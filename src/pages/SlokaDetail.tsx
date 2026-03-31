@@ -15,6 +15,7 @@ import { useBookDetailQuery } from "@/lib/api/endpoints/books";
 import {
   useMeaningsQuery,
   useCreateMeaningMutation,
+  useInsertMeaningAboveMutation,
   useUpdateMeaningMutation,
 } from "@/lib/api/endpoints/meanings";
 import {
@@ -68,6 +69,7 @@ export default function SlokaDetail() {
   const [filter, setFilter] = useState<MeaningFilter>("most-voted");
   const [meaningModalOpen, setMeaningModalOpen] = useState(false);
   const [parentId, setParentId] = useState<string | null>(null);
+  const [insertAboveTargetId, setInsertAboveTargetId] = useState<string | null>(null);
   const [historyNode, setHistoryNode] = useState<MeaningNode | null>(null);
   const [editNode, setEditNode] = useState<MeaningNode | null>(null);
   const [editText, setEditText] = useState("");
@@ -90,6 +92,7 @@ export default function SlokaDetail() {
 
   const updateShlokMutation = useUpdateShlokMutation();
   const createMeaningMutation = useCreateMeaningMutation(id ?? "");
+  const insertAboveMutation = useInsertMeaningAboveMutation(id ?? "");
   const updateMeaningMutation = useUpdateMeaningMutation(id ?? "");
   const createContentReq = useCreateContentRequestMutation();
 
@@ -115,10 +118,18 @@ export default function SlokaDetail() {
 
   const handleAddChild = (pid: string) => {
     setParentId(pid);
+    setInsertAboveTargetId(null);
     setMeaningModalOpen(true);
   };
 
   const handleAddRoot = () => {
+    setParentId(null);
+    setInsertAboveTargetId(null);
+    setMeaningModalOpen(true);
+  };
+
+  const handleInsertAbove = (targetMeaningId: string) => {
+    setInsertAboveTargetId(targetMeaningId);
     setParentId(null);
     setMeaningModalOpen(true);
   };
@@ -163,15 +174,22 @@ export default function SlokaDetail() {
 
   const handleAddMeaning = (text: string) => {
     if (!id) return;
-    createMeaningMutation.mutate(
-      { shlokId: id, data: { content: text, parent_id: parentId ?? undefined } },
-      {
-        onSuccess: () => {
-          setMeaningModalOpen(false);
-          setParentId(null);
-        },
-      }
-    );
+    const onDone = () => {
+      setMeaningModalOpen(false);
+      setParentId(null);
+      setInsertAboveTargetId(null);
+    };
+    if (insertAboveTargetId) {
+      insertAboveMutation.mutate(
+        { shlokId: id, data: { content: text, target_meaning_id: insertAboveTargetId } },
+        { onSuccess: onDone }
+      );
+    } else {
+      createMeaningMutation.mutate(
+        { shlokId: id, data: { content: text, parent_id: parentId ?? undefined } },
+        { onSuccess: onDone }
+      );
+    }
   };
 
   const handleSaveMeaning = () => {
@@ -389,6 +407,7 @@ export default function SlokaDetail() {
             nodes={sortedMeanings}
             canAddMeaning={isOwner}
             onAddChild={handleAddChild}
+            onInsertAbove={handleInsertAbove}
             onViewHistory={(node) => setHistoryNode(node)}
             onEdit={handleEdit}
           />
@@ -397,7 +416,7 @@ export default function SlokaDetail() {
 
       <AddMeaningModal
         open={meaningModalOpen}
-        onClose={() => { setMeaningModalOpen(false); setParentId(null); }}
+        onClose={() => { setMeaningModalOpen(false); setParentId(null); setInsertAboveTargetId(null); }}
         onSubmit={handleAddMeaning}
         parentText={parentNode?.text}
       />

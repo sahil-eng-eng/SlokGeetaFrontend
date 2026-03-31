@@ -1,8 +1,10 @@
 import { useState, useCallback } from "react";
 import { MeaningNode, ReactionType } from "@/types/sloka";
-import { ChevronRight, ChevronDown, Plus, ThumbsUp, User, Clock, Shield, AlertCircle, History, Star, Pencil } from "lucide-react";
+import { ChevronRight, ChevronDown, Plus, ThumbsUp, User, Clock, Shield, AlertCircle, History, Star, Pencil, ArrowUpToLine } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { useQueryClient } from "@tanstack/react-query";
+import { QUERY_KEYS } from "@/lib/api/queryKeys";
 import { VisibilitySelector } from "@/components/ui/VisibilitySelector";
 import { Visibility } from "@/types/sloka";
 import {
@@ -18,6 +20,7 @@ interface MeaningTreeProps {
   depth?: number;
   canAddMeaning?: boolean;
   onAddChild?: (parentId: string) => void;
+  onInsertAbove?: (targetMeaningId: string) => void;
   onViewHistory?: (node: MeaningNode) => void;
   onEdit?: (node: MeaningNode) => void;
 }
@@ -34,14 +37,14 @@ const reactionEmoji: Record<ReactionType, string> = {
   disagree: "👎",
 };
 
-export function MeaningTree({ nodes, depth = 0, canAddMeaning, onAddChild, onViewHistory, onEdit }: MeaningTreeProps) {
+export function MeaningTree({ nodes, depth = 0, canAddMeaning, onAddChild, onInsertAbove, onViewHistory, onEdit }: MeaningTreeProps) {
   return (
     <div className={cn("space-y-1.5", depth > 0 && "ml-6 relative")}>
       {depth > 0 && (
         <div className="absolute left-[-16px] top-0 bottom-0 w-px bg-border" />
       )}
       {nodes.map((node) => (
-        <MeaningTreeNode key={node.id} node={node} depth={depth} canAddMeaning={canAddMeaning} onAddChild={onAddChild} onViewHistory={onViewHistory} onEdit={onEdit} />
+        <MeaningTreeNode key={node.id} node={node} depth={depth} canAddMeaning={canAddMeaning} onAddChild={onAddChild} onInsertAbove={onInsertAbove} onViewHistory={onViewHistory} onEdit={onEdit} />
       ))}
     </div>
   );
@@ -52,6 +55,7 @@ export function MeaningTree({ nodes, depth = 0, canAddMeaning, onAddChild, onVie
  * Keeps the entity-permissions hooks away from non-owner nodes (avoids 403s).
  */
 function MeaningVisibilityControl({ nodeId, shlokId, initialVisibility }: { nodeId: string; shlokId: string; initialVisibility: string }) {
+  const queryClient = useQueryClient();
   const [visibility, setVisibility] = useState<Visibility>(
     initialVisibility === "specific_users" ? "shared" : (initialVisibility as Visibility) ?? "private"
   );
@@ -64,6 +68,12 @@ function MeaningVisibilityControl({ nodeId, shlokId, initialVisibility }: { node
   const sharedUsers: SharedUserPermission[] = (permsQuery.data?.data ?? [])
     .filter((p) => !p.is_structural && !p.is_hidden)
     .map((p) => ({ user_id: p.user_id, permission_level: (p.permission_level || "view") as PermissionLevel }));
+
+  /** Refetch meaning tree + all meaning permissions after a share/revoke */
+  const refetchAfterPermChange = useCallback(() => {
+    queryClient.invalidateQueries({ queryKey: QUERY_KEYS.MEANINGS_BY_SHLOK(shlokId) });
+    queryClient.invalidateQueries({ queryKey: ["permissions", "meaning"] });
+  }, [queryClient, shlokId]);
 
   const handleVisibilityChange = (v: Visibility) => {
     setVisibility(v);
@@ -81,10 +91,15 @@ function MeaningVisibilityControl({ nodeId, shlokId, initialVisibility }: { node
       return prev && prev.permission_level !== u.permission_level;
     });
     [...added, ...levelChanged].forEach((u) =>
-      setMeaningPerm.mutate({ user_id: u.user_id, permission_level: u.permission_level })
+      setMeaningPerm.mutate(
+        { user_id: u.user_id, permission_level: u.permission_level },
+        { onSuccess: refetchAfterPermChange }
+      )
     );
-    removed.forEach((uid) => revokeMeaningPerm.mutate(uid));
-  }, [sharedUsers, setMeaningPerm, revokeMeaningPerm]);
+    removed.forEach((uid) =>
+      revokeMeaningPerm.mutate(uid, { onSuccess: refetchAfterPermChange })
+    );
+  }, [sharedUsers, setMeaningPerm, revokeMeaningPerm, refetchAfterPermChange]);
 
   return (
     <VisibilitySelector
@@ -97,7 +112,7 @@ function MeaningVisibilityControl({ nodeId, shlokId, initialVisibility }: { node
   );
 }
 
-function MeaningTreeNode({ node, depth, canAddMeaning, onAddChild, onViewHistory, onEdit }: { node: MeaningNode; depth: number; canAddMeaning?: boolean; onAddChild?: (parentId: string) => void; onViewHistory?: (node: MeaningNode) => void; onEdit?: (node: MeaningNode) => void }) {
+function MeaningTreeNode({ node, depth, canAddMeaning, onAddChild, onInsertAbove, onViewHistory, onEdit }: { node: MeaningNode; depth: number; canAddMeaning?: boolean; onAddChild?: (parentId: string) => void; onInsertAbove?: (targetMeaningId: string) => void; onViewHistory?: (node: MeaningNode) => void; onEdit?: (node: MeaningNode) => void }) {
   const [expanded, setExpanded] = useState(depth < 2);
   const [reactions, setReactions] = useState(node.reactions);
   const hasChildren = node.children.length > 0;
@@ -192,6 +207,16 @@ function MeaningTreeNode({ node, depth, canAddMeaning, onAddChild, onViewHistory
 
           {/* Actions */}
           <div className="flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition-all shrink-0">
+            {/* Insert Above — only on child interpretations (not root) */}
+            {depth > 0 && canAddMeaning && (
+              <button
+                onClick={() => onInsertAbove?.(node.id)}
+                className="p-1 rounded-md text-muted-foreground hover:text-accent hover:bg-accent/10 transition-all"
+                title="Insert interpretation above"
+              >
+                <ArrowUpToLine className="w-3.5 h-3.5" />
+              </button>
+            )}
             {/* Show Edit button for owners AND for users with explicit permissions (Bug 2/5) */}
             {(node.isOwner || (node.myPermission && node.myPermission !== "view")) && (
               <button
@@ -234,7 +259,7 @@ function MeaningTreeNode({ node, depth, canAddMeaning, onAddChild, onViewHistory
             className="overflow-hidden"
           >
             <div className="mt-1.5">
-              <MeaningTree nodes={node.children} depth={depth + 1} canAddMeaning={canAddMeaning} onAddChild={onAddChild} onViewHistory={onViewHistory} onEdit={onEdit} />
+              <MeaningTree nodes={node.children} depth={depth + 1} canAddMeaning={canAddMeaning} onAddChild={onAddChild} onInsertAbove={onInsertAbove} onViewHistory={onViewHistory} onEdit={onEdit} />
             </div>
           </motion.div>
         )}

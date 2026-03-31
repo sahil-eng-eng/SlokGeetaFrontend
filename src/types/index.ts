@@ -164,6 +164,11 @@ export interface CreateMeaningRequest {
   parent_id?: string;
 }
 
+export interface InsertMeaningAboveRequest {
+  content: string;
+  target_meaning_id: string;
+}
+
 export interface UpdateMeaningRequest {
   content?: string;
   visibility?: string;
