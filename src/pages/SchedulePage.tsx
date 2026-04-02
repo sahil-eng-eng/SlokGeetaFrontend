@@ -1,4 +1,4 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Plus, X, Clock, Calendar, Trophy, History,
@@ -217,7 +217,7 @@ export default function SchedulePage() {
   return (
     <div className="min-h-screen">
       {/* ── Hero Banner ── */}
-      <div className="relative overflow-hidden rounded-2xl mx-4 md:mx-6 mt-4 mb-6">
+      <div className="relative overflow-hidden rounded mx-4 md:mx-6 mt-4 mb-6">
         <div className="absolute inset-0 bg-gradient-to-br from-accent/20 via-accent/10 to-transparent" />
         <div className="absolute inset-0 bg-gradient-to-t from-background/60 to-transparent" />
         <div className="relative px-6 py-8 md:px-10 md:py-10">
@@ -254,7 +254,7 @@ export default function SchedulePage() {
             <div className="flex items-center gap-2 shrink-0">
               <button
                 onClick={() => setShowHistory(true)}
-                className="h-9 px-3 rounded-md border border-border text-[12px] font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors inline-flex items-center gap-1.5"
+                className="h-9 px-3 rounded border border-border text-[12px] font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors inline-flex items-center gap-1.5"
               >
                 <History className="w-3.5 h-3.5" /> Versions
               </button>
@@ -273,7 +273,7 @@ export default function SchedulePage() {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
-            className="mx-4 md:mx-6 mb-4 surface rounded-xl border border-success/30 bg-success/5 p-5 text-center"
+            className="mx-4 md:mx-6 mb-4 surface rounded border border-success/30 bg-success/5 p-5 text-center"
           >
             <Trophy className="w-10 h-10 text-success mx-auto mb-2" />
             <p className="text-heading font-bold text-success">Congratulations! 🎉</p>
@@ -292,7 +292,7 @@ export default function SchedulePage() {
         <div className="space-y-4">
 
           {/* Active Schedule Card */}
-          <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="surface rounded-xl border border-border p-5">
+          <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="surface rounded border border-border p-5">
         {versionsLoading ? (
           <div className="py-8 text-center">
             <Loader2 className="w-6 h-6 text-muted-foreground/40 animate-spin mx-auto mb-2" />
@@ -320,7 +320,7 @@ export default function SchedulePage() {
                 </p>
               </div>
               <div className="flex items-center gap-2">
-                <button onClick={() => openEditVersion(activeVersion)} className="h-8 px-3 rounded-md border border-border text-[12px] font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors inline-flex items-center gap-1.5">
+                <button onClick={() => openEditVersion(activeVersion)} className="h-8 px-3 rounded border border-border text-[12px] font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors inline-flex items-center gap-1.5">
                   <Pencil className="w-3.5 h-3.5" /> Edit
                 </button>
                 <GradientButton size="sm" onClick={startCheckIn}>
@@ -330,7 +330,7 @@ export default function SchedulePage() {
             </div>
 
             {activeVersion.reward && (
-              <div className="mb-4 p-3 rounded-lg bg-accent/5 border border-accent/10 flex items-center gap-2.5">
+              <div className="mb-4 p-3 rounded bg-accent/5 border border-accent/10 flex items-center gap-2.5">
                 <Gift className="w-4 h-4 text-accent shrink-0" />
                 <div>
                   <p className="text-small font-medium text-foreground">Reward: {activeVersion.reward}</p>
@@ -341,7 +341,7 @@ export default function SchedulePage() {
 
             {/* Today check-in status */}
             {todayCheckIn && (
-              <div className={`mb-4 p-3 rounded-lg border flex items-center gap-2.5 ${todayCheckIn.alignment >= 80 ? "bg-success/5 border-success/20" : "bg-warning/5 border-warning/20"}`}>
+              <div className={`mb-4 p-3 rounded border flex items-center gap-2.5 ${todayCheckIn.alignment >= 80 ? "bg-success/5 border-success/20" : "bg-warning/5 border-warning/20"}`}>
                 <CheckCircle2 className={`w-4 h-4 shrink-0 ${todayCheckIn.alignment >= 80 ? "text-success" : "text-warning"}`} />
                 <p className="text-small font-medium text-foreground">
                   Today's check-in: <span className={todayCheckIn.alignment >= 80 ? "text-success" : "text-warning"}>{todayCheckIn.alignment}% aligned</span>
@@ -351,7 +351,7 @@ export default function SchedulePage() {
 
             <div className="space-y-1">
               {activeVersion.items.map((item, i) => (
-                <motion.div key={item.id} initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.03 }} className="flex items-center gap-3 p-2.5 rounded-lg hover:bg-muted/30 transition-colors">
+                <motion.div key={item.id} initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.03 }} className="flex items-center gap-3 p-2.5 rounded hover:bg-muted/30 transition-colors">
                   <div className="w-24 text-right shrink-0">
                     <span className="text-small font-medium text-accent">{formatItemTime(item)}</span>
                   </div>
@@ -366,7 +366,7 @@ export default function SchedulePage() {
 
           {/* ── Stats Card ── */}
           {activeVersion && (
-            <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }} className="surface rounded-xl border border-border p-5">
+            <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }} className="surface rounded border border-border p-5">
               <h2 className="text-heading text-foreground flex items-center gap-2 mb-4">
                 <Trophy className="w-4 h-4 text-accent" /> Progress
               </h2>
@@ -407,7 +407,7 @@ export default function SchedulePage() {
         <div className="lg:col-span-2 space-y-4">
 
         {/* Check-in Log */}
-        <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="surface rounded-xl border border-border p-5">
+        <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="surface rounded border border-border p-5">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-heading text-foreground flex items-center gap-2">
             <Calendar className="w-4 h-4 text-accent" /> Check-in History
@@ -415,7 +415,7 @@ export default function SchedulePage() {
           <div className="flex items-center gap-1.5">
             <Filter className="w-3.5 h-3.5 text-muted-foreground" />
             {([7, 14, 30, 90] as const).map((n) => (
-              <button key={n} onClick={() => setHistoryDays(n)} className={`h-7 px-2.5 rounded-md text-[11px] font-medium transition-all ${historyDays === n ? "bg-accent/15 text-accent border border-accent/30" : "text-muted-foreground hover:text-foreground border border-transparent hover:border-border"}`}>
+              <button key={n} onClick={() => setHistoryDays(n)} className={`h-7 px-2.5 rounded text-[11px] font-medium transition-all ${historyDays === n ? "bg-accent/15 text-accent border border-accent/30" : "text-muted-foreground hover:text-foreground border border-transparent hover:border-border"}`}>
                 {n}d
               </button>
             ))}
@@ -432,7 +432,7 @@ export default function SchedulePage() {
             const expanded = expandedLog === ci.check_in_date;
             const ciVersion = ci.version_id ? versions.find((v) => v.id === ci.version_id) ?? null : null;
             return (
-              <div key={ci.check_in_date} className="border border-border rounded-lg overflow-hidden">
+              <div key={ci.check_in_date} className="border border-border rounded overflow-hidden">
                 <button onClick={() => setExpandedLog(expanded ? null : ci.check_in_date)} className="flex items-center justify-between w-full p-3 hover:bg-muted/30 transition-colors">
                   <div className="flex items-center gap-3">
                     {expanded ? <ChevronDown className="w-3.5 h-3.5 text-muted-foreground" /> : <ChevronRight className="w-3.5 h-3.5 text-muted-foreground" />}
@@ -497,10 +497,10 @@ export default function SchedulePage() {
           <>
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 bg-foreground/20 backdrop-blur-sm z-50" onClick={() => setShowCreate(false)} />
             <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto">
-              <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }} className="surface w-full max-w-lg rounded-xl shadow-modal border border-border/50 p-6 my-8" onClick={(e) => e.stopPropagation()}>
+              <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }} className="surface w-full max-w-lg rounded shadow-modal border border-accent/15 p-6 my-8" onClick={(e) => e.stopPropagation()}>
                 <div className="flex items-center justify-between mb-5">
                   <h2 className="text-heading text-foreground">{editingVersionId ? "Edit Schedule" : "Create Schedule"}</h2>
-                  <button onClick={() => setShowCreate(false)} className="p-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"><X className="w-4 h-4" /></button>
+                  <button onClick={() => setShowCreate(false)} className="p-1.5 rounded text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"><X className="w-4 h-4" /></button>
                 </div>
 
                 {/* Day selector */}
@@ -508,7 +508,7 @@ export default function SchedulePage() {
                   <label className="text-small font-medium text-foreground">Applies to</label>
                   <div className="flex gap-1.5 flex-wrap">
                     {DAYS.map((d) => (
-                      <button key={d} type="button" onClick={() => toggleDay(d)} className={`px-3 py-1.5 rounded-md text-[12px] font-medium border transition-all ${newDays.includes(d) ? "border-accent bg-accent/10 text-accent" : "border-border text-muted-foreground hover:text-foreground"}`}>
+                      <button key={d} type="button" onClick={() => toggleDay(d)} className={`px-3 py-1.5 rounded text-[12px] font-medium border transition-all ${newDays.includes(d) ? "border-accent bg-accent/10 text-accent" : "border-border text-muted-foreground hover:text-foreground"}`}>
                         {d}
                       </button>
                     ))}
@@ -524,7 +524,7 @@ export default function SchedulePage() {
                         type="time"
                         value={item.start_time ?? ""}
                         onChange={(e) => updateNewItem(item.id, "start_time", e.target.value)}
-                        className="h-9 w-24 shrink-0 rounded-md border border-input bg-background px-2 text-[13px] text-foreground focus:outline-none focus:ring-2 focus:ring-accent/20 transition-all"
+                        className="h-9 w-24 shrink-0 rounded border border-input bg-background px-2 text-[13px] text-foreground focus:outline-none focus:ring-2 focus:ring-accent/20 transition-all"
                         title="Start time"
                       />
                       <span className="text-muted-foreground text-[13px] shrink-0">–</span>
@@ -532,12 +532,12 @@ export default function SchedulePage() {
                         type="time"
                         value={item.end_time ?? ""}
                         onChange={(e) => updateNewItem(item.id, "end_time", e.target.value)}
-                        className="h-9 w-24 shrink-0 rounded-md border border-input bg-background px-2 text-[13px] text-foreground focus:outline-none focus:ring-2 focus:ring-accent/20 transition-all"
+                        className="h-9 w-24 shrink-0 rounded border border-input bg-background px-2 text-[13px] text-foreground focus:outline-none focus:ring-2 focus:ring-accent/20 transition-all"
                         title="End time"
                       />
-                      <input value={item.activity} onChange={(e) => updateNewItem(item.id, "activity", e.target.value)} placeholder="Activity" className="h-9 flex-1 rounded-md border border-input bg-background px-3 text-[13px] text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-accent/20 transition-all" />
+                      <input value={item.activity} onChange={(e) => updateNewItem(item.id, "activity", e.target.value)} placeholder="Activity" className="h-9 flex-1 rounded border border-input bg-background px-3 text-[13px] text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-accent/20 transition-all" />
                       {newItems.length > 1 && (
-                        <button onClick={() => removeNewItem(item.id)} className="p-1.5 rounded-md text-muted-foreground hover:text-destructive transition-colors"><Trash2 className="w-3.5 h-3.5" /></button>
+                        <button onClick={() => removeNewItem(item.id)} className="p-1.5 rounded text-muted-foreground hover:text-destructive transition-colors"><Trash2 className="w-3.5 h-3.5" /></button>
                       )}
                     </div>
                   ))}
@@ -549,16 +549,16 @@ export default function SchedulePage() {
                 {/* Reward */}
                 <div className="mb-5 space-y-2">
                   <label className="text-small font-medium text-foreground flex items-center gap-1.5"><Gift className="w-3.5 h-3.5 text-accent" /> Self-Reward (optional)</label>
-                  <input value={newReward} onChange={(e) => setNewReward(e.target.value)} placeholder="e.g., Buy a new book I've been wanting" className="h-9 w-full rounded-md border border-input bg-background px-3 text-[13px] text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-accent/20 transition-all" />
+                  <input value={newReward} onChange={(e) => setNewReward(e.target.value)} placeholder="e.g., Buy a new book I've been wanting" className="h-9 w-full rounded border border-input bg-background px-3 text-[13px] text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-accent/20 transition-all" />
                   <div className="flex items-center gap-2">
                     <span className="text-small text-muted-foreground whitespace-nowrap">Earn after</span>
-                    <input type="number" value={newRewardDays} onChange={(e) => setNewRewardDays(e.target.value)} className="h-8 w-16 rounded-md border border-input bg-background px-2 text-[13px] text-foreground text-center focus:outline-none focus:ring-2 focus:ring-accent/20 transition-all" />
+                    <input type="number" value={newRewardDays} onChange={(e) => setNewRewardDays(e.target.value)} className="h-8 w-16 rounded border border-input bg-background px-2 text-[13px] text-foreground text-center focus:outline-none focus:ring-2 focus:ring-accent/20 transition-all" />
                     <span className="text-small text-muted-foreground">days</span>
                   </div>
                 </div>
 
                 <div className="flex justify-end gap-2">
-                  <button onClick={() => setShowCreate(false)} className="h-9 px-4 rounded-md text-[13px] font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">Cancel</button>
+                  <button onClick={() => setShowCreate(false)} className="h-9 px-4 rounded text-[13px] font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">Cancel</button>
                   <GradientButton size="sm" onClick={saveSchedule} disabled={createVersionMutation.isPending || updateVersionMutation.isPending}>
                     {(createVersionMutation.isPending || updateVersionMutation.isPending) ? <><Loader2 className="w-3.5 h-3.5 mr-1 animate-spin" /> Saving…</> : editingVersionId ? "Save Changes" : "Save Schedule"}
                   </GradientButton>
@@ -575,14 +575,14 @@ export default function SchedulePage() {
           <>
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 bg-foreground/20 backdrop-blur-sm z-50" onClick={() => setShowHistory(false)} />
             <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto">
-              <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }} className="surface w-full max-w-md rounded-xl shadow-modal border border-border/50 p-6 my-8" onClick={(e) => e.stopPropagation()}>
+              <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }} className="surface w-full max-w-md rounded shadow-modal border border-accent/15 p-6 my-8" onClick={(e) => e.stopPropagation()}>
                 <div className="flex items-center justify-between mb-5">
                   <h2 className="text-heading text-foreground">Schedule Versions</h2>
-                  <button onClick={() => setShowHistory(false)} className="p-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"><X className="w-4 h-4" /></button>
+                  <button onClick={() => setShowHistory(false)} className="p-1.5 rounded text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"><X className="w-4 h-4" /></button>
                 </div>
                 <div className="space-y-3">
                   {versions.map((v) => (
-                    <div key={v.id} className={`p-3 rounded-lg border transition-all ${v.is_active ? "border-accent bg-accent/5" : "border-border hover:bg-muted/30 cursor-pointer"}`} onClick={() => !v.is_active && switchVersion(v.id)}>
+                    <div key={v.id} className={`p-3 rounded border transition-all ${v.is_active ? "border-accent bg-accent/5" : "border-border hover:bg-muted/30 cursor-pointer"}`} onClick={() => !v.is_active && switchVersion(v.id)}>
                       <div className="flex items-center justify-between mb-1.5">
                         <span className="text-body font-medium text-foreground">Created {format(new Date(v.created_at), "MMM d, yyyy")}</span>
                         {v.is_active && <span className="text-[10px] font-semibold uppercase tracking-wider text-accent bg-accent/10 px-2 py-0.5 rounded-full">Active</span>}
@@ -608,20 +608,20 @@ export default function SchedulePage() {
           <>
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 bg-foreground/20 backdrop-blur-sm z-50" onClick={() => setShowCheckIn(false)} />
             <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto">
-              <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }} className="surface w-full max-w-md rounded-xl shadow-modal border border-border/50 p-6 my-8" onClick={(e) => e.stopPropagation()}>
+              <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }} className="surface w-full max-w-md rounded shadow-modal border border-accent/15 p-6 my-8" onClick={(e) => e.stopPropagation()}>
                 <div className="flex items-center justify-between mb-5">
                   <h2 className="text-heading text-foreground">
                     {editingCheckIn
                       ? `Edit Check-in — ${format(new Date(editingCheckIn.check_in_date), "EEE, MMM d")}`
                       : "Daily Check-in"}
                   </h2>
-                  <button onClick={() => { setShowCheckIn(false); setEditingCheckIn(null); }} className="p-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"><X className="w-4 h-4" /></button>
+                  <button onClick={() => { setShowCheckIn(false); setEditingCheckIn(null); }} className="p-1.5 rounded text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"><X className="w-4 h-4" /></button>
                 </div>
                 <p className="text-small text-muted-foreground mb-4">Mark each item as done or not done for today.</p>
 
                 <div className="space-y-1.5 mb-5">
                   {checkInItems.map((item) => (
-                    <button key={item.id} type="button" onClick={() => toggleCheckItem(item.id)} className={`flex items-center gap-3 w-full p-3 rounded-lg border transition-all ${item.done ? "border-success/30 bg-success/5" : "border-border hover:bg-muted/30"}`}>
+                    <button key={item.id} type="button" onClick={() => toggleCheckItem(item.id)} className={`flex items-center gap-3 w-full p-3 rounded border transition-all ${item.done ? "border-success/30 bg-success/5" : "border-border hover:bg-muted/30"}`}>
                       {item.done ? <CheckCircle2 className="w-4 h-4 text-success shrink-0" /> : <Circle className="w-4 h-4 text-muted-foreground/40 shrink-0" />}
                       <span className={`text-body text-left ${item.done ? "text-foreground" : "text-muted-foreground"}`}>{item.activity}</span>
                     </button>
@@ -629,20 +629,20 @@ export default function SchedulePage() {
                 </div>
 
                 {/* Alignment score */}
-                <div className="p-4 rounded-lg bg-muted/50 text-center mb-4">
+                <div className="p-4 rounded bg-muted/50 text-center mb-4">
                   <p className="text-[11px] uppercase tracking-wider text-muted-foreground mb-1">Today's Alignment</p>
                   <p className={`text-[28px] font-bold ${checkInAlignment >= 80 ? "text-success" : checkInAlignment >= 50 ? "text-warning" : "text-destructive"}`}>{checkInAlignment}%</p>
                 </div>
 
                 {checkInAlignment === 100 && (
-                  <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="p-3 rounded-lg bg-success/10 border border-success/20 text-center mb-4">
+                  <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="p-3 rounded bg-success/10 border border-success/20 text-center mb-4">
                     <Trophy className="w-6 h-6 text-success mx-auto mb-1" />
                     <p className="text-body font-medium text-success">Perfect day! 🌟</p>
                   </motion.div>
                 )}
 
                 <div className="flex justify-end gap-2">
-                  <button onClick={() => { setShowCheckIn(false); setEditingCheckIn(null); }} className="h-9 px-4 rounded-md text-[13px] font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">Cancel</button>
+                  <button onClick={() => { setShowCheckIn(false); setEditingCheckIn(null); }} className="h-9 px-4 rounded text-[13px] font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">Cancel</button>
                   <GradientButton size="sm" onClick={saveCheckIn} disabled={submitCheckInMutation.isPending || updateCheckInMutation.isPending}>
                     {(submitCheckInMutation.isPending || updateCheckInMutation.isPending) ? <><Loader2 className="w-3.5 h-3.5 mr-1 animate-spin" /> Saving…</> : editingCheckIn ? "Update Check-in" : "Save Check-in"}
                   </GradientButton>
@@ -662,12 +662,12 @@ export default function SchedulePage() {
             <>
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 bg-foreground/20 backdrop-blur-sm z-50" onClick={() => setViewingVersionId(null)} />
               <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto">
-                <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }} className="surface w-full max-w-md rounded-xl shadow-modal border border-border/50 p-6 my-8" onClick={(e) => e.stopPropagation()}>
+                <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }} className="surface w-full max-w-md rounded shadow-modal border border-accent/15 p-6 my-8" onClick={(e) => e.stopPropagation()}>
                   <div className="flex items-center justify-between mb-4">
                     <h2 className="text-heading text-foreground flex items-center gap-2">
                       <ClipboardList className="w-4 h-4 text-accent" /> Schedule Used
                     </h2>
-                    <button onClick={() => setViewingVersionId(null)} className="p-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"><X className="w-4 h-4" /></button>
+                    <button onClick={() => setViewingVersionId(null)} className="p-1.5 rounded text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"><X className="w-4 h-4" /></button>
                   </div>
                   <p className="text-small text-muted-foreground mb-3">
                     Created {format(new Date(v.created_at), "MMM d, yyyy")} · Applies to: {v.applies_to.join(", ")}
@@ -675,7 +675,7 @@ export default function SchedulePage() {
                   </p>
                   <div className="space-y-1">
                     {v.items.map((item) => (
-                      <div key={item.id} className="flex items-center gap-3 p-2.5 rounded-lg bg-muted/30">
+                      <div key={item.id} className="flex items-center gap-3 p-2.5 rounded bg-muted/30">
                         <div className="w-20 text-right shrink-0">
                           <span className="text-small font-medium text-accent">{formatItemTime(item)}</span>
                         </div>
@@ -685,7 +685,7 @@ export default function SchedulePage() {
                     ))}
                   </div>
                   <div className="mt-4 flex justify-end">
-                    <button onClick={() => setViewingVersionId(null)} className="h-9 px-4 rounded-md text-[13px] font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">Close</button>
+                    <button onClick={() => setViewingVersionId(null)} className="h-9 px-4 rounded text-[13px] font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">Close</button>
                   </div>
                 </motion.div>
               </div>

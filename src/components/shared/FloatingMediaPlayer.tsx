@@ -1,4 +1,4 @@
-import { useRef, useEffect, useCallback } from "react";
+﻿import { useRef, useEffect, useCallback } from "react";
 import { useLocation } from "react-router-dom";
 import { Play, Pause, SkipForward, SkipBack, Volume2, VolumeX, X, Music, Youtube } from "lucide-react";
 import { useMediaPlayer } from "@/context/MediaPlayerContext";
@@ -86,7 +86,7 @@ export function FloatingMediaPlayer() {
       display:none / visibility:hidden would pause the YouTube iframe.
     */
     <div
-      className="fixed bottom-4 right-4 z-50 w-72 surface rounded-xl border border-border shadow-elevated overflow-hidden"
+      className="fixed bottom-4 right-4 z-50 w-72 surface rounded border border-border shadow-elevated overflow-hidden"
       style={{
         transform: isOnKirtanPage ? "translateX(calc(100% + 2rem))" : "translateX(0)",
         transition: "transform 0.3s cubic-bezier(0.4,0,0.2,1)",
@@ -111,7 +111,7 @@ export function FloatingMediaPlayer() {
       <div className="p-3">
         {/* Track info */}
         <div className="flex items-center gap-2.5 mb-2.5">
-          <div className="w-8 h-8 rounded-md bg-accent/10 flex items-center justify-center shrink-0">
+          <div className="w-8 h-8 rounded bg-accent/10 flex items-center justify-center shrink-0">
             {isYouTube
               ? <Youtube className="w-4 h-4 text-red-500" />
               : <Music className="w-4 h-4 text-accent" />}
@@ -124,7 +124,7 @@ export function FloatingMediaPlayer() {
           </div>
           <button
             onClick={stopPlayer}
-            className="p-1 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted transition-colors shrink-0"
+            className="p-1 rounded text-muted-foreground hover:text-foreground hover:bg-muted transition-colors shrink-0"
             aria-label="Close player"
           >
             <X className="w-3.5 h-3.5" />
@@ -147,12 +147,12 @@ export function FloatingMediaPlayer() {
 
         {/* Controls */}
         <div className="flex items-center justify-between">
-          <button onClick={toggleMute} className="p-1.5 rounded-md text-muted-foreground hover:text-foreground transition-colors" aria-label={isMuted ? "Unmute" : "Mute"}>
+          <button onClick={toggleMute} className="p-1.5 rounded text-muted-foreground hover:text-foreground transition-colors" aria-label={isMuted ? "Unmute" : "Mute"}>
             {isMuted ? <VolumeX className="w-3.5 h-3.5" /> : <Volume2 className="w-3.5 h-3.5" />}
           </button>
 
           <div className="flex items-center gap-1.5">
-            <button onClick={prevTrack} className="p-1.5 rounded-md text-muted-foreground hover:text-foreground transition-colors" aria-label="Previous">
+            <button onClick={prevTrack} className="p-1.5 rounded text-muted-foreground hover:text-foreground transition-colors" aria-label="Previous">
               <SkipBack className="w-4 h-4" />
             </button>
             <button
@@ -162,7 +162,7 @@ export function FloatingMediaPlayer() {
             >
               {isPlaying ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5 ml-0.5" />}
             </button>
-            <button onClick={nextTrack} className="p-1.5 rounded-md text-muted-foreground hover:text-foreground transition-colors" aria-label="Next">
+            <button onClick={nextTrack} className="p-1.5 rounded text-muted-foreground hover:text-foreground transition-colors" aria-label="Next">
               <SkipForward className="w-4 h-4" />
             </button>
           </div>

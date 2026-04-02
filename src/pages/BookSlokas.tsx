@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+﻿import { useState, useEffect, useCallback } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -165,7 +165,7 @@ export default function BookSlokas() {
         <Link to="/dashboard/library" className="inline-flex items-center gap-1.5 text-body text-muted-foreground hover:text-foreground transition-colors">
           <ArrowLeft className="w-4 h-4" /> Back to Library
         </Link>
-        <div className="surface rounded-lg border border-border p-5 animate-pulse">
+        <div className="surface rounded border border-border p-5 animate-pulse">
           <div className="h-6 bg-muted rounded w-1/3 mb-2" />
           <div className="h-4 bg-muted rounded w-2/3" />
         </div>
@@ -179,7 +179,7 @@ export default function BookSlokas() {
         <Link to="/dashboard/library" className="inline-flex items-center gap-1.5 text-body text-muted-foreground hover:text-foreground transition-colors">
           <ArrowLeft className="w-4 h-4" /> Back to Library
         </Link>
-        <div className="surface rounded-lg border border-border p-12 text-center">
+        <div className="surface rounded border border-border p-12 text-center">
           <BookOpen className="w-10 h-10 text-muted-foreground/30 mx-auto mb-3" />
           <p className="text-body text-muted-foreground">Book not found.</p>
         </div>
@@ -204,7 +204,7 @@ export default function BookSlokas() {
       <motion.div
         initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
-        className="surface rounded-lg border border-border p-5"
+        className="surface rounded border border-border p-5"
       >
         <div className="flex items-start justify-between gap-4">
           <div className="flex-1">
@@ -233,7 +233,7 @@ export default function BookSlokas() {
               />
               <button
                 onClick={handleOpenEdit}
-                className="p-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+                className="p-1.5 rounded text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
                 aria-label="Edit book details"
               >
                 <Pencil className="w-3.5 h-3.5" />
@@ -253,7 +253,7 @@ export default function BookSlokas() {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Search slokas..."
-          className="w-full h-9 pl-9 pr-3 rounded-md border border-input bg-background text-[13px] text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent transition-all"
+          className="w-full h-9 pl-9 pr-3 rounded border border-input bg-background text-[13px] text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent transition-all"
         />
       </div>
 
@@ -261,7 +261,7 @@ export default function BookSlokas() {
       {shloksLoading ? (
         <div className="space-y-2">
           {Array.from({ length: 4 }).map((_, i) => (
-            <div key={i} className="surface rounded-lg border border-border p-4 animate-pulse">
+            <div key={i} className="surface rounded border border-border p-4 animate-pulse">
               <div className="h-4 bg-muted rounded w-1/3 mb-2" />
               <div className="h-3 bg-muted rounded w-3/4" />
             </div>
@@ -279,7 +279,7 @@ export default function BookSlokas() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.25, delay: i * 0.04 }}
                 onClick={() => navigate(`/dashboard/slokas/${shlok.id}`)}
-                className="group surface rounded-lg border border-border p-4 cursor-pointer transition-all duration-200 hover:shadow-elevated hover:border-accent/20"
+                className="group surface rounded border border-border p-4 cursor-pointer transition-all duration-200 hover:shadow-elevated hover:border-accent/20"
               >
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex-1 min-w-0">
@@ -312,7 +312,7 @@ export default function BookSlokas() {
       )}
 
       {filtered.length === 0 && !shloksLoading && (
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="surface rounded-lg border border-border p-12 text-center">
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="surface rounded border border-border p-12 text-center">
           <ScrollText className="w-10 h-10 text-muted-foreground/30 mx-auto mb-3" />
           <p className="text-body text-muted-foreground">No slokas found.</p>
           <button onClick={() => setCreateOpen(true)} className="text-small text-accent hover:text-accent-glow font-medium mt-2 transition-colors">
@@ -342,14 +342,14 @@ export default function BookSlokas() {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
-                className="surface w-full max-w-lg rounded-xl shadow-modal border border-border/50 p-6"
+                className="surface w-full max-w-lg rounded shadow-modal border border-accent/15 p-6"
                 onClick={(e) => e.stopPropagation()}
               >
                 <div className="flex items-center justify-between mb-5">
                   <h2 className="text-heading font-semibold text-foreground flex items-center gap-2">
                     <Pencil className="w-4 h-4 text-accent" /> Edit Book
                   </h2>
-                  <button onClick={() => setEditOpen(false)} className="p-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
+                  <button onClick={() => setEditOpen(false)} className="p-1.5 rounded text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
                     <X className="w-4 h-4" />
                   </button>
                 </div>
@@ -371,7 +371,7 @@ export default function BookSlokas() {
                       onChange={(e) => setEditDescription(e.target.value)}
                       rows={3}
                       placeholder="Short description of the book"
-                      className="flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent resize-none transition-all"
+                      className="flex w-full rounded border border-input bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent resize-none transition-all"
                     />
                   </div>
                   <div className="grid grid-cols-2 gap-3">
@@ -404,7 +404,7 @@ export default function BookSlokas() {
                     />
                   </div>
                   <div className="flex justify-end gap-3 pt-1">
-                    <button type="button" onClick={() => setEditOpen(false)} className="h-9 px-4 rounded-md text-[13px] font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
+                    <button type="button" onClick={() => setEditOpen(false)} className="h-9 px-4 rounded text-[13px] font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
                       Cancel
                     </button>
                     <GradientButton type="submit" size="sm" disabled={updateBookMutation.isPending}>

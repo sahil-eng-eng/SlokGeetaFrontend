@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+﻿import { useState, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { useEditor, EditorContent } from "@tiptap/react";
@@ -313,7 +313,7 @@ function PageEditorModal({ granthId, totalPages, editingPage, onClose }: PageEdi
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.97, y: 8 }}
           transition={{ duration: 0.18 }}
-          className="surface w-full max-w-4xl rounded-2xl border border-border/70 shadow-elevated flex flex-col max-h-[90vh]"
+          className="surface w-full max-w-4xl rounded border border-accent/20 shadow-elevated flex flex-col max-h-[90vh]"
           onClick={(e) => e.stopPropagation()}
         >
           {/* Header */}
@@ -330,7 +330,7 @@ function PageEditorModal({ granthId, totalPages, editingPage, onClose }: PageEdi
                     min={1}
                     value={pageNumber}
                     onChange={(e) => setPageNumber(Number(e.target.value))}
-                    className="w-16 h-8 px-2 rounded-lg border border-border bg-muted/30 text-[12px] text-foreground focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent transition-all text-center"
+                    className="w-16 h-8 px-2 rounded border border-border bg-muted/30 text-[12px] text-foreground focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent transition-all text-center"
                   />
                 </div>
               )}
@@ -361,7 +361,7 @@ function PageEditorModal({ granthId, totalPages, editingPage, onClose }: PageEdi
             <div className="flex items-center gap-2">
               <button
                 onClick={onClose}
-                className="h-8 px-3 rounded-md text-[13px] text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+                className="h-8 px-3 rounded text-[13px] text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
               >
                 Cancel
               </button>
@@ -445,7 +445,7 @@ export default function GranthPagesAdminPage() {
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        className="relative overflow-hidden rounded-2xl border border-border/70 surface px-5 py-5 sm:px-6"
+        className="relative overflow-hidden rounded border border-accent/20 surface px-5 py-5 sm:px-6"
       >
         <div className="absolute inset-0 bg-gradient-to-br from-accent/10 via-transparent to-background" />
         <div className="relative flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
@@ -453,7 +453,7 @@ export default function GranthPagesAdminPage() {
             <div className="flex items-center gap-3">
         <button
           onClick={() => navigate("/admin/granths")}
-          className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+          className="p-2 rounded text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
         </button>
@@ -480,15 +480,15 @@ export default function GranthPagesAdminPage() {
           </div>
 
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:min-w-[430px]">
-            <div className="rounded-xl border border-border/60 bg-background/80 p-3">
+            <div className="rounded border border-accent/15 bg-background/80 p-3">
               <p className="text-small text-muted-foreground">Pages</p>
               <p className="mt-1 text-heading text-foreground">{pages.length}</p>
             </div>
-            <div className="rounded-xl border border-border/60 bg-background/80 p-3">
+            <div className="rounded border border-accent/15 bg-background/80 p-3">
               <p className="text-small text-muted-foreground">Language</p>
               <p className="mt-1 text-body font-medium capitalize text-foreground">{granth.language}</p>
             </div>
-            <div className="col-span-2 rounded-xl border border-border/60 bg-background/80 p-3 sm:col-span-1">
+            <div className="col-span-2 rounded border border-accent/15 bg-background/80 p-3 sm:col-span-1">
               <p className="text-small text-muted-foreground">Next page</p>
               <p className="mt-1 text-heading text-foreground">{pages.length + 1}</p>
             </div>
@@ -508,7 +508,7 @@ export default function GranthPagesAdminPage() {
 
       {/* Pages list */}
       {pages.length === 0 ? (
-        <div className="surface border border-border rounded-2xl py-16 flex flex-col items-center gap-3 text-muted-foreground">
+        <div className="surface border border-border rounded py-16 flex flex-col items-center gap-3 text-muted-foreground">
           <FileText className="w-8 h-8 opacity-40" />
           <p className="text-[13px]">No pages yet. Add the first page to get started.</p>
           <GradientButton size="sm" onClick={openAdd}>
@@ -522,23 +522,23 @@ export default function GranthPagesAdminPage() {
               key={page.id}
               initial={{ opacity: 0, y: 3 }}
               animate={{ opacity: 1, y: 0 }}
-              className="surface border border-border/70 rounded-2xl p-4 flex flex-col gap-4 hover:border-accent/20 transition-all hover:shadow-surface group"
+              className="surface border border-accent/20 rounded p-4 flex flex-col gap-4 hover:border-accent/20 transition-all hover:shadow-surface group"
             >
               <div className="flex items-start justify-between gap-3">
-                <span className="shrink-0 w-10 h-10 rounded-xl bg-accent/10 text-accent text-[13px] font-semibold flex items-center justify-center">
+                <span className="shrink-0 w-10 h-10 rounded bg-accent/10 text-accent text-[13px] font-semibold flex items-center justify-center">
                   {page.page_number}
                 </span>
-                <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity shrink-0 rounded-xl border border-border/60 bg-background/70 px-1 py-1">
+                <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity shrink-0 rounded border border-accent/15 bg-background/70 px-1 py-1">
                   <button
                     onClick={() => openEdit(page)}
-                    className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+                    className="p-2 rounded text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
                     title="Edit page content"
                   >
                     <Pencil className="w-3.5 h-3.5" />
                   </button>
                   <button
                     onClick={() => handleDelete(page)}
-                    className="p-2 rounded-lg text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors"
+                    className="p-2 rounded text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors"
                     title="Delete page"
                   >
                     <Trash2 className="w-3.5 h-3.5" />

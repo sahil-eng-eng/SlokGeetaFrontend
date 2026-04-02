@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo, useRef } from "react";
+﻿import { useState, useCallback, useMemo, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Music, Play, Pause, SkipForward, SkipBack, Volume2, VolumeX,
   Search, Plus, X, Clock, Heart, Shuffle, Repeat,
@@ -136,14 +136,14 @@ function AddSongModal({ open, onClose, onSubmit, isLoading }: AddSongModalProps)
           initial={{ opacity: 0, scale: 0.95, y: 10 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 10 }}
-          className="surface rounded-xl border border-border p-6 w-full max-w-md shadow-elevated"
+          className="surface rounded border border-border p-6 w-full max-w-md shadow-elevated"
           onClick={(e) => e.stopPropagation()}
         >
           <div className="flex items-center justify-between mb-5">
             <h2 className="text-heading text-foreground flex items-center gap-2">
               <Music className="w-4 h-4 text-accent" /> Add Song
             </h2>
-            <button onClick={onClose} className="p-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
+            <button onClick={onClose} className="p-1.5 rounded text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
               <X className="w-4 h-4" />
             </button>
           </div>
@@ -155,7 +155,7 @@ function AddSongModal({ open, onClose, onSubmit, isLoading }: AddSongModalProps)
                 value={form.title}
                 onChange={(e) => setForm((f) => ({ ...f, title: e.target.value }))}
                 placeholder="Song title"
-                className="w-full h-9 px-3 rounded-md border border-border bg-muted/40 text-[13px] text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent transition-all"
+                className="w-full h-9 px-3 rounded border border-border bg-muted/40 text-[13px] text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent transition-all"
               />
             </div>
             <div>
@@ -164,7 +164,7 @@ function AddSongModal({ open, onClose, onSubmit, isLoading }: AddSongModalProps)
                 value={form.artist}
                 onChange={(e) => setForm((f) => ({ ...f, artist: e.target.value }))}
                 placeholder="Artist name"
-                className="w-full h-9 px-3 rounded-md border border-border bg-muted/40 text-[13px] text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent transition-all"
+                className="w-full h-9 px-3 rounded border border-border bg-muted/40 text-[13px] text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent transition-all"
               />
             </div>
             <div>
@@ -173,7 +173,7 @@ function AddSongModal({ open, onClose, onSubmit, isLoading }: AddSongModalProps)
                 value={form.album}
                 onChange={(e) => setForm((f) => ({ ...f, album: e.target.value }))}
                 placeholder="Album name"
-                className="w-full h-9 px-3 rounded-md border border-border bg-muted/40 text-[13px] text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent transition-all"
+                className="w-full h-9 px-3 rounded border border-border bg-muted/40 text-[13px] text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent transition-all"
               />
             </div>
             <div className="grid grid-cols-2 gap-3">
@@ -183,7 +183,7 @@ function AddSongModal({ open, onClose, onSubmit, isLoading }: AddSongModalProps)
                   value={form.duration}
                   onChange={(e) => setForm((f) => ({ ...f, duration: e.target.value }))}
                   placeholder="e.g. 5:30"
-                  className="w-full h-9 px-3 rounded-md border border-border bg-muted/40 text-[13px] text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent transition-all"
+                  className="w-full h-9 px-3 rounded border border-border bg-muted/40 text-[13px] text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent transition-all"
                 />
               </div>
               <div>
@@ -191,7 +191,7 @@ function AddSongModal({ open, onClose, onSubmit, isLoading }: AddSongModalProps)
                 <select
                   value={form.category}
                   onChange={(e) => setForm((f) => ({ ...f, category: e.target.value as Exclude<CategoryFilter, "all"> }))}
-                  className="w-full h-9 px-3 rounded-md border border-border bg-muted/40 text-[13px] text-foreground focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent transition-all"
+                  className="w-full h-9 px-3 rounded border border-border bg-muted/40 text-[13px] text-foreground focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent transition-all"
                 >
                   {CATEGORIES.filter((c) => c.value !== "all").map((c) => (
                     <option key={c.value} value={c.value}>{c.label}</option>
@@ -207,7 +207,7 @@ function AddSongModal({ open, onClose, onSubmit, isLoading }: AddSongModalProps)
                 value={form.audio_url}
                 onChange={(e) => setForm((f) => ({ ...f, audio_url: e.target.value }))}
                 placeholder="https://… direct audio link"
-                className="w-full h-9 px-3 rounded-md border border-border bg-muted/40 text-[13px] text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent transition-all"
+                className="w-full h-9 px-3 rounded border border-border bg-muted/40 text-[13px] text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent transition-all"
               />
             </div>
             <div>
@@ -218,13 +218,13 @@ function AddSongModal({ open, onClose, onSubmit, isLoading }: AddSongModalProps)
                 value={form.external_link}
                 onChange={(e) => setForm((f) => ({ ...f, external_link: e.target.value }))}
                 placeholder="https://youtube.com/…"
-                className="w-full h-9 px-3 rounded-md border border-border bg-muted/40 text-[13px] text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent transition-all"
+                className="w-full h-9 px-3 rounded border border-border bg-muted/40 text-[13px] text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent transition-all"
               />
             </div>
           </div>
 
           <div className="flex gap-2 mt-5">
-            <button onClick={onClose} className="flex-1 h-9 rounded-md border border-border text-[13px] font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
+            <button onClick={onClose} className="flex-1 h-9 rounded border border-border text-[13px] font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
               Cancel
             </button>
             <GradientButton onClick={handleSubmit} disabled={isLoading || !form.title} className="flex-1 h-9 text-[13px]">
@@ -254,17 +254,17 @@ function TrackDetailPanel({ track, onClose, onToggleFavorite, onDelete, onUpload
       initial={{ opacity: 0, x: 20 }}
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: 20 }}
-      className="surface rounded-xl border border-border p-5 space-y-4"
+      className="surface rounded border border-border p-5 space-y-4"
     >
       <div className="flex items-start justify-between">
         <h3 className="text-heading text-foreground">Track Details</h3>
-        <button onClick={onClose} className="p-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
+        <button onClick={onClose} className="p-1.5 rounded text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
           <X className="w-4 h-4" />
         </button>
       </div>
 
       <div className="flex items-center gap-4">
-        <div className="w-20 h-20 rounded-lg bg-accent/10 flex items-center justify-center shrink-0">
+        <div className="w-20 h-20 rounded bg-accent/10 flex items-center justify-center shrink-0">
           <Disc3 className="w-8 h-8 text-accent" />
         </div>
         <div className="min-w-0">
@@ -275,26 +275,26 @@ function TrackDetailPanel({ track, onClose, onToggleFavorite, onDelete, onUpload
       </div>
 
       <div className="grid grid-cols-2 gap-3">
-        <div className="p-3 rounded-md bg-muted/30 border border-border">
+        <div className="p-3 rounded bg-muted/30 border border-border">
           <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">Duration</p>
           <p className="text-body font-medium text-foreground flex items-center gap-1.5">
             <Clock className="w-3.5 h-3.5 text-accent" /> {track.duration}
           </p>
         </div>
-        <div className="p-3 rounded-md bg-muted/30 border border-border">
+        <div className="p-3 rounded bg-muted/30 border border-border">
           <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">Category</p>
           <p className="text-body font-medium text-foreground capitalize">{track.category}</p>
         </div>
       </div>
 
       {track.audio_url && (
-        <div className="p-3 rounded-md bg-muted/30 border border-border">
+        <div className="p-3 rounded bg-muted/30 border border-border">
           <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1.5">Audio Preview</p>
           <audio controls src={track.audio_url} className="w-full h-8" />
         </div>
       )}
 
-      <div className="p-3 rounded-md bg-muted/30 border border-border">
+      <div className="p-3 rounded bg-muted/30 border border-border">
         <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1.5">
           {track.audio_url ? "Replace Audio File" : "Upload Audio File"}
         </p>
@@ -312,7 +312,7 @@ function TrackDetailPanel({ track, onClose, onToggleFavorite, onDelete, onUpload
         <button
           onClick={() => fileInputRef.current?.click()}
           disabled={isUploadingAudio}
-          className="w-full h-8 rounded-md border border-border text-[12px] font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors flex items-center justify-center gap-1.5 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full h-8 rounded border border-border text-[12px] font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors flex items-center justify-center gap-1.5 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {isUploadingAudio ? (
             <><Loader2 className="w-3 h-3 animate-spin" /> Uploading…</>
@@ -326,7 +326,7 @@ function TrackDetailPanel({ track, onClose, onToggleFavorite, onDelete, onUpload
         const ytId = extractYouTubeId(track.external_link);
         if (ytId) {
           return (
-            <div className="rounded-md overflow-hidden border border-border">
+            <div className="rounded overflow-hidden border border-border">
               <p className="text-[10px] uppercase tracking-wider text-muted-foreground px-3 pt-3 mb-2">YouTube</p>
               <div className="relative w-full" style={{ paddingBottom: "56.25%" }}>
                 <iframe
@@ -346,7 +346,7 @@ function TrackDetailPanel({ track, onClose, onToggleFavorite, onDelete, onUpload
             href={track.external_link}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-2 p-3 rounded-md bg-accent/5 border border-accent/20 text-accent text-[13px] font-medium hover:bg-accent/10 transition-colors"
+            className="flex items-center gap-2 p-3 rounded bg-accent/5 border border-accent/20 text-accent text-[13px] font-medium hover:bg-accent/10 transition-colors"
           >
             <ExternalLink className="w-3.5 h-3.5 shrink-0" />
             <span className="truncate">{track.external_link}</span>
@@ -356,7 +356,7 @@ function TrackDetailPanel({ track, onClose, onToggleFavorite, onDelete, onUpload
 
       <button
         onClick={() => onToggleFavorite(track.id)}
-        className={`w-full h-9 rounded-md border text-[13px] font-medium flex items-center justify-center gap-2 transition-colors ${
+        className={`w-full h-9 rounded border text-[13px] font-medium flex items-center justify-center gap-2 transition-colors ${
           track.isFavorite
             ? "border-red-500/30 bg-red-500/5 text-red-500 hover:bg-red-500/10"
             : "border-border text-muted-foreground hover:text-foreground hover:bg-muted"
@@ -368,7 +368,7 @@ function TrackDetailPanel({ track, onClose, onToggleFavorite, onDelete, onUpload
 
       <button
         onClick={() => onDelete(track.id)}
-        className="w-full h-9 rounded-md border border-destructive/30 bg-destructive/5 text-destructive text-[13px] font-medium flex items-center justify-center gap-2 hover:bg-destructive/10 transition-colors"
+        className="w-full h-9 rounded border border-destructive/30 bg-destructive/5 text-destructive text-[13px] font-medium flex items-center justify-center gap-2 hover:bg-destructive/10 transition-colors"
       >
         <X className="w-3.5 h-3.5" /> Delete Track
       </button>
@@ -416,11 +416,11 @@ function MiniPlayer({
     <motion.div
       initial={{ y: 20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      className="surface rounded-xl border border-border p-4"
+      className="surface rounded border border-border p-4"
     >
       {/* Track info */}
       <div className="flex items-center gap-3 mb-3">
-        <div className="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center shrink-0">
+        <div className="w-10 h-10 rounded bg-accent/10 flex items-center justify-center shrink-0">
           <Music className="w-4 h-4 text-accent" />
         </div>
         <div className="flex-1 min-w-0">
@@ -449,13 +449,13 @@ function MiniPlayer({
       <div className="flex items-center justify-between">
         <button
           onClick={onToggleShuffle}
-          className={`p-1.5 rounded-md transition-colors ${isShuffled ? "text-accent" : "text-muted-foreground hover:text-foreground"}`}
+          className={`p-1.5 rounded transition-colors ${isShuffled ? "text-accent" : "text-muted-foreground hover:text-foreground"}`}
         >
           <Shuffle className="w-3.5 h-3.5" />
         </button>
 
         <div className="flex items-center gap-2">
-          <button onClick={onPrev} className="p-2 rounded-md text-muted-foreground hover:text-foreground transition-colors">
+          <button onClick={onPrev} className="p-2 rounded text-muted-foreground hover:text-foreground transition-colors">
             <SkipBack className="w-4 h-4" />
           </button>
           <button
@@ -464,7 +464,7 @@ function MiniPlayer({
           >
             {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4 ml-0.5" />}
           </button>
-          <button onClick={onNext} className="p-2 rounded-md text-muted-foreground hover:text-foreground transition-colors">
+          <button onClick={onNext} className="p-2 rounded text-muted-foreground hover:text-foreground transition-colors">
             <SkipForward className="w-4 h-4" />
           </button>
         </div>
@@ -472,14 +472,14 @@ function MiniPlayer({
         <div className="flex items-center gap-1">
           <button
             onClick={onToggleRepeat}
-            className={`p-1.5 rounded-md transition-colors relative ${repeatMode !== "off" ? "text-accent" : "text-muted-foreground hover:text-foreground"}`}
+            className={`p-1.5 rounded transition-colors relative ${repeatMode !== "off" ? "text-accent" : "text-muted-foreground hover:text-foreground"}`}
           >
             <Repeat className="w-3.5 h-3.5" />
             {repeatMode === "one" && (
               <span className="absolute -top-0.5 -right-0.5 text-[8px] font-bold text-accent">1</span>
             )}
           </button>
-          <button onClick={onToggleMute} className="p-1.5 rounded-md text-muted-foreground hover:text-foreground transition-colors">
+          <button onClick={onToggleMute} className="p-1.5 rounded text-muted-foreground hover:text-foreground transition-colors">
             {isMuted ? <VolumeX className="w-3.5 h-3.5" /> : <Volume2 className="w-3.5 h-3.5" />}
           </button>
         </div>
@@ -648,7 +648,7 @@ export default function KirtanLibraryPage() {
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="relative rounded-xl overflow-hidden h-36"
+        className="relative rounded overflow-hidden h-36"
       >
         <img src={kirtanHero} alt="" className="absolute inset-0 w-full h-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-r from-foreground/60 via-foreground/30 to-transparent" />
@@ -678,9 +678,9 @@ export default function KirtanLibraryPage() {
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.06 }}
-            className="surface rounded-lg border border-border p-4"
+            className="surface rounded border border-border p-4"
           >
-            <div className={`w-8 h-8 rounded-lg ${stat.bg} flex items-center justify-center mb-3`}>
+            <div className={`w-8 h-8 rounded ${stat.bg} flex items-center justify-center mb-3`}>
               <stat.icon className={`w-4 h-4 ${stat.color}`} />
             </div>
             <p className="text-display text-foreground">{stat.value}</p>
@@ -697,7 +697,7 @@ export default function KirtanLibraryPage() {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search songs, artists, albums..."
-            className="w-full h-9 pl-9 pr-3 rounded-md border border-border bg-muted/40 text-[13px] text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent transition-all"
+            className="w-full h-9 pl-9 pr-3 rounded border border-border bg-muted/40 text-[13px] text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent transition-all"
           />
         </div>
         <div className="flex gap-1.5 overflow-x-auto pb-1">
@@ -705,7 +705,7 @@ export default function KirtanLibraryPage() {
             <button
               key={cat.value}
               onClick={() => setActiveCategory(cat.value)}
-              className={`px-3 py-1.5 rounded-md text-[12px] font-medium whitespace-nowrap transition-colors ${
+              className={`px-3 py-1.5 rounded text-[12px] font-medium whitespace-nowrap transition-colors ${
                 activeCategory === cat.value
                   ? "bg-accent text-accent-foreground"
                   : "bg-muted/50 text-muted-foreground hover:text-foreground hover:bg-muted"
@@ -721,7 +721,7 @@ export default function KirtanLibraryPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         {/* Track List */}
         <div className={`${selectedTrackId ? "lg:col-span-2" : "lg:col-span-3"}`}>
-          <div className="surface rounded-xl border border-border overflow-hidden">
+          <div className="surface rounded border border-border overflow-hidden">
             {/* List header */}
             <div className="px-4 py-3 border-b border-border flex items-center gap-3 text-[11px] uppercase tracking-wider text-muted-foreground font-medium">
               <span className="w-8 text-center">#</span>
@@ -820,7 +820,7 @@ export default function KirtanLibraryPage() {
                           e.stopPropagation();
                           handleToggleFavorite(track.id);
                         }}
-                        className={`w-8 p-1 rounded-md transition-colors ${
+                        className={`w-8 p-1 rounded transition-colors ${
                           track.isFavorite
                             ? "text-red-500"
                             : "text-transparent group-hover:text-muted-foreground hover:text-red-500"

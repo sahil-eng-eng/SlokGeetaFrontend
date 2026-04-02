@@ -137,7 +137,7 @@ export default function NaamJapPage() {
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="relative rounded-xl overflow-hidden h-40"
+        className="relative rounded overflow-hidden h-40"
       >
         <img src={naamJapHero} alt="" className="absolute inset-0 w-full h-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-r from-foreground/70 via-foreground/30 to-transparent" />
@@ -152,7 +152,7 @@ export default function NaamJapPage() {
                 initial={{ scale: 0.8, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ delay: 0.3 }}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-orange-500/25 backdrop-blur-sm text-white text-[12px] font-semibold border border-orange-400/30"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded bg-orange-500/25 backdrop-blur-sm text-white text-[12px] font-semibold border border-orange-400/30"
               >
                 <Flame className="w-3.5 h-3.5 text-orange-300" /> {streak} day streak
               </motion.span>
@@ -205,9 +205,9 @@ export default function NaamJapPage() {
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.07 }}
-            className={`surface rounded-xl border ${stat.border} p-4 transition-colors`}
+            className={`surface rounded border ${stat.border} p-4 transition-colors`}
           >
-            <div className={`w-9 h-9 rounded-lg ${stat.bgColor} flex items-center justify-center mb-3`}>
+            <div className={`w-9 h-9 rounded ${stat.bgColor} flex items-center justify-center mb-3`}>
               <stat.icon className={`w-[18px] h-[18px] ${stat.color}`} />
             </div>
             <p className="text-2xl font-bold text-foreground tracking-tight">{stat.value}</p>
@@ -221,7 +221,7 @@ export default function NaamJapPage() {
         initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.25 }}
-        className="surface rounded-xl border border-border p-5"
+        className="surface rounded border border-border p-5"
       >
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-heading text-foreground flex items-center gap-2">
@@ -245,7 +245,7 @@ export default function NaamJapPage() {
                 { label: "Goal", value: target.total_goal.toLocaleString() },
                 { label: "Remaining", value: remaining.toLocaleString() },
               ].map((item) => (
-                <div key={item.label} className="p-2.5 rounded-lg bg-muted/50 text-center">
+                <div key={item.label} className="p-2.5 rounded bg-muted/50 text-center">
                   <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-0.5">{item.label}</p>
                   <p className="text-[13px] font-semibold text-foreground">{item.value}</p>
                 </div>
@@ -310,7 +310,7 @@ export default function NaamJapPage() {
               <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-center"
+                className="p-4 rounded bg-emerald-500/10 border border-emerald-500/20 text-center"
               >
                 <Trophy className="w-10 h-10 text-emerald-500 mx-auto mb-2" />
                 <p className="text-heading font-bold text-emerald-600 dark:text-emerald-400">Target Achieved! 🎉</p>
@@ -328,9 +328,9 @@ export default function NaamJapPage() {
             <p className="text-body text-muted-foreground">No target set yet</p>
             <button
               onClick={openEditTarget}
-              className="text-small text-accent hover:text-accent-glow font-medium mt-2 transition-colors"
+              className="inline-flex items-center gap-1 text-small text-accent hover:text-accent-glow font-medium mt-2 transition-colors"
             >
-              Set your first goal →
+              Set your first goal <ChevronRight className="w-3.5 h-3.5" />
             </button>
           </div>
         )}
@@ -348,7 +348,7 @@ export default function NaamJapPage() {
         initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3 }}
-        className="surface rounded-xl border border-border p-5 h-full"
+        className="surface rounded border border-border p-5 h-full"
       >
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-heading text-foreground flex items-center gap-2">
@@ -394,7 +394,7 @@ export default function NaamJapPage() {
           <motion.div
             initial={{ opacity: 0, y: -4 }}
             animate={{ opacity: 1, y: 0 }}
-            className="mb-3 p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center gap-2.5"
+            className="mb-3 p-3 rounded bg-emerald-500/10 border border-emerald-500/20 flex items-center gap-2.5"
           >
             <Trophy className="w-5 h-5 text-emerald-500 shrink-0" />
             <div>
@@ -417,10 +417,10 @@ export default function NaamJapPage() {
                 initial={{ opacity: 0, x: -8 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: i * 0.05 }}
-                className="flex items-center justify-between p-3 rounded-lg border border-border hover:bg-muted/30 transition-colors group"
+                className="flex items-center justify-between p-3 rounded border border-border hover:bg-muted/30 transition-colors group"
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-lg bg-accent/10 flex items-center justify-center text-accent shrink-0">
+                  <div className="w-9 h-9 rounded bg-accent/10 flex items-center justify-center text-accent shrink-0">
                     <Clock className="w-4 h-4" />
                   </div>
                   <div>
@@ -432,7 +432,7 @@ export default function NaamJapPage() {
                   <span className="text-body font-bold text-accent">{entry.count}</span>
                   <button
                     onClick={() => removeEntry(entry.id)}
-                    className="p-1.5 rounded-md text-muted-foreground hover:text-destructive hover:bg-destructive/10 opacity-0 group-hover:opacity-100 transition-all"
+                    className="p-1.5 rounded text-muted-foreground hover:text-destructive hover:bg-destructive/10 opacity-0 group-hover:opacity-100 transition-all"
                   >
                     <X className="w-3.5 h-3.5" />
                   </button>
@@ -447,9 +447,9 @@ export default function NaamJapPage() {
               <p className="text-body text-muted-foreground">No sessions logged today</p>
               <button
                 onClick={() => setAddOpen(true)}
-                className="text-small text-accent hover:text-accent-glow font-medium mt-1.5 transition-colors"
+                className="inline-flex items-center gap-1 text-small text-accent hover:text-accent-glow font-medium mt-1.5 transition-colors"
               >
-                Start your first session →
+                Start your first session <ChevronRight className="w-3.5 h-3.5" />
               </button>
             </div>
           )}
@@ -467,7 +467,7 @@ export default function NaamJapPage() {
         initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.35 }}
-        className="surface rounded-xl border border-border p-5 h-full"
+        className="surface rounded border border-border p-5 h-full"
       >
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
           <h2 className="text-heading text-foreground flex items-center gap-2">
@@ -480,7 +480,7 @@ export default function NaamJapPage() {
                 <button
                   key={n}
                   onClick={() => applyPreset(n)}
-                  className={`px-2.5 py-1 rounded-md text-[11px] font-medium transition-colors ${
+                  className={`px-2.5 py-1 rounded text-[11px] font-medium transition-colors ${
                     historyFrom === format(subDays(new Date(), n - 1), "yyyy-MM-dd") &&
                     historyTo === format(new Date(), "yyyy-MM-dd")
                       ? "bg-accent text-accent-foreground"
@@ -523,7 +523,7 @@ export default function NaamJapPage() {
               const expanded = expandedDay === day.date;
               const dayDate = parseISO(day.date);
               return (
-                <div key={day.date} className="border border-border rounded-xl overflow-hidden">
+                <div key={day.date} className="border border-border rounded overflow-hidden">
                   <button
                     onClick={() => setExpandedDay(expanded ? null : day.date)}
                     className="flex items-center justify-between w-full p-3.5 hover:bg-muted/30 transition-colors"
@@ -585,7 +585,7 @@ export default function NaamJapPage() {
                             day.entries.map((e) => (
                               <div
                                 key={e.id}
-                                className="flex items-center justify-between text-small py-1.5 px-2 rounded-md hover:bg-muted/40 transition-colors"
+                                className="flex items-center justify-between text-small py-1.5 px-2 rounded hover:bg-muted/40 transition-colors"
                               >
                                 <span className="text-muted-foreground flex items-center gap-1.5">
                                   <Clock className="w-3 h-3" /> {e.time_slot}
@@ -629,7 +629,7 @@ export default function NaamJapPage() {
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
-                className="surface w-full max-w-sm rounded-2xl shadow-modal border border-border/50 p-6"
+                className="surface w-full max-w-sm rounded shadow-modal border border-accent/15 p-6"
                 onClick={(e) => e.stopPropagation()}
               >
                 <div className="flex items-center justify-between mb-5">
@@ -639,7 +639,7 @@ export default function NaamJapPage() {
                   </div>
                   <button
                     onClick={() => setAddOpen(false)}
-                    className="p-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+                    className="p-1.5 rounded text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
                   >
                     <X className="w-4 h-4" />
                   </button>
@@ -651,7 +651,7 @@ export default function NaamJapPage() {
                       value={newSlot}
                       onChange={(e) => setNewSlot(e.target.value)}
                       placeholder="e.g., 6:00 AM – 7:00 AM"
-                      className="flex h-10 w-full rounded-lg border border-input bg-background px-3 text-[13px] text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent transition-all"
+                      className="flex h-10 w-full rounded border border-input bg-background px-3 text-[13px] text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent transition-all"
                     />
                   </div>
                   <div className="space-y-1.5">
@@ -661,7 +661,7 @@ export default function NaamJapPage() {
                       value={newCount}
                       onChange={(e) => setNewCount(e.target.value)}
                       placeholder="e.g., 108"
-                      className="flex h-10 w-full rounded-lg border border-input bg-background px-3 text-[13px] text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent transition-all"
+                      className="flex h-10 w-full rounded border border-input bg-background px-3 text-[13px] text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent transition-all"
                     />
                     <div className="flex flex-wrap gap-1.5 mt-1">
                       {[27, 54, 108, 216, 324, 432].map((n) => (
@@ -669,7 +669,7 @@ export default function NaamJapPage() {
                           key={n}
                           type="button"
                           onClick={() => setNewCount(n.toString())}
-                          className={`px-2.5 py-1 rounded-md text-[11px] font-medium transition-colors ${
+                          className={`px-2.5 py-1 rounded text-[11px] font-medium transition-colors ${
                             newCount === n.toString()
                               ? "bg-accent text-accent-foreground"
                               : "bg-muted text-muted-foreground hover:text-foreground hover:bg-muted/80"
@@ -684,7 +684,7 @@ export default function NaamJapPage() {
                     <button
                       type="button"
                       onClick={() => setAddOpen(false)}
-                      className="h-10 px-4 rounded-lg text-[13px] font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+                      className="h-10 px-4 rounded text-[13px] font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
                     >
                       Cancel
                     </button>
@@ -719,7 +719,7 @@ export default function NaamJapPage() {
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
-                className="surface w-full max-w-md rounded-2xl shadow-modal border border-border/50 p-6"
+                className="surface w-full max-w-md rounded shadow-modal border border-accent/15 p-6"
                 onClick={(e) => e.stopPropagation()}
               >
                 <div className="flex items-center justify-between mb-5">
@@ -729,7 +729,7 @@ export default function NaamJapPage() {
                   </div>
                   <button
                     onClick={() => setEditingTarget(false)}
-                    className="p-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+                    className="p-1.5 rounded text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
                   >
                     <X className="w-4 h-4" />
                   </button>
@@ -761,7 +761,7 @@ export default function NaamJapPage() {
                       value={targetForm.totalGoal}
                       onChange={(e) => setTargetForm((p) => ({ ...p, totalGoal: e.target.value }))}
                       placeholder="e.g., 100000"
-                      className="flex h-10 w-full rounded-lg border border-input bg-background px-3 text-[13px] text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent transition-all"
+                      className="flex h-10 w-full rounded border border-input bg-background px-3 text-[13px] text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent transition-all"
                     />
                     <div className="flex flex-wrap gap-1.5">
                       {[1080, 10800, 100000, 108000, 1000000].map((n) => (
@@ -769,7 +769,7 @@ export default function NaamJapPage() {
                           key={n}
                           type="button"
                           onClick={() => setTargetForm((p) => ({ ...p, totalGoal: n.toString() }))}
-                          className={`px-2.5 py-1 rounded-md text-[11px] font-medium transition-colors ${
+                          className={`px-2.5 py-1 rounded text-[11px] font-medium transition-colors ${
                             targetForm.totalGoal === n.toString()
                               ? "bg-accent text-accent-foreground"
                               : "bg-muted text-muted-foreground hover:text-foreground"
@@ -784,7 +784,7 @@ export default function NaamJapPage() {
                     <motion.div
                       initial={{ opacity: 0, y: -4 }}
                       animate={{ opacity: 1, y: 0 }}
-                      className="p-3.5 rounded-xl bg-accent/5 border border-accent/15 text-small text-muted-foreground space-y-1"
+                      className="p-3.5 rounded bg-accent/5 border border-accent/15 text-small text-muted-foreground space-y-1"
                     >
                       <p>
                         Duration:{" "}
@@ -811,7 +811,7 @@ export default function NaamJapPage() {
                     <button
                       type="button"
                       onClick={() => setEditingTarget(false)}
-                      className="h-10 px-4 rounded-lg text-[13px] font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+                      className="h-10 px-4 rounded text-[13px] font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
                     >
                       Cancel
                     </button>

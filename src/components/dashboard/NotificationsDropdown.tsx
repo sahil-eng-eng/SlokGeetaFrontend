@@ -1,4 +1,4 @@
-import { CheckCircle, MessageSquare, BookOpen, GitBranch, Share2, Clock } from "lucide-react";
+﻿import { CheckCircle, MessageSquare, BookOpen, GitBranch, Share2, Clock } from "lucide-react";
 
 const mockNotifications = [
   { id: "1", icon: MessageSquare, text: "Scholar B raised a meaning on Chapter 2, Verse 47", time: "2m ago", unread: true, color: "text-accent" },
@@ -14,7 +14,7 @@ interface Props {
 
 export function NotificationsDropdown({ onClose }: Props) {
   return (
-    <div className="absolute right-0 top-full mt-1 w-80 rounded-xl border border-border surface shadow-elevated z-50 overflow-hidden">
+    <div className="absolute right-0 top-full mt-1 w-80 rounded border border-border surface shadow-elevated z-50 overflow-hidden">
       <div className="px-4 py-3 border-b border-border flex items-center justify-between">
         <h3 className="text-[13px] font-semibold text-foreground">Notifications</h3>
         <span className="text-[11px] text-accent font-medium cursor-pointer hover:underline">Mark all read</span>
@@ -23,7 +23,7 @@ export function NotificationsDropdown({ onClose }: Props) {
         {mockNotifications.map((n) => (
           <div
             key={n.id}
-            className={`flex items-start gap-3 px-4 py-3 hover:bg-muted/50 transition-colors cursor-pointer border-b border-border/50 last:border-0 ${
+            className={`flex items-start gap-3 px-4 py-3 hover:bg-muted/50 transition-colors cursor-pointer border-b border-accent/15 last:border-0 ${
               n.unread ? "bg-accent/[0.03]" : ""
             }`}
           >

@@ -1,4 +1,4 @@
-import * as React from "react";
+﻿import * as React from "react";
 import { format, parseISO } from "date-fns";
 import { Calendar as CalendarIcon } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
@@ -41,7 +41,7 @@ export function DatePicker({
           type="button"
           disabled={disabled}
           className={cn(
-            "flex h-10 w-full items-center gap-2 rounded-lg border border-input bg-background px-3 text-[13px] text-foreground transition-all",
+            "flex h-10 w-full items-center gap-2 rounded border border-input bg-background px-3 text-[13px] text-foreground transition-all",
             "hover:border-accent/50 focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent",
             !value && "text-muted-foreground/60",
             disabled && "opacity-50 cursor-not-allowed",

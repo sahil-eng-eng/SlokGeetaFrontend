@@ -1,4 +1,4 @@
-import { useForm } from "react-hook-form";
+﻿import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
@@ -50,7 +50,7 @@ export default function FormDemo() {
         </p>
       </div>
 
-      <div className="surface rounded-xl border border-border p-6 shadow-surface max-w-xl">
+      <div className="surface rounded border border-border p-6 shadow-surface max-w-xl">
         <h2 className="text-heading text-foreground mb-5">Example Form</h2>
 
         <Form {...form}>

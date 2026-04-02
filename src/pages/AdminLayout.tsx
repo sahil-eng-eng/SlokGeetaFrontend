@@ -1,4 +1,4 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import { Outlet, Navigate } from "react-router-dom";
 import { AdminSidebar } from "@/components/admin/AdminSidebar";
 import { useCurrentUserQuery } from "@/lib/api/endpoints/auth";
@@ -22,10 +22,10 @@ export default function AdminLayout() {
       />
       <div className="flex-1 flex flex-col min-w-0 h-screen overflow-hidden">
         {/* Top bar */}
-        <header className="flex min-h-16 items-center gap-3 border-b border-border/70 surface px-5 shrink-0">
+        <header className="flex min-h-16 items-center gap-3 border-b border-accent/20 surface px-5 shrink-0">
           <button
             onClick={() => setCollapsed((c) => !c)}
-            className="rounded-lg p-2 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground lg:hidden"
+            className="rounded p-2 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground lg:hidden"
           >
             <svg
               className="w-4 h-4"
@@ -46,7 +46,7 @@ export default function AdminLayout() {
               <p className="text-small uppercase tracking-[0.18em] text-muted-foreground">Admin workspace</p>
               <p className="text-heading text-foreground">Manage content with a calmer, more editorial interface</p>
             </div>
-            <div className="hidden max-w-[240px] rounded-xl border border-border/60 bg-background/80 px-3 py-2 text-right md:block">
+            <div className="hidden max-w-[240px] rounded border border-accent/15 bg-background/80 px-3 py-2 text-right md:block">
               <p className="text-small text-muted-foreground">Logged in as</p>
               <p className="truncate text-body font-medium text-foreground">
                 {data?.data?.full_name ?? data?.data?.email}

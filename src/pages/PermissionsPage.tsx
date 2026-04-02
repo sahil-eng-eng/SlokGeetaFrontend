@@ -1,4 +1,4 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import { motion } from "framer-motion";
 import { ShieldCheck, Trash2, Book, FileText, MessageSquare, Loader2 } from "lucide-react";
 import { useMyGrantedPermissionsQuery, useRevokeEntityPermissionMutation } from "@/lib/api/endpoints/entityPermissions";
@@ -38,9 +38,9 @@ function PermissionRow({ perm }: PermissionRowProps) {
     <motion.div
       initial={{ opacity: 0, y: 6 }}
       animate={{ opacity: 1, y: 0 }}
-      className="flex items-center gap-3 px-4 py-3 rounded-xl surface border border-border/50 hover:border-accent/20 transition-all"
+      className="flex items-center gap-3 px-4 py-3 rounded surface border border-accent/15 hover:border-accent/20 transition-all"
     >
-      <div className="w-9 h-9 rounded-lg bg-accent/10 flex items-center justify-center shrink-0">
+      <div className="w-9 h-9 rounded bg-accent/10 flex items-center justify-center shrink-0">
         <Icon className="w-4 h-4 text-accent" />
       </div>
       <div className="flex-1 min-w-0">
@@ -59,7 +59,7 @@ function PermissionRow({ perm }: PermissionRowProps) {
       <button
         onClick={handleRevoke}
         disabled={revoke.isPending}
-        className="w-8 h-8 rounded-lg flex items-center justify-center text-destructive hover:bg-destructive/10 transition-colors disabled:opacity-50"
+        className="w-8 h-8 rounded flex items-center justify-center text-destructive hover:bg-destructive/10 transition-colors disabled:opacity-50"
         title="Revoke permission"
       >
         {revoke.isPending ? (
@@ -108,7 +108,7 @@ export default function PermissionsPage() {
             <button
               key={opt.id}
               onClick={() => setFilter(opt.id)}
-              className={`px-3 py-1.5 rounded-lg text-[12px] font-medium transition-all ${
+              className={`px-3 py-1.5 rounded text-[12px] font-medium transition-all ${
                 filter === opt.id
                   ? "bg-accent text-accent-foreground"
                   : "bg-muted/50 text-muted-foreground hover:text-foreground"
@@ -126,7 +126,7 @@ export default function PermissionsPage() {
           </div>
         ) : filtered.length === 0 ? (
           <div className="text-center py-16">
-            <div className="w-14 h-14 rounded-2xl bg-accent/10 flex items-center justify-center mx-auto mb-4">
+            <div className="w-14 h-14 rounded bg-accent/10 flex items-center justify-center mx-auto mb-4">
               <ShieldCheck className="w-6 h-6 text-accent" />
             </div>
             <p className="text-[14px] font-semibold text-foreground">No permissions granted</p>

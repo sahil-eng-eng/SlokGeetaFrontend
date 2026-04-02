@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+﻿import { useState, useCallback } from "react";
 import { MeaningNode, ReactionType } from "@/types/sloka";
 import { ChevronRight, ChevronDown, Plus, ThumbsUp, User, Clock, Shield, AlertCircle, History, Star, Pencil } from "lucide-react";
 import { toast } from "sonner";
@@ -147,10 +147,10 @@ function MeaningTreeNode({ node, depth, canAddMeaning, onAddChild, onViewHistory
         <div className="absolute left-[-16px] top-[18px] w-3 h-px bg-border" />
       )}
       <div className={cn(
-        "group rounded-lg border p-3 surface transition-all hover:shadow-surface",
+        "group rounded border p-3 surface transition-all hover:shadow-surface",
         node.status === "pending"
           ? "border-warning/30 bg-warning/[0.02]"
-          : "border-border/60 hover:border-accent/20"
+          : "border-accent/15 hover:border-accent/20"
       )}>
         <div className="flex items-start gap-2">
           {hasChildren ? (
@@ -225,7 +225,7 @@ function MeaningTreeNode({ node, depth, canAddMeaning, onAddChild, onViewHistory
             {(node.isOwner || (node.myPermission && node.myPermission !== "view")) && (
               <button
                 onClick={() => onEdit?.(node)}
-                className="p-1 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted transition-all"
+                className="p-1 rounded text-muted-foreground hover:text-foreground hover:bg-muted transition-all"
                 title={node.myPermission === "request_edit" ? "Suggest edit" : "Edit meaning"}
               >
                 <Pencil className="w-3.5 h-3.5" />
@@ -234,7 +234,7 @@ function MeaningTreeNode({ node, depth, canAddMeaning, onAddChild, onViewHistory
             {node.versions.length > 0 && (
               <button
                 onClick={() => onViewHistory?.(node)}
-                className="p-1 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted transition-all"
+                className="p-1 rounded text-muted-foreground hover:text-foreground hover:bg-muted transition-all"
                 title="View history"
               >
                 <History className="w-3.5 h-3.5" />
@@ -243,7 +243,7 @@ function MeaningTreeNode({ node, depth, canAddMeaning, onAddChild, onViewHistory
             {canAddMeaning && (
               <button
                 onClick={() => onAddChild?.({ id: node.id, text: node.text })}
-                className="p-1 rounded-md text-muted-foreground hover:text-accent hover:bg-accent/10 transition-all"
+                className="p-1 rounded text-muted-foreground hover:text-accent hover:bg-accent/10 transition-all"
                 title="Add meaning"
               >
                 <Plus className="w-3.5 h-3.5" />

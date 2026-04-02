@@ -1,18 +1,30 @@
+﻿import { useState } from "react";
 import { useLocation, Link, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { BookOpen, Menu, LogOut, ShieldCheck, ChevronLeft, LayoutDashboard } from "lucide-react";
+import { BookOpen, Menu, LogOut, ShieldCheck, ChevronLeft, ChevronDown, LayoutDashboard } from "lucide-react";
 import { useTheme } from "@/context/ThemeContext";
 import { Sun, Moon } from "lucide-react";
+
+interface AdminNavChild {
+  label: string;
+  href: string;
+}
 
 interface AdminNavItem {
   label: string;
   icon: React.ElementType;
-  href: string;
+  href?: string;
+  children?: AdminNavChild[];
 }
 
 const adminNavItems: AdminNavItem[] = [
-  { label: "Granths", icon: BookOpen, href: "/admin/granths" },
-  // More modules will be added here
+  {
+    label: "Granths",
+    icon: BookOpen,
+    children: [
+      { label: "All Granths", href: "/admin/granths" },
+    ],
+  },
 ];
 
 interface AdminSidebarProps {
@@ -24,8 +36,20 @@ export function AdminSidebar({ collapsed, onToggle }: AdminSidebarProps) {
   const location = useLocation();
   const navigate = useNavigate();
   const { theme, toggleTheme } = useTheme();
+  const [expandedGroups, setExpandedGroups] = useState<string[]>(["Granths"]);
 
   const isActive = (href: string) => location.pathname.startsWith(href);
+
+  const isGroupActive = (item: AdminNavItem) => {
+    if (item.href) return isActive(item.href);
+    return item.children?.some((c) => isActive(c.href)) ?? false;
+  };
+
+  const toggleGroup = (label: string) => {
+    setExpandedGroups((prev) =>
+      prev.includes(label) ? prev.filter((g) => g !== label) : [...prev, label]
+    );
+  };
 
   function handleLogout() {
     localStorage.clear();
@@ -48,83 +72,137 @@ export function AdminSidebar({ collapsed, onToggle }: AdminSidebarProps) {
 
       <aside
         className={`fixed lg:static inset-y-0 left-0 z-50 flex flex-col surface border-r border-sidebar-border transition-all duration-300 ${
-          collapsed ? "-translate-x-full lg:translate-x-0 lg:w-[68px]" : "w-[246px]"
+          collapsed ? "-translate-x-full lg:translate-x-0 lg:w-[60px]" : "w-[220px]"
         }`}
       >
-        <div className="border-b border-sidebar-border px-3 py-3 shrink-0">
-          {!collapsed && (
-            <div className="rounded-2xl border border-border/70 bg-background/80 px-3 py-3">
-              <div className="flex items-center gap-2 min-w-0">
-                <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-accent/10 text-accent">
-                  <ShieldCheck className="w-4 h-4 shrink-0" />
+        {/* Header — fixed h-14 keeps the toggle button at a consistent position */}
+        <div className="border-b border-sidebar-border shrink-0">
+          <div className="flex h-14 items-center px-3">
+            {!collapsed && (
+              <div className="flex items-center gap-2 min-w-0 flex-1 mr-2">
+                <div className="flex h-7 w-7 items-center justify-center rounded bg-accent/10 text-accent shrink-0">
+                  <ShieldCheck className="w-3.5 h-3.5" />
                 </div>
                 <div className="min-w-0">
                   <span className="block truncate text-[13px] font-semibold text-foreground">Admin Panel</span>
-                  <span className="block truncate text-[11px] text-muted-foreground">Editorial workspace</span>
+                  <span className="block truncate text-[10px] text-muted-foreground">Editorial workspace</span>
                 </div>
               </div>
-            </div>
-          )}
-          <div className={`mt-3 flex ${collapsed ? "justify-center" : "justify-end"}`}>
+            )}
             <button
               onClick={onToggle}
-              className="rounded-lg p-2 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground shrink-0"
+              className={`rounded p-1.5 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground shrink-0 ${collapsed ? "mx-auto" : ""}`}
             >
               {collapsed ? <Menu className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
             </button>
           </div>
         </div>
 
-        <nav className="flex-1 overflow-y-auto px-2 py-3 space-y-1">
+        {/* Nav */}
+        <nav className="flex-1 overflow-y-auto py-3 px-2 space-y-0.5">
           {adminNavItems.map((item) => {
-            const active = isActive(item.href);
+            if (item.children) {
+              const groupExpanded = expandedGroups.includes(item.label);
+              const groupActive = isGroupActive(item);
+              return (
+                <div key={item.label}>
+                  <button
+                    onClick={() => toggleGroup(item.label)}
+                    className={`flex items-center gap-3 w-full h-9 px-3 rounded text-[13px] font-medium transition-all duration-150 ${
+                      groupActive ? "text-accent" : "text-muted-foreground hover:text-foreground"
+                    }`}
+                  >
+                    <item.icon className="w-[18px] h-[18px] shrink-0" />
+                    {!collapsed && (
+                      <>
+                        <span className="flex-1 text-left">{item.label}</span>
+                        <ChevronDown
+                          className={`w-3.5 h-3.5 transition-transform duration-200 ${
+                            groupExpanded ? "rotate-0" : "-rotate-90"
+                          }`}
+                        />
+                      </>
+                    )}
+                  </button>
+                  <AnimatePresence initial={false}>
+                    {groupExpanded && !collapsed && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.2 }}
+                        className="overflow-hidden"
+                      >
+                        <div className="ml-[30px] border-l border-border pl-2 py-0.5 space-y-0.5">
+                          {item.children.map((child) => (
+                            <Link
+                              key={child.href}
+                              to={child.href}
+                              className={`block px-3 py-1.5 rounded text-[12px] font-medium transition-all duration-150 ${
+                                isActive(child.href)
+                                  ? "text-accent"
+                                  : "text-muted-foreground hover:text-foreground"
+                              }`}
+                            >
+                              {child.label}
+                            </Link>
+                          ))}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              );
+            }
+
             return (
               <Link
-                key={item.href}
-                to={item.href}
-                className={`flex items-center gap-3 rounded-xl border px-3 py-2.5 text-[13px] font-medium transition-all ${
-                  active
-                    ? "border-accent/10 bg-accent/10 text-accent"
-                    : "border-transparent text-muted-foreground hover:bg-muted hover:text-foreground"
+                key={item.label}
+                to={item.href!}
+                className={`flex items-center gap-3 h-9 px-3 rounded text-[13px] font-medium transition-all duration-150 ${
+                  isActive(item.href!)
+                    ? "text-accent"
+                    : "text-muted-foreground hover:text-foreground"
                 }`}
                 title={collapsed ? item.label : undefined}
               >
-                <item.icon className="w-4 h-4 shrink-0" />
-                {!collapsed && <span className="truncate">{item.label}</span>}
+                <item.icon className="w-[18px] h-[18px] shrink-0" />
+                {!collapsed && <span>{item.label}</span>}
               </Link>
             );
           })}
         </nav>
 
-        <div className="border-t border-sidebar-border px-2 py-2 space-y-1 shrink-0">
+        {/* Bottom */}
+        <div className="p-2 border-t border-sidebar-border space-y-0.5 shrink-0">
           {!collapsed && (
-            <div className="rounded-xl border border-border/60 bg-background/70 px-3 py-3">
-              <div className="flex items-center gap-2 text-[12px] font-medium text-foreground">
-                <LayoutDashboard className="h-4 w-4 text-accent" /> Workspace status
+            <div className="rounded border border-accent/15 bg-background/70 px-3 py-2 mb-1">
+              <div className="flex items-center gap-1.5 text-[12px] font-medium text-foreground">
+                <LayoutDashboard className="h-3.5 w-3.5 text-accent" /> Workspace
               </div>
-              <p className="mt-1 text-[11px] text-muted-foreground">
-                Manage collections, pages, and publishing in one cleaner flow.
+              <p className="mt-0.5 text-[11px] text-muted-foreground leading-snug">
+                Manage collections, pages &amp; publishing.
               </p>
             </div>
           )}
           <button
             onClick={toggleTheme}
-            className="w-full flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-[13px] text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+            className="w-full flex items-center gap-3 h-9 px-3 rounded text-[13px] font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
             title={collapsed ? "Toggle theme" : undefined}
           >
             {theme === "dark" ? (
-              <Sun className="w-4 h-4 shrink-0" />
+              <Sun className="w-[18px] h-[18px] shrink-0" />
             ) : (
-              <Moon className="w-4 h-4 shrink-0" />
+              <Moon className="w-[18px] h-[18px] shrink-0" />
             )}
             {!collapsed && <span>Theme</span>}
           </button>
           <button
             onClick={handleLogout}
-            className="w-full flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-[13px] text-muted-foreground transition-colors hover:bg-destructive/10 hover:text-destructive"
+            className="w-full flex items-center gap-3 h-9 px-3 rounded text-[13px] font-medium text-muted-foreground transition-colors hover:bg-destructive/10 hover:text-destructive"
             title={collapsed ? "Log out" : undefined}
           >
-            <LogOut className="w-4 h-4 shrink-0" />
+            <LogOut className="w-[18px] h-[18px] shrink-0" />
             {!collapsed && <span>Log out</span>}
           </button>
         </div>

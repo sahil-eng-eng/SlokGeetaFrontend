@@ -250,10 +250,10 @@ function GroupChatPanel({ group, currentUserId, onBack }: GroupChatPanelProps) {
   return (
     <div className="flex flex-col h-full">
       <div className="h-14 px-4 flex items-center gap-3 border-b border-border surface shrink-0">
-        <button onClick={onBack} className="p-1.5 rounded-lg text-muted-foreground hover:text-foreground md:hidden">
+        <button onClick={onBack} className="p-1.5 rounded text-muted-foreground hover:text-foreground md:hidden">
           <ArrowLeft className="w-4 h-4" />
         </button>
-        <div className="w-9 h-9 rounded-xl bg-accent/10 flex items-center justify-center text-accent shrink-0">
+        <div className="w-9 h-9 rounded bg-accent/10 flex items-center justify-center text-accent shrink-0">
           <Users className="w-4 h-4" />
         </div>
         <div className="flex-1 min-w-0">
@@ -262,7 +262,7 @@ function GroupChatPanel({ group, currentUserId, onBack }: GroupChatPanelProps) {
         </div>
         <button
           onClick={() => leaveGroup.mutate(group.id)}
-          className="p-2 rounded-lg text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors"
+          className="p-2 rounded text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors"
           title="Leave group"
         >
           <LogOut className="w-4 h-4" />
@@ -274,7 +274,7 @@ function GroupChatPanel({ group, currentUserId, onBack }: GroupChatPanelProps) {
           <div className="flex justify-center py-8"><Loader2 className="w-5 h-5 text-muted-foreground animate-spin" /></div>
         ) : messages.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-full text-center">
-            <div className="w-14 h-14 rounded-2xl bg-accent/10 flex items-center justify-center mb-3">
+            <div className="w-14 h-14 rounded bg-accent/10 flex items-center justify-center mb-3">
               <Users className="w-6 h-6 text-accent" />
             </div>
             <p className="text-[13px] font-medium text-foreground">No messages yet</p>
@@ -293,10 +293,10 @@ function GroupChatPanel({ group, currentUserId, onBack }: GroupChatPanelProps) {
                         if (e.key === "Enter") { if (editInput.trim()) editMsg.mutate({ messageId: msg.id, content: editInput.trim() }); setEditingMsg(null); }
                         if (e.key === "Escape") setEditingMsg(null);
                       }}
-                      className="flex-1 h-9 px-3 rounded-xl border border-accent bg-background text-[13px] text-foreground focus:outline-none focus:ring-2 focus:ring-accent/20" />
+                      className="flex-1 h-9 px-3 rounded border border-accent bg-background text-[13px] text-foreground focus:outline-none focus:ring-2 focus:ring-accent/20" />
                     <button onClick={() => { if (editInput.trim()) editMsg.mutate({ messageId: msg.id, content: editInput.trim() }); setEditingMsg(null); }}
-                      className="p-1.5 rounded-lg bg-accent text-white"><Check className="w-3.5 h-3.5" /></button>
-                    <button onClick={() => setEditingMsg(null)} className="p-1.5 rounded-lg text-muted-foreground hover:text-foreground"><X className="w-3.5 h-3.5" /></button>
+                      className="p-1.5 rounded bg-accent text-white"><Check className="w-3.5 h-3.5" /></button>
+                    <button onClick={() => setEditingMsg(null)} className="p-1.5 rounded text-muted-foreground hover:text-foreground"><X className="w-3.5 h-3.5" /></button>
                   </div>
                 </div>
               );
@@ -310,7 +310,7 @@ function GroupChatPanel({ group, currentUserId, onBack }: GroupChatPanelProps) {
                     </p>
                   )}
                   <div className={cn(
-                    "relative group/bubble px-4 py-2.5 rounded-2xl text-[13px] leading-relaxed",
+                    "relative group/bubble px-4 py-2.5 rounded text-[13px] leading-relaxed",
                     msg.is_deleted
                       ? "italic text-muted-foreground/60 surface border border-border/40"
                       : isOwn
@@ -329,7 +329,7 @@ function GroupChatPanel({ group, currentUserId, onBack }: GroupChatPanelProps) {
                     {!msg.is_deleted && isOwn && (
                       <div className={cn(
                         "absolute -top-7 right-0 flex gap-0.5 opacity-0 group-hover/bubble:opacity-100 transition-opacity",
-                        "bg-background/90 border border-border rounded-md shadow-sm px-1 py-0.5"
+                        "bg-background/90 border border-border rounded shadow-sm px-1 py-0.5"
                       )}>
                         <button onClick={() => { setEditingMsg(msg); setEditInput(msg.content); }}
                           className="p-1 rounded text-muted-foreground hover:text-foreground" title="Edit">
@@ -356,9 +356,9 @@ function GroupChatPanel({ group, currentUserId, onBack }: GroupChatPanelProps) {
             onChange={(e) => { setInput(e.target.value); autoResize(textareaRef.current); }}
             onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); handleSend(); } }}
             placeholder={`Message ${group.name}…`} rows={1}
-            className="flex-1 min-h-[40px] max-h-[120px] px-4 py-2.5 rounded-xl border border-input bg-background text-[13px] text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent transition-all resize-none" />
+            className="flex-1 min-h-[40px] max-h-[120px] px-4 py-2.5 rounded border border-input bg-background text-[13px] text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent transition-all resize-none" />
           <button onClick={handleSend} disabled={!input.trim() || sendMsg.isPending}
-            className="h-10 w-10 rounded-xl bg-accent text-white flex items-center justify-center transition-all hover:bg-accent/90 disabled:opacity-40 disabled:cursor-not-allowed shrink-0">
+            className="h-10 w-10 rounded bg-accent text-white flex items-center justify-center transition-all hover:bg-accent/90 disabled:opacity-40 disabled:cursor-not-allowed shrink-0">
             {sendMsg.isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
           </button>
         </div>
@@ -406,26 +406,26 @@ function CreateGroupModal({ open, onClose, friends, onCreated }: CreateGroupModa
             className="fixed inset-0 bg-foreground/20 backdrop-blur-sm z-50" onClick={onClose} />
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
             <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }}
-              className="surface w-full max-w-md rounded-xl shadow-lg border border-border/50 p-6"
+              className="surface w-full max-w-md rounded shadow-lg border border-accent/15 p-6"
               onClick={(e) => e.stopPropagation()}>
               <div className="flex items-center justify-between mb-5">
                 <h2 className="text-[15px] font-semibold text-foreground">New Group</h2>
-                <button onClick={onClose} className="p-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted">
+                <button onClick={onClose} className="p-1.5 rounded text-muted-foreground hover:text-foreground hover:bg-muted">
                   <X className="w-4 h-4" />
                 </button>
               </div>
               <div className="space-y-3 mb-5">
                 <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Group name *"
-                  className="w-full h-9 px-3 rounded-md border border-border bg-muted/40 text-[13px] text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-accent/20 transition-all" />
+                  className="w-full h-9 px-3 rounded border border-border bg-muted/40 text-[13px] text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-accent/20 transition-all" />
                 <input value={desc} onChange={(e) => setDesc(e.target.value)} placeholder="Description (optional)"
-                  className="w-full h-9 px-3 rounded-md border border-border bg-muted/40 text-[13px] text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-accent/20 transition-all" />
+                  className="w-full h-9 px-3 rounded border border-border bg-muted/40 text-[13px] text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-accent/20 transition-all" />
                 {friends.length > 0 && (
                   <div>
                     <p className="text-[11px] font-medium text-muted-foreground mb-2">Add friends</p>
                     <div className="space-y-1 max-h-48 overflow-y-auto">
                       {friends.map((f) => (
                         <button key={f.id} type="button" onClick={() => toggle(f.id)}
-                          className={cn("flex items-center gap-3 w-full p-2.5 rounded-lg border transition-all text-left",
+                          className={cn("flex items-center gap-3 w-full p-2.5 rounded border transition-all text-left",
                             selectedIds.includes(f.id) ? "border-accent bg-accent/5" : "border-border hover:bg-muted/30")}>
                           <div className="w-7 h-7 rounded-full bg-accent/15 flex items-center justify-center shrink-0 text-[11px] font-bold text-accent">
                             {(f.full_name ?? f.username).charAt(0).toUpperCase()}
@@ -439,7 +439,7 @@ function CreateGroupModal({ open, onClose, friends, onCreated }: CreateGroupModa
                 )}
               </div>
               <div className="flex justify-end gap-2">
-                <button onClick={onClose} className="h-9 px-4 rounded-md text-[13px] font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">Cancel</button>
+                <button onClick={onClose} className="h-9 px-4 rounded text-[13px] font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">Cancel</button>
                 <GradientButton size="sm" onClick={handleCreate} disabled={!name.trim() || createGroup.isPending}>
                   {createGroup.isPending ? <><Loader2 className="w-3.5 h-3.5 mr-1 animate-spin" />Creating…</> : "Create Group"}
                 </GradientButton>
@@ -684,7 +684,7 @@ export default function MessagesPage() {
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground" />
                 <input value={contactSearch} onChange={(e) => setContactSearch(e.target.value)} placeholder="Search conversations..."
-                  className="w-full h-9 pl-9 pr-3 rounded-lg border border-input bg-background text-[12px] text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent transition-all" />
+                  className="w-full h-9 pl-9 pr-3 rounded border border-input bg-background text-[12px] text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent transition-all" />
               </div>
             </div>
           )}
@@ -694,7 +694,7 @@ export default function MessagesPage() {
             <div className="px-4 py-2 flex items-center justify-between shrink-0">
               <span className="text-[12px] font-medium text-muted-foreground">Group Chats</span>
               <button onClick={() => setShowCreateGroup(true)}
-                className="h-7 px-2.5 rounded-md bg-accent/10 text-accent text-[11px] font-medium hover:bg-accent/20 transition-colors flex items-center gap-1">
+                className="h-7 px-2.5 rounded bg-accent/10 text-accent text-[11px] font-medium hover:bg-accent/20 transition-colors flex items-center gap-1">
                 <Plus className="w-3 h-3" /> New
               </button>
             </div>
@@ -707,8 +707,8 @@ export default function MessagesPage() {
                 {convsLoading && (
                   <div className="space-y-0.5 p-2">
                     {[1, 2, 3].map((n) => (
-                      <div key={n} className="flex items-center gap-3 p-3 rounded-xl animate-pulse">
-                        <div className="w-10 h-10 rounded-xl bg-muted shrink-0" />
+                      <div key={n} className="flex items-center gap-3 p-3 rounded animate-pulse">
+                        <div className="w-10 h-10 rounded bg-muted shrink-0" />
                         <div className="flex-1 space-y-2">
                           <div className="h-2.5 bg-muted rounded w-24" />
                           <div className="h-2 bg-muted rounded w-32" />
@@ -719,7 +719,7 @@ export default function MessagesPage() {
                 )}
                 {!convsLoading && allContacts.length === 0 && (
                   <div className="flex flex-col items-center justify-center h-full p-6 text-center">
-                    <div className="w-14 h-14 rounded-2xl bg-accent/10 flex items-center justify-center mb-3">
+                    <div className="w-14 h-14 rounded bg-accent/10 flex items-center justify-center mb-3">
                       <Users className="w-6 h-6 text-accent" />
                     </div>
                     <p className="text-[13px] font-medium text-foreground">No conversations yet</p>
@@ -730,17 +730,17 @@ export default function MessagesPage() {
                   {allContacts.map((contact) => (
                     <button key={contact.friend_id} onClick={() => navigate(`/dashboard/messages/${contact.friend_id}`)}
                       className={cn(
-                        "flex items-center gap-3 w-full px-3 py-3 text-left transition-all rounded-xl",
+                        "flex items-center gap-3 w-full px-3 py-3 text-left transition-all rounded",
                         partnerId === contact.friend_id ? "bg-accent/8 border border-accent/15" : "hover:bg-muted/40 border border-transparent"
                       )}>
                       <div className="relative shrink-0">
-                        <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center text-accent font-semibold text-sm overflow-hidden">
+                        <div className="w-10 h-10 rounded bg-accent/10 flex items-center justify-center text-accent font-semibold text-sm overflow-hidden">
                           {contact.friend_avatar ? (
                             <img src={contact.friend_avatar} alt="" className="w-full h-full object-cover" />
                           ) : contact.friend_username[0]?.toUpperCase()}
                         </div>
                         {contact.unread_count > 0 && (
-                          <span className="absolute -top-1 -right-1 bg-accent text-white text-[9px] font-bold rounded-lg min-w-[16px] h-4 flex items-center justify-center px-1">
+                          <span className="absolute -top-1 -right-1 bg-accent text-white text-[9px] font-bold rounded min-w-[16px] h-4 flex items-center justify-center px-1">
                             {contact.unread_count}
                           </span>
                         )}
@@ -770,8 +770,8 @@ export default function MessagesPage() {
                 {groupsLoading ? (
                   <div className="space-y-0.5 p-2">
                     {[1, 2, 3].map((n) => (
-                      <div key={n} className="flex items-center gap-3 p-3 rounded-xl animate-pulse">
-                        <div className="w-10 h-10 rounded-xl bg-muted shrink-0" />
+                      <div key={n} className="flex items-center gap-3 p-3 rounded animate-pulse">
+                        <div className="w-10 h-10 rounded bg-muted shrink-0" />
                         <div className="flex-1 space-y-2">
                           <div className="h-2.5 bg-muted rounded w-24" />
                           <div className="h-2 bg-muted rounded w-14" />
@@ -781,7 +781,7 @@ export default function MessagesPage() {
                   </div>
                 ) : groups.length === 0 ? (
                   <div className="flex flex-col items-center justify-center h-full p-6 text-center">
-                    <div className="w-14 h-14 rounded-2xl bg-accent/10 flex items-center justify-center mb-3">
+                    <div className="w-14 h-14 rounded bg-accent/10 flex items-center justify-center mb-3">
                       <Users className="w-6 h-6 text-accent" />
                     </div>
                     <p className="text-[13px] font-medium text-foreground">No groups yet</p>
@@ -792,10 +792,10 @@ export default function MessagesPage() {
                     {groups.map((g) => (
                       <button key={g.id} onClick={() => setSelectedGroupId(g.id)}
                         className={cn(
-                          "flex items-center gap-3 w-full px-3 py-3 text-left transition-all rounded-xl",
+                          "flex items-center gap-3 w-full px-3 py-3 text-left transition-all rounded",
                           selectedGroupId === g.id ? "bg-accent/8 border border-accent/15" : "hover:bg-muted/40 border border-transparent"
                         )}>
-                        <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center text-accent shrink-0">
+                        <div className="w-10 h-10 rounded bg-accent/10 flex items-center justify-center text-accent shrink-0">
                           <Users className="w-4 h-4" />
                         </div>
                         <div className="flex-1 min-w-0">
@@ -817,7 +817,7 @@ export default function MessagesPage() {
             <GroupChatPanel group={selectedGroup} currentUserId={currentUserId} onBack={() => setSelectedGroupId(null)} />
           ) : mode === "groups" ? (
             <div className="flex flex-col items-center justify-center flex-1 text-center p-8">
-              <div className="w-16 h-16 rounded-2xl bg-accent/10 flex items-center justify-center mb-4">
+              <div className="w-16 h-16 rounded bg-accent/10 flex items-center justify-center mb-4">
                 <Users className="w-7 h-7 text-accent" />
               </div>
               <p className="text-[15px] font-semibold text-foreground">Group Chats</p>
@@ -825,7 +825,7 @@ export default function MessagesPage() {
             </div>
           ) : !partnerId ? (
             <div className="flex flex-col items-center justify-center flex-1 text-center p-8">
-              <div className="w-16 h-16 rounded-2xl bg-accent/10 flex items-center justify-center mb-4">
+              <div className="w-16 h-16 rounded bg-accent/10 flex items-center justify-center mb-4">
                 <MessageCircle className="w-7 h-7 text-accent" />
               </div>
               <p className="text-[15px] font-semibold text-foreground">Your messages</p>
@@ -835,10 +835,10 @@ export default function MessagesPage() {
             <>
               {/* DM header */}
               <div className="h-14 px-4 flex items-center gap-3 border-b border-border surface shrink-0">
-                <button onClick={() => navigate("/dashboard/messages")} className="p-1.5 rounded-lg text-muted-foreground hover:text-foreground md:hidden transition-colors">
+                <button onClick={() => navigate("/dashboard/messages")} className="p-1.5 rounded text-muted-foreground hover:text-foreground md:hidden transition-colors">
                   <ArrowLeft className="w-4 h-4" />
                 </button>
-                <div className="w-9 h-9 rounded-xl bg-accent/10 flex items-center justify-center text-accent font-semibold text-[13px] shrink-0 overflow-hidden">
+                <div className="w-9 h-9 rounded bg-accent/10 flex items-center justify-center text-accent font-semibold text-[13px] shrink-0 overflow-hidden">
                   {partnerAvatar ? <img src={partnerAvatar} alt="" className="w-full h-full object-cover" /> : partnerName[0]?.toUpperCase()}
                 </div>
                 <div className="flex-1 min-w-0">
@@ -852,11 +852,11 @@ export default function MessagesPage() {
                   </AnimatePresence>
                 </div>
                 <button onClick={() => initiateCall(partnerId, false)} disabled={callState !== "idle"}
-                  className="p-2 rounded-lg text-muted-foreground hover:text-accent hover:bg-accent/10 transition-colors disabled:opacity-40" title="Voice call">
+                  className="p-2 rounded text-muted-foreground hover:text-accent hover:bg-accent/10 transition-colors disabled:opacity-40" title="Voice call">
                   <Phone className="w-4 h-4" />
                 </button>
                 <button onClick={() => initiateCall(partnerId, true)} disabled={callState !== "idle"}
-                  className="p-2 rounded-lg text-muted-foreground hover:text-accent hover:bg-accent/10 transition-colors disabled:opacity-40" title="Video call">
+                  className="p-2 rounded text-muted-foreground hover:text-accent hover:bg-accent/10 transition-colors disabled:opacity-40" title="Video call">
                   <Video className="w-4 h-4" />
                 </button>
               </div>
@@ -872,7 +872,7 @@ export default function MessagesPage() {
                 {msgsLoading && <div className="flex justify-center py-6"><Loader2 className="w-5 h-5 text-muted-foreground animate-spin" /></div>}
                 {!msgsLoading && messages.length === 0 && !partnerTyping && (
                   <div className="flex flex-col items-center justify-center h-full text-center">
-                    <div className="w-14 h-14 rounded-2xl bg-accent/10 flex items-center justify-center mb-3">
+                    <div className="w-14 h-14 rounded bg-accent/10 flex items-center justify-center mb-3">
                       <MessageCircle className="w-6 h-6 text-accent" />
                     </div>
                     <p className="text-[13px] font-medium text-foreground">Start the conversation</p>
@@ -890,7 +890,7 @@ export default function MessagesPage() {
                           className="pb-3">
                           {isTypingRow ? (
                             <motion.div initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -4 }} className="flex justify-start">
-                              <div className="surface border border-border px-4 py-3 rounded-2xl rounded-bl-lg">
+                              <div className="surface border border-border px-4 py-3 rounded rounded-bl-lg">
                                 <div className="flex gap-1 items-center">
                                   {[0, 1, 2].map((i) => (
                                     <motion.span key={i} className="w-1.5 h-1.5 rounded-full bg-muted-foreground/50 block"
@@ -912,13 +912,13 @@ export default function MessagesPage() {
                                         if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); if (editInput.trim() && editingMsg) { editMsg.mutate({ messageId: editingMsg.id, content: editInput.trim() }); setEditingMsg(null); setEditInput(""); } }
                                         else if (e.key === "Escape") { setEditingMsg(null); setEditInput(""); }
                                       }}
-                                      className="flex-1 h-9 px-3 rounded-xl border border-accent bg-background text-[13px] text-foreground focus:outline-none focus:ring-2 focus:ring-accent/20"
+                                      className="flex-1 h-9 px-3 rounded border border-accent bg-background text-[13px] text-foreground focus:outline-none focus:ring-2 focus:ring-accent/20"
                                       autoFocus />
                                     <button onClick={() => { if (editInput.trim() && editingMsg) { editMsg.mutate({ messageId: editingMsg.id, content: editInput.trim() }); } setEditingMsg(null); setEditInput(""); }}
-                                      disabled={!editInput.trim() || editMsg.isPending} className="p-1.5 rounded-lg bg-accent text-white disabled:opacity-40">
+                                      disabled={!editInput.trim() || editMsg.isPending} className="p-1.5 rounded bg-accent text-white disabled:opacity-40">
                                       <Check className="w-3.5 h-3.5" />
                                     </button>
-                                    <button onClick={() => { setEditingMsg(null); setEditInput(""); }} className="p-1.5 rounded-lg text-muted-foreground hover:text-foreground">
+                                    <button onClick={() => { setEditingMsg(null); setEditInput(""); }} className="p-1.5 rounded text-muted-foreground hover:text-foreground">
                                       <X className="w-3.5 h-3.5" />
                                     </button>
                                   </div>
@@ -926,10 +926,10 @@ export default function MessagesPage() {
                                   <div className={cn(
                                     "relative group/bubble max-w-[72%] px-4 py-2.5 text-[13px] leading-relaxed",
                                     msg.is_deleted
-                                      ? "italic text-muted-foreground/60 surface border border-border/40 rounded-2xl"
+                                      ? "italic text-muted-foreground/60 surface border border-border/40 rounded"
                                       : isOwn
-                                        ? "bg-accent text-white rounded-2xl rounded-br-lg"
-                                        : "surface border border-border text-foreground rounded-2xl rounded-bl-lg"
+                                        ? "bg-accent text-white rounded rounded-br-lg"
+                                        : "surface border border-border text-foreground rounded rounded-bl-lg"
                                   )}>
                                     <p className="whitespace-pre-wrap break-words">
                                       {msg.is_deleted ? "This message was deleted" : msg.content}
@@ -944,7 +944,7 @@ export default function MessagesPage() {
                                     {!msg.is_deleted && (
                                       <div className={cn(
                                         "absolute -top-7 flex gap-0.5 opacity-0 group-hover/msg:opacity-100 transition-opacity",
-                                        "bg-background/90 border border-border rounded-md shadow-sm px-1 py-0.5",
+                                        "bg-background/90 border border-border rounded shadow-sm px-1 py-0.5",
                                         isOwn ? "right-0" : "left-0"
                                       )}>
                                         <button onClick={() => setViewedMsg(msg)} title="View"
@@ -982,13 +982,13 @@ export default function MessagesPage() {
                 <div className="flex items-end gap-2">
                   <div className="relative" ref={emojiRef}>
                     <button type="button" onClick={() => setEmojiOpen((o) => !o)}
-                      className={cn("p-2 rounded-lg transition-colors", emojiOpen ? "text-accent bg-accent/10" : "text-muted-foreground hover:text-foreground hover:bg-muted")}>
+                      className={cn("p-2 rounded transition-colors", emojiOpen ? "text-accent bg-accent/10" : "text-muted-foreground hover:text-foreground hover:bg-muted")}>
                       <Smile className="w-4 h-4" />
                     </button>
                     <AnimatePresence>
                       {emojiOpen && (
                         <motion.div initial={{ opacity: 0, y: 8, scale: 0.95 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 8, scale: 0.95 }} transition={{ duration: 0.15 }}
-                          className="absolute bottom-12 left-0 surface border border-border rounded-xl shadow-lg p-3 z-50 w-56">
+                          className="absolute bottom-12 left-0 surface border border-border rounded shadow-lg p-3 z-50 w-56">
                           <div className="flex items-center justify-between mb-2">
                             <span className="text-[11px] font-medium text-muted-foreground uppercase tracking-wide">Emoji</span>
                             <button onClick={() => setEmojiOpen(false)} className="p-0.5 rounded text-muted-foreground hover:text-foreground"><X className="w-3 h-3" /></button>
@@ -1007,9 +1007,9 @@ export default function MessagesPage() {
                   </div>
                   <textarea ref={inputRef} value={input} onChange={handleInputChange} onKeyDown={handleKeyDown}
                     placeholder={`Message ${partnerName}…`} rows={1}
-                    className="flex-1 min-h-[40px] max-h-[120px] px-4 py-2.5 rounded-xl border border-input bg-background text-[13px] text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent transition-all resize-none overflow-y-auto" />
+                    className="flex-1 min-h-[40px] max-h-[120px] px-4 py-2.5 rounded border border-input bg-background text-[13px] text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent transition-all resize-none overflow-y-auto" />
                   <button onClick={handleSend} disabled={!input.trim() || sendMsg.isPending}
-                    className="h-10 w-10 rounded-xl bg-accent text-white flex items-center justify-center transition-all hover:bg-accent/90 disabled:opacity-40 disabled:cursor-not-allowed shrink-0 active:scale-95">
+                    className="h-10 w-10 rounded bg-accent text-white flex items-center justify-center transition-all hover:bg-accent/90 disabled:opacity-40 disabled:cursor-not-allowed shrink-0 active:scale-95">
                     {sendMsg.isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
                   </button>
                 </div>
@@ -1026,16 +1026,16 @@ export default function MessagesPage() {
             className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm"
             onClick={() => setViewedMsg(null)}>
             <motion.div initial={{ opacity: 0, scale: 0.94, y: 12 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.94, y: 12 }} transition={{ duration: 0.18 }}
-              className="surface rounded-2xl border border-border shadow-lg max-w-md w-full mx-4 p-5"
+              className="surface rounded border border-border shadow-lg max-w-md w-full mx-4 p-5"
               onClick={(e) => e.stopPropagation()}>
               <div className="flex items-center justify-between mb-3">
                 <span className="text-[11px] font-medium text-muted-foreground uppercase tracking-wide">
                   {viewedMsg.sender_id === currentUserId ? "You" : partnerName}
                 </span>
-                <button onClick={() => setViewedMsg(null)} className="p-1 rounded-lg hover:bg-muted text-muted-foreground"><X className="w-4 h-4" /></button>
+                <button onClick={() => setViewedMsg(null)} className="p-1 rounded hover:bg-muted text-muted-foreground"><X className="w-4 h-4" /></button>
               </div>
               <p className="text-[14px] text-foreground leading-relaxed whitespace-pre-wrap break-words">{viewedMsg.content}</p>
-              <p className="text-[11px] text-muted-foreground mt-3 pt-3 border-t border-border/60">
+              <p className="text-[11px] text-muted-foreground mt-3 pt-3 border-t border-accent/15">
                 {new Date(viewedMsg.created_at).toLocaleString([], { weekday: "short", month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" })}
               </p>
             </motion.div>
@@ -1051,13 +1051,13 @@ export default function MessagesPage() {
       <AnimatePresence>
         {(callState === "calling" || callState === "connected") && (
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 20 }}
-            className="fixed bottom-6 right-6 z-50 surface border border-border rounded-2xl shadow-lg overflow-hidden">
+            className="fixed bottom-6 right-6 z-50 surface border border-border rounded shadow-lg overflow-hidden">
             {/* Remote video (full card when connected + video call) */}
             {isVideoCall && callState === "connected" && (
               <div className="relative w-64 h-48 bg-black">
                 <video ref={remoteVideoRef} autoPlay playsInline className="absolute inset-0 w-full h-full object-cover" />
                 {/* Local video PiP */}
-                <div className="absolute bottom-2 right-2 w-20 h-15 rounded-lg overflow-hidden border border-white/30 bg-black">
+                <div className="absolute bottom-2 right-2 w-20 h-15 rounded overflow-hidden border border-white/30 bg-black">
                   <video ref={localVideoRef} autoPlay muted playsInline className="w-full h-full object-cover" />
                 </div>
               </div>
@@ -1087,7 +1087,7 @@ export default function MessagesPage() {
         {callState === "incoming" && incomingCallerId && (
           <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }}
             className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
-            <div className="surface border border-border rounded-2xl shadow-lg p-6 max-w-xs w-full mx-4 text-center">
+            <div className="surface border border-border rounded shadow-lg p-6 max-w-xs w-full mx-4 text-center">
               <div className="w-16 h-16 rounded-full bg-accent/10 flex items-center justify-center mx-auto mb-4">
                 {isVideoCall
                   ? <Video className="w-7 h-7 text-accent animate-pulse" />

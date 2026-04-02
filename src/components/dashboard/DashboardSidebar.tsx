@@ -1,4 +1,4 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import { useLocation, Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -128,7 +128,7 @@ export function DashboardSidebar({ collapsed, onToggle }: DashboardSidebarProps)
           )}
           <button
             onClick={onToggle}
-            className="p-1.5 rounded-md text-muted-foreground hover:text-foreground transition-colors"
+            className="p-1.5 rounded text-muted-foreground hover:text-foreground transition-colors"
           >
             {collapsed ? <Menu className="w-4 h-4" /> : <X className="w-4 h-4 lg:hidden" />}
             {!collapsed && <ChevronLeft className="w-4 h-4 hidden lg:block" />}
@@ -145,7 +145,7 @@ export function DashboardSidebar({ collapsed, onToggle }: DashboardSidebarProps)
                 <div key={item.label}>
                   <button
                     onClick={() => toggleGroup(item.label)}
-                    className={`flex items-center gap-3 w-full h-9 px-3 rounded-md text-[13px] font-medium transition-all duration-150 ${
+                    className={`flex items-center gap-3 w-full h-9 px-3 rounded text-[13px] font-medium transition-all duration-150 ${
                       groupActive
                         ? "text-accent"
                         : "text-muted-foreground hover:text-foreground"
@@ -177,7 +177,7 @@ export function DashboardSidebar({ collapsed, onToggle }: DashboardSidebarProps)
                             <Link
                               key={child.href}
                               to={child.href}
-                              className={`block px-3 py-1.5 rounded-md text-[12px] font-medium transition-all duration-150 ${
+                              className={`block px-3 py-1.5 rounded text-[12px] font-medium transition-all duration-150 ${
                                 isActive(child.href)
                                   ? "text-accent"
                                   : "text-muted-foreground hover:text-foreground"
@@ -198,7 +198,7 @@ export function DashboardSidebar({ collapsed, onToggle }: DashboardSidebarProps)
               <Link
                 key={item.label}
                 to={item.href!}
-                className={`flex items-center gap-3 h-9 px-3 rounded-md text-[13px] font-medium transition-all duration-150 ${
+                className={`flex items-center gap-3 h-9 px-3 rounded text-[13px] font-medium transition-all duration-150 ${
                   isActive(item.href!)
                     ? "text-accent"
                     : "text-muted-foreground hover:text-foreground"
@@ -215,7 +215,7 @@ export function DashboardSidebar({ collapsed, onToggle }: DashboardSidebarProps)
         <div className="p-2 border-t border-sidebar-border space-y-1 shrink-0">
           <button
             onClick={toggleTheme}
-            className="flex items-center gap-3 w-full h-9 px-3 rounded-md text-[13px] font-medium text-muted-foreground hover:text-foreground transition-colors"
+            className="flex items-center gap-3 w-full h-9 px-3 rounded text-[13px] font-medium text-muted-foreground hover:text-foreground transition-colors"
           >
             {theme === "light" ? <Moon className="w-[18px] h-[18px]" /> : <Sun className="w-[18px] h-[18px]" />}
             {!collapsed && <span>{theme === "light" ? "Dark mode" : "Light mode"}</span>}
@@ -230,7 +230,7 @@ export function DashboardSidebar({ collapsed, onToggle }: DashboardSidebarProps)
                 <p className="text-[12px] font-medium text-foreground truncate">John Doe</p>
                 <p className="text-[11px] text-muted-foreground truncate">john@example.com</p>
               </div>
-              <button className="p-1 rounded-md text-muted-foreground hover:text-foreground transition-colors">
+              <button className="p-1 rounded text-muted-foreground hover:text-foreground transition-colors">
                 <LogOut className="w-3.5 h-3.5" />
               </button>
             </div>

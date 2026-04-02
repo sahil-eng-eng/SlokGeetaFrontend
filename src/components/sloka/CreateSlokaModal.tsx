@@ -1,4 +1,4 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
 import { RichTextEditor } from "@/components/editor/RichTextEditor";
@@ -44,12 +44,12 @@ export function CreateSlokaModal({ open, onClose, onSubmit }: CreateSlokaModalPr
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 10 }}
               transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
-              className="surface w-full max-w-2xl max-h-[85vh] overflow-y-auto rounded-xl shadow-modal border border-border/50 p-6"
+              className="surface w-full max-w-2xl max-h-[85vh] overflow-y-auto rounded shadow-modal border border-accent/15 p-6"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-heading font-semibold text-foreground">Add New Sloka</h2>
-                <button onClick={onClose} className="p-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
+                <button onClick={onClose} className="p-1.5 rounded text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
                   <X className="w-4 h-4" />
                 </button>
               </div>
@@ -80,7 +80,7 @@ export function CreateSlokaModal({ open, onClose, onSubmit }: CreateSlokaModalPr
                 </div>
 
                 <div className="flex justify-end gap-3 pt-2">
-                  <button type="button" onClick={onClose} className="h-9 px-4 rounded-md text-body font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
+                  <button type="button" onClick={onClose} className="h-9 px-4 rounded text-body font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
                     Cancel
                   </button>
                   <GradientButton type="submit" size="sm">

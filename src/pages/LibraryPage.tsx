@@ -1,4 +1,4 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -99,8 +99,8 @@ export default function LibraryPage() {
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
           {Array.from({ length: 6 }).map((_, i) => (
-            <div key={i} className="surface rounded-lg border border-border p-4 animate-pulse">
-              <div className="w-9 h-9 rounded-lg bg-muted mb-3" />
+            <div key={i} className="surface rounded border border-border p-4 animate-pulse">
+              <div className="w-9 h-9 rounded bg-muted mb-3" />
               <div className="h-4 bg-muted rounded mb-2 w-3/4" />
               <div className="h-3 bg-muted rounded w-1/2" />
             </div>
@@ -114,7 +114,7 @@ export default function LibraryPage() {
     return (
       <div className="mx-auto w-full max-w-7xl space-y-5">
         <h1 className="text-display text-foreground">Library</h1>
-        <div className="surface rounded-lg border border-border p-12 text-center">
+        <div className="surface rounded border border-border p-12 text-center">
           <BookOpen className="w-10 h-10 text-muted-foreground/30 mx-auto mb-3" />
           <p className="text-body text-muted-foreground">Failed to load your library. Please try again.</p>
         </div>
@@ -129,7 +129,7 @@ export default function LibraryPage() {
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="relative overflow-hidden rounded-2xl h-40 lg:h-44"
+        className="relative overflow-hidden rounded h-40 lg:h-44"
       >
         <img src={booksHero} alt="" className="absolute inset-0 h-full w-full object-cover object-center" />
         <div className="absolute inset-0 bg-gradient-to-r from-foreground/60 via-foreground/30 to-transparent" />
@@ -152,10 +152,10 @@ export default function LibraryPage() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search books..."
-            className="w-full h-9 pl-9 pr-3 rounded-md border border-input bg-background text-[13px] text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent transition-all"
+            className="w-full h-9 pl-9 pr-3 rounded border border-input bg-background text-[13px] text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent transition-all"
           />
         </div>
-        <div className="flex items-center gap-1 p-0.5 rounded-md bg-muted/50 border border-border/50">
+        <div className="flex items-center gap-1 p-0.5 rounded bg-muted/50 border border-accent/15">
           {CATEGORIES.map((cat) => (
             <button
               key={cat}
@@ -183,10 +183,10 @@ export default function LibraryPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3, delay: i * 0.04 }}
               onClick={() => navigate(`/dashboard/library/${book.id}`)}
-              className="group surface rounded-lg border border-border p-4 cursor-pointer transition-all duration-200 hover:shadow-elevated hover:border-accent/20 hover:-translate-y-0.5"
+              className="group surface rounded border border-border p-4 cursor-pointer transition-all duration-200 hover:shadow-elevated hover:border-accent/20 hover:-translate-y-0.5"
             >
               <div className="flex items-start justify-between mb-3">
-                <div className="w-9 h-9 rounded-lg bg-accent/10 flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-accent-foreground transition-colors">
+                <div className="w-9 h-9 rounded bg-accent/10 flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-accent-foreground transition-colors">
                   <BookOpen className="w-4 h-4" />
                 </div>
                 <div className="flex items-center gap-2">
@@ -201,7 +201,7 @@ export default function LibraryPage() {
               </div>
               <h3 className="text-heading text-foreground group-hover:text-accent transition-colors">{book.title}</h3>
               <p className="text-small text-muted-foreground mt-1 line-clamp-2">{book.description}</p>
-              <div className="flex items-center gap-3 mt-3 pt-3 border-t border-border/60">
+              <div className="flex items-center gap-3 mt-3 pt-3 border-t border-accent/15">
                 {book.author_name && (
                   <span className="text-small text-muted-foreground">{book.author_name}</span>
                 )}
@@ -224,7 +224,7 @@ export default function LibraryPage() {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="surface rounded-lg border border-border p-12 text-center"
+          className="surface rounded border border-border p-12 text-center"
         >
           <BookOpen className="w-10 h-10 text-muted-foreground/30 mx-auto mb-3" />
           <p className="text-body text-muted-foreground">No books found matching your search.</p>
@@ -254,14 +254,14 @@ export default function LibraryPage() {
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.95, y: 10 }}
                 transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
-                className="surface w-full max-w-md rounded-xl shadow-modal border border-border/50 p-6"
+                className="surface w-full max-w-md rounded shadow-modal border border-accent/15 p-6"
                 onClick={(e) => e.stopPropagation()}
               >
                 <div className="flex items-center justify-between mb-5">
                   <h2 className="text-heading text-foreground">Add New Book</h2>
                   <button
                     onClick={() => setCreateOpen(false)}
-                    className="p-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+                    className="p-1.5 rounded text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
                   >
                     <X className="w-4 h-4" />
                   </button>
@@ -272,7 +272,7 @@ export default function LibraryPage() {
                     <input
                       {...register("title")}
                       placeholder="e.g., Bhagavad Gita"
-                      className="flex h-9 w-full rounded-md border border-input bg-background px-3 text-[13px] text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent transition-all"
+                      className="flex h-9 w-full rounded border border-input bg-background px-3 text-[13px] text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent transition-all"
                     />
                     {errors.title && (
                       <p className="text-[11px] text-destructive">{errors.title.message}</p>
@@ -283,7 +283,7 @@ export default function LibraryPage() {
                     <input
                       {...register("author_name")}
                       placeholder="e.g., Vyasa"
-                      className="flex h-9 w-full rounded-md border border-input bg-background px-3 text-[13px] text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent transition-all"
+                      className="flex h-9 w-full rounded border border-input bg-background px-3 text-[13px] text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent transition-all"
                     />
                   </div>
                   <div className="space-y-1.5">
@@ -292,14 +292,14 @@ export default function LibraryPage() {
                       {...register("description")}
                       rows={3}
                       placeholder="Brief description..."
-                      className="flex w-full rounded-md border border-input bg-background px-3 py-2 text-[13px] text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent transition-all resize-none"
+                      className="flex w-full rounded border border-input bg-background px-3 py-2 text-[13px] text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent transition-all resize-none"
                     />
                   </div>
                   <div className="space-y-1.5">
                     <label className="text-small font-medium text-foreground">Category</label>
                     <select
                       {...register("category")}
-                      className="flex h-9 w-full rounded-md border border-input bg-background px-3 text-[13px] text-foreground focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent transition-all"
+                      className="flex h-9 w-full rounded border border-input bg-background px-3 text-[13px] text-foreground focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent transition-all"
                     >
                       <option value="">Select category</option>
                       <option value="scripture">Scripture</option>
@@ -316,7 +316,7 @@ export default function LibraryPage() {
                     <button
                       type="button"
                       onClick={() => setCreateOpen(false)}
-                      className="h-9 px-4 rounded-md text-[13px] font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+                      className="h-9 px-4 rounded text-[13px] font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
                     >
                       Cancel
                     </button>

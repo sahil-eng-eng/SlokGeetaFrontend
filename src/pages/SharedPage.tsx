@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+﻿import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { BookOpen, ChevronRight, Share2, Loader2 } from "lucide-react";
 import { useSharedWithMeBooksQuery } from "@/lib/api/endpoints/books";
@@ -19,7 +19,7 @@ export default function SharedPage() {
       </div>
 
       {isLoading ? (
-        <div className="surface rounded-lg border border-border p-12 text-center">
+        <div className="surface rounded border border-border p-12 text-center">
           <Loader2 className="w-8 h-8 text-accent/50 mx-auto mb-3 animate-spin" />
           <p className="text-body text-muted-foreground">Loading shared books…</p>
         </div>
@@ -32,10 +32,10 @@ export default function SharedPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3, delay: i * 0.04 }}
               onClick={() => navigate(`/dashboard/library/${book.id}`)}
-              className="group surface rounded-lg border border-border p-4 cursor-pointer transition-all duration-200 hover:shadow-elevated hover:border-accent/20 hover:-translate-y-0.5"
+              className="group surface rounded border border-border p-4 cursor-pointer transition-all duration-200 hover:shadow-elevated hover:border-accent/20 hover:-translate-y-0.5"
             >
               <div className="flex items-start justify-between mb-3">
-                <div className="w-9 h-9 rounded-lg bg-accent/10 flex items-center justify-center text-accent">
+                <div className="w-9 h-9 rounded bg-accent/10 flex items-center justify-center text-accent">
                   <BookOpen className="w-4 h-4" />
                 </div>
                 <ChevronRight className="w-4 h-4 text-muted-foreground/40 group-hover:text-accent transition-colors" />
@@ -45,7 +45,7 @@ export default function SharedPage() {
                 <p className="text-small text-muted-foreground mt-1 line-clamp-2">{book.description}</p>
               )}
               {book.author_name && (
-                <div className="mt-3 pt-3 border-t border-border/60">
+                <div className="mt-3 pt-3 border-t border-accent/15">
                   <div className="flex items-center gap-1.5 text-small text-muted-foreground">
                     <Share2 className="w-3 h-3" />
                     By <span className="text-foreground font-medium">{book.author_name}</span>
@@ -56,7 +56,7 @@ export default function SharedPage() {
           ))}
         </div>
       ) : (
-        <div className="surface rounded-lg border border-border p-12 text-center">
+        <div className="surface rounded border border-border p-12 text-center">
           <Share2 className="w-10 h-10 text-muted-foreground/30 mx-auto mb-3" />
           <p className="text-body text-muted-foreground">No books have been shared with you yet.</p>
         </div>

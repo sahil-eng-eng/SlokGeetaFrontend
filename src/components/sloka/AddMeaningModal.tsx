@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+﻿import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ArrowUp, ArrowDown, CornerDownRight } from "lucide-react";
 import { GradientButton } from "@/components/ui/gradient-button";
@@ -66,12 +66,12 @@ export function AddMeaningModal({ open, onClose, onSubmit, targetNodeText, showP
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
               transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
-              className="surface w-full max-w-lg rounded-xl shadow-modal border border-border/50 p-6"
+              className="surface w-full max-w-lg rounded shadow-modal border border-accent/15 p-6"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-heading font-semibold text-foreground">Add Meaning</h2>
-                <button onClick={onClose} className="p-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
+                <button onClick={onClose} className="p-1.5 rounded text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
                   <X className="w-4 h-4" />
                 </button>
               </div>
@@ -87,7 +87,7 @@ export function AddMeaningModal({ open, onClose, onSubmit, targetNodeText, showP
                         type="button"
                         onClick={() => setPosition(opt.value)}
                         className={cn(
-                          "flex flex-col items-center gap-1.5 px-3 py-3 rounded-lg border text-center transition-all",
+                          "flex flex-col items-center gap-1.5 px-3 py-3 rounded border text-center transition-all",
                           position === opt.value
                             ? "border-accent bg-accent/10 text-accent shadow-sm"
                             : "border-border text-muted-foreground hover:border-accent/30 hover:text-foreground"
@@ -104,7 +104,7 @@ export function AddMeaningModal({ open, onClose, onSubmit, targetNodeText, showP
 
               {/* Show parent context for "inside" when no position selector */}
               {!showPositionSelector && targetNodeText && (
-                <div className="mb-4 p-3 rounded-lg bg-muted/50 border border-border/50">
+                <div className="mb-4 p-3 rounded bg-muted/50 border border-accent/15">
                   <p className="text-small text-muted-foreground mb-1">Replying to:</p>
                   <p className="text-body text-foreground line-clamp-2">{targetNodeText}</p>
                 </div>
@@ -118,7 +118,7 @@ export function AddMeaningModal({ open, onClose, onSubmit, targetNodeText, showP
                     onChange={(e) => setText(e.target.value)}
                     rows={4}
                     placeholder="Share your understanding of this verse or meaning..."
-                    className="flex w-full rounded-md border border-input bg-background px-3 py-2 text-body text-foreground placeholder:text-muted-foreground transition-colors focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent resize-none"
+                    className="flex w-full rounded border border-input bg-background px-3 py-2 text-body text-foreground placeholder:text-muted-foreground transition-colors focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent resize-none"
                   />
                 </div>
                 <div className="space-y-1.5">
@@ -126,7 +126,7 @@ export function AddMeaningModal({ open, onClose, onSubmit, targetNodeText, showP
                   <VisibilitySelector value={visibility} onChange={setVisibility} />
                 </div>
                 <div className="flex justify-end gap-3">
-                  <button type="button" onClick={onClose} className="h-9 px-4 rounded-md text-body font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
+                  <button type="button" onClick={onClose} className="h-9 px-4 rounded text-body font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
                     Cancel
                   </button>
                   <GradientButton type="submit" size="sm">

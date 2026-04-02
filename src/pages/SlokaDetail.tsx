@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+﻿import { useState, useEffect, useCallback } from "react";
 import { useParams, Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -273,7 +273,7 @@ export default function SlokaDetail() {
         <div className="h-4 bg-muted animate-pulse rounded w-28" />
 
         {/* Sloka card */}
-        <div className="surface rounded-xl border border-border p-6 space-y-4">
+        <div className="surface rounded border border-border p-6 space-y-4">
           <div className="flex items-start justify-between gap-3">
             <div className="h-7 bg-muted animate-pulse rounded w-52" />
             <div className="flex items-center gap-2">
@@ -281,7 +281,7 @@ export default function SlokaDetail() {
               <div className="h-7 bg-muted animate-pulse rounded w-7" />
             </div>
           </div>
-          <div className="p-4 rounded-lg bg-muted/40 border border-border/50 space-y-2.5">
+          <div className="p-4 rounded bg-muted/40 border border-accent/15 space-y-2.5">
             <div className="h-4 bg-muted animate-pulse rounded" />
             <div className="h-4 bg-muted animate-pulse rounded w-11/12" />
             <div className="h-4 bg-muted animate-pulse rounded w-4/5" />
@@ -300,7 +300,7 @@ export default function SlokaDetail() {
             <div className="h-8 bg-muted animate-pulse rounded-full w-20" />
           </div>
           <div className="space-y-3">
-            <div className="surface rounded-lg border border-border p-4 space-y-3">
+            <div className="surface rounded border border-border p-4 space-y-3">
               <div className="flex items-center gap-2">
                 <div className="h-6 w-6 bg-muted animate-pulse rounded-full shrink-0" />
                 <div className="h-3.5 bg-muted animate-pulse rounded w-28" />
@@ -313,7 +313,7 @@ export default function SlokaDetail() {
                 <div className="h-6 bg-muted animate-pulse rounded w-16" />
               </div>
             </div>
-            <div className="surface rounded-lg border border-border p-4 space-y-3">
+            <div className="surface rounded border border-border p-4 space-y-3">
               <div className="flex items-center gap-2">
                 <div className="h-6 w-6 bg-muted animate-pulse rounded-full shrink-0" />
                 <div className="h-3.5 bg-muted animate-pulse rounded w-20" />
@@ -326,7 +326,7 @@ export default function SlokaDetail() {
                 <div className="h-6 bg-muted animate-pulse rounded w-16" />
               </div>
             </div>
-            <div className="ml-8 surface rounded-lg border border-border p-4 space-y-3">
+            <div className="ml-8 surface rounded border border-border p-4 space-y-3">
               <div className="flex items-center gap-2">
                 <div className="h-6 w-6 bg-muted animate-pulse rounded-full shrink-0" />
                 <div className="h-3.5 bg-muted animate-pulse rounded w-32" />
@@ -350,7 +350,7 @@ export default function SlokaDetail() {
         <Link to="/dashboard/library" className="inline-flex items-center gap-1.5 text-body text-muted-foreground hover:text-foreground transition-colors">
           <ArrowLeft className="w-4 h-4" /> Back
         </Link>
-        <div className="surface rounded-lg border border-border p-12 text-center">
+        <div className="surface rounded border border-border p-12 text-center">
           <ScrollText className="w-10 h-10 text-muted-foreground/30 mx-auto mb-3" />
           <p className="text-body text-muted-foreground">Sloka not found.</p>
         </div>
@@ -391,7 +391,7 @@ export default function SlokaDetail() {
       <motion.div
         initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
-        className="surface rounded-xl border border-border p-6"
+        className="surface rounded border border-border p-6"
       >
         <div className="flex items-start justify-between gap-3">
           <h1 className="text-display text-foreground">{shlokTitle}</h1>
@@ -404,18 +404,18 @@ export default function SlokaDetail() {
                 sharedUsers={sharedUsers}
                 onSharedUsersChange={handleSharedUsersChange}
               />
-              <button onClick={handleEditSloka} className="p-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted transition-colors" title="Edit sloka">
+              <button onClick={handleEditSloka} className="p-1.5 rounded text-muted-foreground hover:text-foreground hover:bg-muted transition-colors" title="Edit sloka">
                 <Pencil className="w-3.5 h-3.5" />
               </button>
             </div>
           )}
           {!isOwner && shlok?.my_permission && shlok.my_permission !== "view" && (
-            <button onClick={handleEditSloka} className="p-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted transition-colors" title={shlok.my_permission === "request_edit" ? "Suggest edit" : "Edit sloka"}>
+            <button onClick={handleEditSloka} className="p-1.5 rounded text-muted-foreground hover:text-foreground hover:bg-muted transition-colors" title={shlok.my_permission === "request_edit" ? "Suggest edit" : "Edit sloka"}>
               <Pencil className="w-3.5 h-3.5" />
             </button>
           )}
         </div>
-        <div className="mt-3 p-4 rounded-lg bg-muted/30 border border-border/50">
+        <div className="mt-3 p-4 rounded bg-muted/30 border border-accent/15">
           <p className="text-body text-foreground whitespace-pre-line leading-relaxed font-medium">{shlok.content}</p>
         </div>
       </motion.div>
@@ -462,7 +462,7 @@ export default function SlokaDetail() {
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
-                className="surface w-full max-w-lg rounded-xl shadow-modal border border-border/50 p-6"
+                className="surface w-full max-w-lg rounded shadow-modal border border-accent/15 p-6"
                 onClick={(e) => e.stopPropagation()}
               >
                 <div className="flex items-center justify-between mb-4">
@@ -470,7 +470,7 @@ export default function SlokaDetail() {
                     <Pencil className="w-4 h-4 text-accent" />
                     {editNode?.myPermission === "request_edit" ? "Suggest Edit" : "Edit Meaning"}
                   </h2>
-                  <button onClick={() => setEditNode(null)} className="p-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
+                  <button onClick={() => setEditNode(null)} className="p-1.5 rounded text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
                     <X className="w-4 h-4" />
                   </button>
                 </div>
@@ -482,10 +482,10 @@ export default function SlokaDetail() {
                     value={editText}
                     onChange={(e) => setEditText(e.target.value)}
                     rows={4}
-                    className="flex w-full rounded-md border border-input bg-background px-3 py-2 text-body text-foreground focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent resize-none transition-all"
+                    className="flex w-full rounded border border-input bg-background px-3 py-2 text-body text-foreground focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent resize-none transition-all"
                   />
                   <div className="flex justify-end gap-3">
-                    <button onClick={() => setEditNode(null)} className="h-9 px-4 rounded-md text-[13px] font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">Cancel</button>
+                    <button onClick={() => setEditNode(null)} className="h-9 px-4 rounded text-[13px] font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">Cancel</button>
                     <GradientButton
                       size="sm"
                       onClick={handleSaveMeaning}
@@ -513,7 +513,7 @@ export default function SlokaDetail() {
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
-                className="surface w-full max-w-lg rounded-xl shadow-modal border border-border/50 p-6"
+                className="surface w-full max-w-lg rounded shadow-modal border border-accent/15 p-6"
                 onClick={(e) => e.stopPropagation()}
               >
                 <div className="flex items-center justify-between mb-4">
@@ -521,7 +521,7 @@ export default function SlokaDetail() {
                     <Pencil className="w-4 h-4 text-accent" />
                     {shlok?.my_permission === "request_edit" ? "Suggest Edit" : "Edit Sloka"}
                   </h2>
-                  <button onClick={() => setEditingSloka(false)} className="p-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
+                  <button onClick={() => setEditingSloka(false)} className="p-1.5 rounded text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
                     <X className="w-4 h-4" />
                   </button>
                 </div>
@@ -535,11 +535,11 @@ export default function SlokaDetail() {
                       value={slokaContent}
                       onChange={(e) => setSlokaContent(e.target.value)}
                       rows={6}
-                      className="flex w-full rounded-md border border-input bg-background px-3 py-2 text-[13px] text-foreground focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent resize-none transition-all"
+                      className="flex w-full rounded border border-input bg-background px-3 py-2 text-[13px] text-foreground focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent resize-none transition-all"
                     />
                   </div>
                   <div className="flex justify-end gap-3">
-                    <button onClick={() => setEditingSloka(false)} className="h-9 px-4 rounded-md text-[13px] font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">Cancel</button>
+                    <button onClick={() => setEditingSloka(false)} className="h-9 px-4 rounded text-[13px] font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">Cancel</button>
                     <GradientButton
                       size="sm"
                       onClick={handleSaveSloka}
@@ -573,7 +573,7 @@ export default function SlokaDetail() {
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
-                className="surface w-full max-w-lg rounded-xl shadow-modal border border-border/50 p-6"
+                className="surface w-full max-w-lg rounded shadow-modal border border-accent/15 p-6"
                 onClick={(e) => e.stopPropagation()}
               >
                 <div className="flex items-center justify-between mb-4">
@@ -581,7 +581,7 @@ export default function SlokaDetail() {
                     <History className="w-4 h-4 text-accent" />
                     Version History
                   </h2>
-                  <button onClick={() => setHistoryNode(null)} className="p-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
+                  <button onClick={() => setHistoryNode(null)} className="p-1.5 rounded text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
                     <X className="w-4 h-4" />
                   </button>
                 </div>

@@ -1,4 +1,4 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { User, Mail, Phone, MapPin, Camera, Save, Trash2, AlertTriangle, Shield, UserX, X } from "lucide-react";
 import { GradientButton } from "@/components/ui/gradient-button";
@@ -39,7 +39,7 @@ export default function SettingsPage() {
       </div>
 
       {/* Tabs */}
-      <div className="flex items-center gap-1 p-0.5 rounded-md bg-muted/50 border border-border/50 w-fit">
+      <div className="flex items-center gap-1 p-0.5 rounded bg-muted/50 border border-accent/15 w-fit">
         {tabs.map((tab) => (
           <button
             key={tab.id}
@@ -63,7 +63,7 @@ export default function SettingsPage() {
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
-            className="surface rounded-xl border border-border p-6 space-y-6"
+            className="surface rounded border border-border p-6 space-y-6"
           >
             {/* Avatar */}
             <div className="flex items-center gap-4">
@@ -90,7 +90,7 @@ export default function SettingsPage() {
                 <input
                   value={profile.name}
                   onChange={(e) => setProfile(p => ({ ...p, name: e.target.value }))}
-                  className="flex h-9 w-full rounded-md border border-input bg-background px-3 text-[13px] text-foreground focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent transition-all"
+                  className="flex h-9 w-full rounded border border-input bg-background px-3 text-[13px] text-foreground focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent transition-all"
                 />
               </div>
               <div className="space-y-1.5">
@@ -100,7 +100,7 @@ export default function SettingsPage() {
                 <input
                   value={profile.email}
                   onChange={(e) => setProfile(p => ({ ...p, email: e.target.value }))}
-                  className="flex h-9 w-full rounded-md border border-input bg-background px-3 text-[13px] text-foreground focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent transition-all"
+                  className="flex h-9 w-full rounded border border-input bg-background px-3 text-[13px] text-foreground focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent transition-all"
                 />
               </div>
               <div className="space-y-1.5">
@@ -110,7 +110,7 @@ export default function SettingsPage() {
                 <input
                   value={profile.phone}
                   onChange={(e) => setProfile(p => ({ ...p, phone: e.target.value }))}
-                  className="flex h-9 w-full rounded-md border border-input bg-background px-3 text-[13px] text-foreground focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent transition-all"
+                  className="flex h-9 w-full rounded border border-input bg-background px-3 text-[13px] text-foreground focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent transition-all"
                 />
               </div>
               <div className="space-y-1.5">
@@ -120,7 +120,7 @@ export default function SettingsPage() {
                 <input
                   value={profile.location}
                   onChange={(e) => setProfile(p => ({ ...p, location: e.target.value }))}
-                  className="flex h-9 w-full rounded-md border border-input bg-background px-3 text-[13px] text-foreground focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent transition-all"
+                  className="flex h-9 w-full rounded border border-input bg-background px-3 text-[13px] text-foreground focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent transition-all"
                 />
               </div>
             </div>
@@ -131,7 +131,7 @@ export default function SettingsPage() {
                 value={profile.bio}
                 onChange={(e) => setProfile(p => ({ ...p, bio: e.target.value }))}
                 rows={3}
-                className="flex w-full rounded-md border border-input bg-background px-3 py-2 text-[13px] text-foreground focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent transition-all resize-none"
+                className="flex w-full rounded border border-input bg-background px-3 py-2 text-[13px] text-foreground focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent transition-all resize-none"
               />
             </div>
 
@@ -159,7 +159,7 @@ export default function SettingsPage() {
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
-            className="surface rounded-xl border border-border p-6 space-y-4"
+            className="surface rounded border border-border p-6 space-y-4"
           >
             <div className="flex items-center gap-2 mb-2">
               <Shield className="w-4 h-4 text-muted-foreground" />
@@ -171,7 +171,7 @@ export default function SettingsPage() {
             {blockedUsers.length > 0 ? (
               <div className="space-y-2">
                 {blockedUsers.map((user) => (
-                  <div key={user.id} className="flex items-center justify-between p-3 rounded-lg border border-border hover:bg-muted/30 transition-colors">
+                  <div key={user.id} className="flex items-center justify-between p-3 rounded border border-border hover:bg-muted/30 transition-colors">
                     <div className="flex items-center gap-3">
                       <div className="w-8 h-8 rounded-full bg-destructive/10 flex items-center justify-center text-[11px] font-semibold text-destructive">
                         {user.name[0]}
@@ -181,7 +181,7 @@ export default function SettingsPage() {
                         <p className="text-small text-muted-foreground">{user.email} • Blocked {user.blockedAt}</p>
                       </div>
                     </div>
-                    <button className="text-[11px] font-medium text-accent hover:text-accent-glow transition-colors px-2.5 py-1 rounded-md hover:bg-accent/10">
+                    <button className="text-[11px] font-medium text-accent hover:text-accent-glow transition-colors px-2.5 py-1 rounded hover:bg-accent/10">
                       Unblock
                     </button>
                   </div>
@@ -202,7 +202,7 @@ export default function SettingsPage() {
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
-            className="surface rounded-xl border border-destructive/30 p-6 space-y-4"
+            className="surface rounded border border-destructive/30 p-6 space-y-4"
           >
             <div className="flex items-center gap-2">
               <AlertTriangle className="w-4 h-4 text-destructive" />
@@ -213,7 +213,7 @@ export default function SettingsPage() {
             </p>
             <button
               onClick={() => setDeleteConfirm(true)}
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-md bg-destructive text-destructive-foreground text-[13px] font-medium hover:bg-destructive/90 transition-colors"
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded bg-destructive text-destructive-foreground text-[13px] font-medium hover:bg-destructive/90 transition-colors"
             >
               <Trash2 className="w-4 h-4" /> Delete Account
             </button>
@@ -231,7 +231,7 @@ export default function SettingsPage() {
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
-                className="surface w-full max-w-sm rounded-xl shadow-modal border border-destructive/30 p-6"
+                className="surface w-full max-w-sm rounded shadow-modal border border-destructive/30 p-6"
                 onClick={(e) => e.stopPropagation()}
               >
                 <div className="flex items-center gap-2 mb-3">
@@ -242,10 +242,10 @@ export default function SettingsPage() {
                   This will permanently delete your account and all associated data. This action cannot be undone.
                 </p>
                 <div className="flex justify-end gap-2">
-                  <button onClick={() => setDeleteConfirm(false)} className="h-9 px-4 rounded-md text-[13px] font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
+                  <button onClick={() => setDeleteConfirm(false)} className="h-9 px-4 rounded text-[13px] font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
                     Cancel
                   </button>
-                  <button className="h-9 px-4 rounded-md bg-destructive text-destructive-foreground text-[13px] font-medium hover:bg-destructive/90 transition-colors">
+                  <button className="h-9 px-4 rounded bg-destructive text-destructive-foreground text-[13px] font-medium hover:bg-destructive/90 transition-colors">
                     Yes, Delete
                   </button>
                 </div>

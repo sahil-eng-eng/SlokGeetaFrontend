@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect, useRef } from "react";
+﻿import { useState, useCallback, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, RotateCcw, Check, Clock, Trophy, Sparkles, Dot } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
@@ -62,6 +62,7 @@ export default function InstantNaamJapPage() {
   const circumference = 2 * Math.PI * radius;
   const strokeDashoffset = circumference * (1 - progress);
   const remaining = Math.max(target - count, 0);
+  const focusMode = started && !completed;
 
   const handleTap = useCallback(() => {
     if (completed) return;
@@ -103,7 +104,7 @@ export default function InstantNaamJapPage() {
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        className="relative overflow-hidden rounded-2xl border border-border/70 surface px-5 py-5 sm:px-6 sm:py-6"
+        className="relative overflow-hidden rounded border border-accent/20 surface px-5 py-5 sm:px-6 sm:py-6"
       >
         <div className="absolute inset-0 bg-gradient-to-br from-accent/10 via-transparent to-success/10" />
         <div className="absolute -right-16 -top-16 h-40 w-40 rounded-full bg-accent/10 blur-3xl" />
@@ -125,7 +126,7 @@ export default function InstantNaamJapPage() {
             </Link>
 
             <div>
-              <div className="mb-2 inline-flex items-center gap-2 rounded-md border border-border/60 bg-background/70 px-2.5 py-1 text-small text-muted-foreground backdrop-blur-sm">
+              <div className="mb-2 inline-flex items-center gap-2 rounded border border-accent/15 bg-background/70 px-2.5 py-1 text-small text-muted-foreground backdrop-blur-sm">
                 <Sparkles className="h-3.5 w-3.5 text-accent" />
                 Focused chanting session
               </div>
@@ -143,7 +144,7 @@ export default function InstantNaamJapPage() {
               { label: "Remaining", value: remaining.toString() },
               { label: "Time", value: formatDuration(elapsed) },
             ].map((item) => (
-              <div key={item.label} className="rounded-xl border border-border/60 bg-background/80 px-3 py-3 backdrop-blur-sm">
+              <div key={item.label} className="rounded border border-accent/15 bg-background/80 px-3 py-2.5 backdrop-blur-sm">
                 <p className="text-small text-muted-foreground">{item.label}</p>
                 <p className="mt-1 text-heading text-foreground tabular-nums">{item.value}</p>
               </div>
@@ -152,18 +153,19 @@ export default function InstantNaamJapPage() {
         </div>
       </motion.div>
 
-      <div className="grid gap-6 xl:grid-cols-[280px_minmax(0,1fr)_320px]">
+      <div className={`grid gap-6 ${!focusMode ? "xl:grid-cols-[280px_minmax(0,1fr)_320px]" : ""}`}>
+        {!focusMode && (
         <motion.div
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
-          className="surface rounded-2xl border border-border/70 p-5"
+          className="surface rounded border border-accent/20 p-5"
         >
           <div className="mb-4 flex items-center justify-between">
             <div>
               <p className="text-heading text-foreground">Session target</p>
               <p className="text-small text-muted-foreground">Choose a count before you begin.</p>
             </div>
-            <div className="rounded-lg bg-accent/10 px-2.5 py-1 text-small font-medium text-accent">{target}</div>
+            <div className="rounded bg-accent/10 px-2.5 py-1 text-small font-medium text-accent">{target}</div>
           </div>
 
           <div className="grid grid-cols-3 gap-2">
@@ -173,10 +175,10 @@ export default function InstantNaamJapPage() {
                 onClick={() => !started && setTarget(t)}
                 disabled={started}
                 className={cn(
-                  "rounded-xl border px-3 py-3 text-body font-medium transition-all disabled:cursor-not-allowed disabled:opacity-60",
+                  "rounded border px-3 py-2 text-[13px] font-medium transition-all disabled:cursor-not-allowed disabled:opacity-60",
                   target === t
                     ? "border-accent/30 bg-accent/10 text-accent shadow-surface"
-                    : "border-border/70 bg-background text-muted-foreground hover:border-accent/20 hover:text-foreground"
+                    : "border-accent/20 bg-background text-muted-foreground hover:border-accent/20 hover:text-foreground"
                 )}
               >
                 {t}
@@ -184,18 +186,24 @@ export default function InstantNaamJapPage() {
             ))}
           </div>
 
-          <div className="mt-4 rounded-xl border border-border/60 bg-muted/30 p-3">
+          <div className="mt-4 rounded border border-accent/15 bg-muted/30 p-3">
             <div className="flex items-center gap-2 text-small text-muted-foreground">
               <Dot className="h-4 w-4 text-accent" />
               The target locks once the session starts.
             </div>
           </div>
         </motion.div>
+        )}
 
         <motion.div
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
-          className="relative overflow-hidden surface rounded-2xl border border-border/70 p-6 sm:p-8"
+          onClick={focusMode ? handleTap : undefined}
+          className={`relative overflow-hidden surface rounded border p-6 sm:p-8 transition-all duration-300 ${
+            focusMode
+              ? "border-accent/50 ring-2 ring-accent/20 shadow-[0_0_40px_hsl(var(--accent)/0.15)] cursor-pointer select-none"
+              : "border-accent/20"
+          }`}
         >
           <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-accent/10 via-accent/5 to-transparent" />
           <div className="relative flex flex-col items-center">
@@ -231,7 +239,7 @@ export default function InstantNaamJapPage() {
                     transition={{ duration: 0.18, ease: "easeOut" }}
                   />
                 </svg>
-                <div className="absolute inset-0 m-5 flex flex-col items-center justify-center rounded-full border border-border/60 bg-background/85 shadow-elevated backdrop-blur-sm">
+                <div className="absolute inset-0 m-5 flex flex-col items-center justify-center rounded-full border border-accent/15 bg-background/85 shadow-elevated backdrop-blur-sm">
                   <span className="text-4xl font-semibold text-foreground tabular-nums">{count}</span>
                   <span className="mt-1 text-small text-muted-foreground">of {target}</span>
                   <span className="mt-2 text-small font-medium text-accent">{Math.round(progress * 100)}% complete</span>
@@ -239,7 +247,7 @@ export default function InstantNaamJapPage() {
               </div>
             </div>
 
-            <div className="mb-6 flex items-center gap-1.5 rounded-lg border border-border/60 bg-background/70 px-3 py-2 text-body text-muted-foreground">
+            <div className="mb-6 flex items-center gap-1.5 rounded border border-accent/15 bg-background/70 px-3 py-2 text-body text-muted-foreground">
               <Clock className="w-4 h-4" />
               <span className="tabular-nums">{formatDuration(elapsed)}</span>
             </div>
@@ -249,7 +257,7 @@ export default function InstantNaamJapPage() {
                 <motion.div
                   initial={{ opacity: 0, scale: 0.92 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  className="mb-5 flex items-center gap-2 rounded-xl border border-success/20 bg-success/10 px-4 py-2.5 text-success"
+                  className="mb-5 flex items-center gap-2 rounded border border-success/20 bg-success/10 px-4 py-2.5 text-success"
                 >
                   <Trophy className="w-5 h-5" />
                   <span className="text-body font-medium">Target reached — beautiful consistency.</span>
@@ -257,41 +265,56 @@ export default function InstantNaamJapPage() {
               )}
             </AnimatePresence>
 
-            {!completed && (
+            {focusMode && (
+              <div className="flex flex-col items-center gap-2 mb-2">
+                <p className="text-small text-accent/70 tracking-wide">Tap anywhere to count</p>
+                <button
+                  onClick={(e) => { e.stopPropagation(); handleReset(); }}
+                  className="text-[11px] text-muted-foreground/50 hover:text-muted-foreground transition-colors"
+                >
+                  End session
+                </button>
+              </div>
+            )}
+
+            {!completed && !focusMode && (
               <button
                 onClick={handleTap}
-                className="w-full max-w-sm rounded-2xl border border-accent/20 bg-gradient-to-b from-accent/15 to-accent/10 px-6 py-6 text-heading font-semibold text-accent shadow-surface transition-all active:scale-[0.985] active:border-accent/30 active:bg-accent/20"
+                className="w-full max-w-sm rounded border border-accent/20 bg-gradient-to-b from-accent/15 to-accent/10 px-6 py-4 text-heading font-semibold text-accent shadow-surface transition-all active:scale-[0.985] active:border-accent/30 active:bg-accent/20"
               >
                 <span className="block text-heading">{started ? "Continue counting" : "Tap to begin"}</span>
                 <span className="mt-1 block text-small font-normal text-muted-foreground">Each tap advances your live progress ring.</span>
               </button>
             )}
 
-            <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
-              {started && (
-                <button
-                  onClick={handleReset}
-                  className="inline-flex h-10 items-center gap-1.5 rounded-lg border border-border/70 px-4 text-body font-medium text-muted-foreground transition-colors hover:bg-muted/50 hover:text-foreground"
-                >
-                  <RotateCcw className="w-4 h-4" /> Reset
-                </button>
-              )}
-              {(completed || (started && count > 0)) && (
-                <GradientButton
-                  onClick={handleSave}
-                  disabled={saveMutation.isPending}
-                  className="h-10 rounded-lg px-5"
-                >
-                  <Check className="w-4 h-4" />
-                  {saveMutation.isPending ? "Saving..." : "Save Session"}
-                </GradientButton>
-              )}
-            </div>
+            {!focusMode && (
+              <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
+                {started && (
+                  <button
+                    onClick={handleReset}
+                    className="inline-flex h-9 items-center gap-1.5 rounded border border-accent/20 px-4 text-body font-medium text-muted-foreground transition-colors hover:bg-muted/50 hover:text-foreground"
+                  >
+                    <RotateCcw className="w-4 h-4" /> Reset
+                  </button>
+                )}
+                {(completed || (started && count > 0)) && (
+                  <GradientButton
+                    onClick={handleSave}
+                    disabled={saveMutation.isPending}
+                    className="h-9 rounded px-5"
+                  >
+                    <Check className="w-4 h-4" />
+                    {saveMutation.isPending ? "Saving..." : "Save Session"}
+                  </GradientButton>
+                )}
+              </div>
+            )}
           </div>
         </motion.div>
 
+        {!focusMode && (
         <div className="space-y-4">
-          <div className="surface rounded-2xl border border-border/70 p-5">
+          <div className="surface rounded border border-accent/20 p-5">
             <h2 className="text-heading font-semibold text-foreground">Session feel</h2>
             <div className="mt-4 space-y-3">
               {[
@@ -299,7 +322,7 @@ export default function InstantNaamJapPage() {
                 { label: "Remaining", value: `${remaining} left` },
                 { label: "Completion", value: `${Math.round(progress * 100)}%` },
               ].map((item) => (
-                <div key={item.label} className="rounded-xl border border-border/60 bg-muted/20 px-3 py-3">
+                <div key={item.label} className="rounded border border-accent/15 bg-muted/20 px-3 py-2.5">
                   <p className="text-small text-muted-foreground">{item.label}</p>
                   <p className="mt-1 text-body font-medium text-foreground">{item.value}</p>
                 </div>
@@ -308,18 +331,18 @@ export default function InstantNaamJapPage() {
           </div>
 
           {sessions.length > 0 && (
-            <div className="surface rounded-2xl border border-border/70 p-5">
+            <div className="surface rounded border border-accent/20 p-5">
               <h2 className="mb-4 text-heading font-semibold text-foreground">Recent Sessions</h2>
               <div className="space-y-2">
                 {sessions.slice(0, 5).map((s) => (
                   <div
                     key={s.id}
-                    className="flex items-center justify-between rounded-xl border border-border/60 bg-muted/20 p-3"
+                    className="flex items-center justify-between rounded border border-accent/15 bg-muted/20 p-3"
                   >
                     <div className="flex items-center gap-3">
                       <div
                         className={cn(
-                          "flex h-9 w-9 items-center justify-center rounded-xl text-[11px] font-semibold",
+                          "flex h-9 w-9 items-center justify-center rounded text-[11px] font-semibold",
                           s.completed ? "bg-success/10 text-success" : "bg-background text-muted-foreground"
                         )}
                       >
@@ -336,6 +359,7 @@ export default function InstantNaamJapPage() {
             </div>
           )}
         </div>
+        )}
       </div>
 
       <AnimatePresence>
@@ -353,7 +377,7 @@ export default function InstantNaamJapPage() {
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
-                className="surface w-full max-w-sm rounded-2xl border border-border/50 p-6 shadow-modal"
+                className="surface w-full max-w-sm rounded border border-accent/15 p-6 shadow-modal"
                 onClick={(e) => e.stopPropagation()}
               >
                 <h3 className="mb-2 text-heading font-semibold text-foreground">Leave session?</h3>
@@ -363,13 +387,13 @@ export default function InstantNaamJapPage() {
                 <div className="flex justify-end gap-3">
                   <button
                     onClick={() => setShowLeaveDialog(false)}
-                    className="h-9 rounded-lg px-4 text-body font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                    className="h-9 rounded px-4 text-body font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
                   >
                     Stay
                   </button>
                   <button
                     onClick={() => navigate("/dashboard/naam-jap")}
-                    className="h-9 rounded-lg bg-destructive/10 px-4 text-body font-medium text-destructive transition-colors hover:bg-destructive/20"
+                    className="h-9 rounded bg-destructive/10 px-4 text-body font-medium text-destructive transition-colors hover:bg-destructive/20"
                   >
                     Leave
                   </button>

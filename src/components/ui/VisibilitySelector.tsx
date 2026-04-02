@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+﻿import { useState, useRef } from "react";
 import { createPortal } from "react-dom";
 import { Eye, Lock, Users, ChevronDown, Check } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -51,7 +51,7 @@ export function VisibilitySelector({ value, onChange, compact, sharedUsers = [],
         type="button"
         onClick={handleToggle}
         className={cn(
-          "inline-flex items-center gap-1.5 rounded-md border border-border text-[12px] font-medium transition-all hover:border-accent/30",
+          "inline-flex items-center gap-1.5 rounded border border-border text-[12px] font-medium transition-all hover:border-accent/30",
           compact ? "px-2 py-1" : "px-3 py-1.5",
           value === "public" && "text-success",
           value === "private" && "text-muted-foreground",
@@ -81,7 +81,7 @@ export function VisibilitySelector({ value, onChange, compact, sharedUsers = [],
                 exit={{ opacity: 0, y: -4 }}
                 transition={{ duration: 0.15 }}
                 style={{ top: dropPos.top, left: dropPos.left }}
-                className="fixed w-52 p-1.5 rounded-lg border border-border surface shadow-elevated z-[9999]"
+                className="fixed w-52 p-1.5 rounded border border-border surface shadow-elevated z-[9999]"
               >
                 {options.map((opt) => (
                   <button
@@ -89,7 +89,7 @@ export function VisibilitySelector({ value, onChange, compact, sharedUsers = [],
                     type="button"
                     onClick={() => handleSelect(opt.value)}
                     className={cn(
-                      "flex items-center gap-2.5 w-full px-2.5 py-2 rounded-md text-left transition-colors",
+                      "flex items-center gap-2.5 w-full px-2.5 py-2 rounded text-left transition-colors",
                       value === opt.value ? "bg-accent/10 text-accent" : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
                     )}
                   >

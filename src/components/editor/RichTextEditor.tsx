@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+﻿import { useState, useRef, useEffect } from "react";
 import {
   Bold, Italic, Underline, List, ListOrdered,
   Quote, Heading1, Heading2, Undo, Redo,
@@ -39,7 +39,7 @@ export function RichTextEditor({ content = "", onChange, placeholder = "Start wr
       onClick={onClick}
       title={title}
       className={cn(
-        "p-1.5 rounded-md transition-colors",
+        "p-1.5 rounded transition-colors",
         active ? "bg-accent/10 text-accent" : "text-muted-foreground hover:text-foreground hover:bg-muted"
       )}
     >
@@ -49,7 +49,7 @@ export function RichTextEditor({ content = "", onChange, placeholder = "Start wr
 
   return (
     <div className={cn(
-      "border border-input rounded-lg overflow-hidden bg-background transition-all",
+      "border border-input rounded overflow-hidden bg-background transition-all",
       isFocused && "ring-2 ring-accent/20 border-accent"
     )}>
       <div className="flex flex-wrap items-center gap-0.5 px-2 py-1.5 border-b border-border bg-muted/30">

@@ -71,7 +71,7 @@ function RequestCard({ req }: RequestCardProps) {
     <motion.div
       initial={{ opacity: 0, y: 6 }}
       animate={{ opacity: 1, y: 0 }}
-      className="rounded-xl surface border border-border/50 hover:border-accent/20 transition-all overflow-hidden"
+      className="rounded surface border border-accent/15 hover:border-accent/20 transition-all overflow-hidden"
     >
       {/* ── Context Tree ─────────────────────────────────── */}
       {treeNodes.length > 0 && (
@@ -139,7 +139,7 @@ function RequestCard({ req }: RequestCardProps) {
 
           {/* Current content preview */}
           {req.current_content && (
-            <div className="mt-2 rounded-md bg-muted/40 border border-border/40 px-2.5 py-1.5">
+            <div className="mt-2 rounded bg-muted/40 border border-border/40 px-2.5 py-1.5">
               <p className="text-[10px] font-semibold uppercase tracking-wide text-muted-foreground mb-0.5">Current</p>
               <p className="text-[12px] text-foreground line-clamp-2 whitespace-pre-line">{req.current_content}</p>
             </div>
@@ -151,7 +151,7 @@ function RequestCard({ req }: RequestCardProps) {
           {proposedKeys.length > 0 && (
             <button
               onClick={() => setExpanded((v) => !v)}
-              className="w-7 h-7 rounded-lg flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted/40 transition-colors"
+              className="w-7 h-7 rounded flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted/40 transition-colors"
             >
               {expanded ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
             </button>
@@ -161,7 +161,7 @@ function RequestCard({ req }: RequestCardProps) {
               <button
                 onClick={() => handleReview(true)}
                 disabled={review.isPending}
-                className="w-7 h-7 rounded-lg flex items-center justify-center text-green-600 hover:bg-green-500/10 transition-colors disabled:opacity-50"
+                className="w-7 h-7 rounded flex items-center justify-center text-green-600 hover:bg-green-500/10 transition-colors disabled:opacity-50"
                 aria-label="Approve request"
               >
                 {review.isPending ? (
@@ -173,7 +173,7 @@ function RequestCard({ req }: RequestCardProps) {
               <button
                 onClick={() => handleReview(false)}
                 disabled={review.isPending}
-                className="w-7 h-7 rounded-lg flex items-center justify-center text-destructive hover:bg-destructive/10 transition-colors disabled:opacity-50"
+                className="w-7 h-7 rounded flex items-center justify-center text-destructive hover:bg-destructive/10 transition-colors disabled:opacity-50"
                 aria-label="Reject request"
               >
                 <X className="w-3.5 h-3.5" />
@@ -199,7 +199,7 @@ function RequestCard({ req }: RequestCardProps) {
               </p>
               <div className="space-y-1.5">
                 {proposedKeys.map((key) => (
-                  <div key={key} className="rounded-md bg-accent/5 border border-accent/10 px-2.5 py-2">
+                  <div key={key} className="rounded bg-accent/5 border border-accent/10 px-2.5 py-2">
                     <p className="text-[10px] text-muted-foreground mb-0.5 capitalize">{key}</p>
                     <p className="text-[12px] text-foreground whitespace-pre-wrap break-words">
                       {String((req.proposed_content as Record<string, unknown>)[key] ?? "")}
@@ -262,7 +262,7 @@ export default function ApprovalsPage() {
             <button
               key={opt.id}
               onClick={() => setFilter(opt.id)}
-              className={`px-3 py-1.5 rounded-lg text-[12px] font-medium transition-all ${
+              className={`px-3 py-1.5 rounded text-[12px] font-medium transition-all ${
                 filter === opt.id
                   ? "bg-accent text-accent-foreground"
                   : "bg-muted/50 text-muted-foreground hover:text-foreground"
@@ -280,7 +280,7 @@ export default function ApprovalsPage() {
           </div>
         ) : requests.length === 0 ? (
           <div className="text-center py-16">
-            <div className="w-14 h-14 rounded-2xl bg-accent/10 flex items-center justify-center mx-auto mb-4">
+            <div className="w-14 h-14 rounded bg-accent/10 flex items-center justify-center mx-auto mb-4">
               <ClipboardList className="w-6 h-6 text-accent" />
             </div>
             <p className="text-[14px] font-semibold text-foreground">No requests</p>

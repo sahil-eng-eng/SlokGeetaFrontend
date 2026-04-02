@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+﻿import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { TrendingUp, Users, BookOpen, ScrollText, ArrowRight, AlertCircle, CheckCircle, Clock, MessageSquare } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -55,7 +55,7 @@ export default function DashboardHome() {
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="relative rounded-xl overflow-hidden h-44 sm:h-52"
+        className="relative rounded overflow-hidden h-44 sm:h-52"
       >
         <img src={heroImg} alt="" className="absolute inset-0 w-full h-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-r from-foreground/70 via-foreground/40 to-transparent" />
@@ -77,10 +77,10 @@ export default function DashboardHome() {
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: i * 0.06 }}
-            className="surface rounded-lg border border-border p-4 hover:shadow-elevated transition-shadow"
+            className="surface rounded border border-border p-4 hover:shadow-elevated transition-shadow"
           >
             <div className="flex items-center justify-between mb-3">
-              <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${stat.color}`}>
+              <div className={`w-8 h-8 rounded flex items-center justify-center ${stat.color}`}>
                 <stat.icon className="w-4 h-4" />
               </div>
             </div>
@@ -98,7 +98,7 @@ export default function DashboardHome() {
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, delay: 0.3 }}
-          className="lg:col-span-2 surface rounded-lg border border-border p-5"
+          className="lg:col-span-2 surface rounded border border-border p-5"
         >
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-heading text-foreground flex items-center gap-2">
@@ -114,7 +114,7 @@ export default function DashboardHome() {
                 initial={{ opacity: 0, x: -8 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.4 + i * 0.05 }}
-                className="flex items-start gap-3 p-3 rounded-md border border-warning/20 bg-warning/[0.02] hover:bg-warning/[0.04] cursor-pointer transition-colors"
+                className="flex items-start gap-3 p-3 rounded border border-warning/20 bg-warning/[0.02] hover:bg-warning/[0.04] cursor-pointer transition-colors"
               >
                 <div className="w-7 h-7 rounded-full bg-warning/10 flex items-center justify-center text-warning shrink-0 mt-0.5">
                   <Clock className="w-3.5 h-3.5" />
@@ -134,7 +134,7 @@ export default function DashboardHome() {
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, delay: 0.35 }}
-          className="surface rounded-lg border border-border p-5"
+          className="surface rounded border border-border p-5"
         >
           <h2 className="text-heading text-foreground mb-4">Activity</h2>
           <div className="space-y-3">
@@ -163,7 +163,7 @@ export default function DashboardHome() {
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, delay: 0.4 }}
-          className="surface rounded-lg border border-border p-5"
+          className="surface rounded border border-border p-5"
         >
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-heading text-foreground">Recent Books</h2>
@@ -182,9 +182,9 @@ export default function DashboardHome() {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.5 + i * 0.05 }}
                 onClick={() => navigate(`/dashboard/library/${book.id}`)}
-                className="flex items-center gap-3 p-2.5 rounded-md hover:bg-muted/50 cursor-pointer transition-colors group"
+                className="flex items-center gap-3 p-2.5 rounded hover:bg-muted/50 cursor-pointer transition-colors group"
               >
-                <div className="w-8 h-8 rounded-md bg-accent/10 flex items-center justify-center text-accent shrink-0">
+                <div className="w-8 h-8 rounded bg-accent/10 flex items-center justify-center text-accent shrink-0">
                   <BookOpen className="w-3.5 h-3.5" />
                 </div>
                 <div className="flex-1 min-w-0">
@@ -201,7 +201,7 @@ export default function DashboardHome() {
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, delay: 0.45 }}
-          className="surface rounded-lg border border-border p-5"
+          className="surface rounded border border-border p-5"
         >
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-heading text-foreground">Recent Slokas</h2>
@@ -220,7 +220,7 @@ export default function DashboardHome() {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.55 + i * 0.05 }}
                 onClick={() => navigate(`/dashboard/slokas/${sloka.id}`)}
-                className="p-2.5 rounded-md hover:bg-muted/50 cursor-pointer transition-colors group"
+                className="p-2.5 rounded hover:bg-muted/50 cursor-pointer transition-colors group"
               >
                 <p className="text-body font-medium text-foreground group-hover:text-accent transition-colors">{sloka.title}</p>
                 <p className="text-small text-muted-foreground mt-0.5 line-clamp-1">{sloka.text.split('\n')[0]}</p>

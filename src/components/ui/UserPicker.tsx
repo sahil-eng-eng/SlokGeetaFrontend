@@ -1,4 +1,4 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import * as React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Search, Check, UserPlus, Users, Eye, GitPullRequest, Pencil } from "lucide-react";
@@ -98,14 +98,14 @@ export function UserPicker({ open, onClose, selectedUsers, onSelectionChange }: 
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="surface w-full max-w-md rounded-xl shadow-modal border border-border/50 overflow-hidden"
+              className="surface w-full max-w-md rounded shadow-modal border border-accent/15 overflow-hidden"
               onClick={(e) => e.stopPropagation()}
             >
               {/* Header */}
               <div className="px-5 pt-5 pb-3">
                 <div className="flex items-center justify-between mb-3">
                   <h2 className="text-heading text-foreground">Share with Users</h2>
-                  <button onClick={onClose} className="p-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
+                  <button onClick={onClose} className="p-1.5 rounded text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
                     <X className="w-4 h-4" />
                   </button>
                 </div>
@@ -115,7 +115,7 @@ export function UserPicker({ open, onClose, selectedUsers, onSelectionChange }: 
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
                     placeholder="Search by name or username..."
-                    className="w-full h-9 pl-9 pr-3 rounded-md border border-input bg-background text-[13px] text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent transition-all"
+                    className="w-full h-9 pl-9 pr-3 rounded border border-input bg-background text-[13px] text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent transition-all"
                   />
                 </div>
               </div>
@@ -132,7 +132,7 @@ export function UserPicker({ open, onClose, selectedUsers, onSelectionChange }: 
                 {isLoading && (
                   <div className="space-y-1">
                     {[1, 2, 3].map((n) => (
-                      <div key={n} className="flex items-center gap-3 px-2.5 py-2.5 rounded-lg animate-pulse">
+                      <div key={n} className="flex items-center gap-3 px-2.5 py-2.5 rounded animate-pulse">
                         <div className="w-8 h-8 rounded-full bg-muted shrink-0" />
                         <div className="flex-1 space-y-1.5">
                           <div className="h-2.5 bg-muted rounded w-24" />
@@ -170,10 +170,10 @@ export function UserPicker({ open, onClose, selectedUsers, onSelectionChange }: 
 
               {/* Footer */}
               <div className="px-5 py-3 border-t border-border flex justify-end gap-2">
-                <button onClick={onClose} className="h-9 px-4 rounded-md text-[13px] font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
+                <button onClick={onClose} className="h-9 px-4 rounded text-[13px] font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
                   Cancel
                 </button>
-                <button onClick={handleDone} className="h-9 px-4 rounded-md text-[13px] font-medium bg-accent text-accent-foreground hover:bg-accent/90 transition-colors">
+                <button onClick={handleDone} className="h-9 px-4 rounded text-[13px] font-medium bg-accent text-accent-foreground hover:bg-accent/90 transition-colors">
                   Done ({selectedCount})
                 </button>
               </div>
@@ -197,7 +197,7 @@ function UserRow({ user, selectedLevel, onToggle, onPermissionChange }: UserRowP
   const currentPerm = PERMISSION_OPTIONS.find((o) => o.value === selectedLevel);
 
   return (
-    <div className={cn("rounded-lg transition-all mb-0.5", isSelected ? "bg-accent/5" : "hover:bg-muted/30")}>
+    <div className={cn("rounded transition-all mb-0.5", isSelected ? "bg-accent/5" : "hover:bg-muted/30")}>
       {/* User row — click to toggle selection */}
       <button
         type="button"
@@ -240,7 +240,7 @@ function UserRow({ user, selectedLevel, onToggle, onPermissionChange }: UserRowP
                   title={opt.desc}
                   onClick={(e) => { e.stopPropagation(); onPermissionChange(opt.value); }}
                   className={cn(
-                    "inline-flex items-center gap-1 px-2 py-1 rounded-md text-[11px] font-medium border transition-all",
+                    "inline-flex items-center gap-1 px-2 py-1 rounded text-[11px] font-medium border transition-all",
                     active
                       ? "bg-accent text-accent-foreground border-accent"
                       : "border-border text-muted-foreground hover:border-accent/40 hover:text-foreground"

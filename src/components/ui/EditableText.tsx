@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+﻿import { useState, useRef, useEffect } from "react";
 import { Pencil, Check, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -38,7 +38,7 @@ export function EditableText({ value, onSave, as = "input", className, editClass
     );
   }
 
-  const inputCls = cn("rounded-md border border-accent/30 bg-background px-2 py-1 text-foreground focus:outline-none focus:ring-2 focus:ring-accent/20 transition-all", editClassName);
+  const inputCls = cn("rounded border border-accent/30 bg-background px-2 py-1 text-foreground focus:outline-none focus:ring-2 focus:ring-accent/20 transition-all", editClassName);
 
   return (
     <span className="inline-flex items-center gap-1.5">

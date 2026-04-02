@@ -1,4 +1,4 @@
-import { MeaningFilter as FilterType } from "@/types/sloka";
+﻿import { MeaningFilter as FilterType } from "@/types/sloka";
 import { cn } from "@/lib/utils";
 import { TrendingUp, Clock, Star, User } from "lucide-react";
 
@@ -16,13 +16,13 @@ const filters: { value: FilterType; label: string; icon: React.ElementType }[] =
 
 export function MeaningFilterBar({ active, onChange }: MeaningFilterProps) {
   return (
-    <div className="flex items-center gap-1 p-1 rounded-lg bg-muted/50 border border-border/50">
+    <div className="flex items-center gap-1 p-1 rounded bg-muted/50 border border-accent/15">
       {filters.map((f) => (
         <button
           key={f.value}
           onClick={() => onChange(f.value)}
           className={cn(
-            "inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-small font-medium transition-all",
+            "inline-flex items-center gap-1.5 px-3 py-1.5 rounded text-small font-medium transition-all",
             active === f.value
               ? "bg-surface text-foreground shadow-surface"
               : "text-muted-foreground hover:text-foreground"
