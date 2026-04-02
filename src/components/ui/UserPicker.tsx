@@ -1,7 +1,7 @@
 ﻿import { useState } from "react";
 import * as React from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Search, Check, UserPlus, Users, Eye, GitPullRequest, Pencil } from "lucide-react";
+import { X, Search, Check, UserPlus, Users, Eye, GitPullRequest, Pencil, UserCheck } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useFriendsListQuery } from "@/lib/api/endpoints/friends";
 import type { PermissionLevel, SharedUserPermission } from "@/types";
@@ -92,90 +92,144 @@ export function UserPicker({ open, onClose, selectedUsers, onSelectionChange }: 
     <AnimatePresence>
       {open && (
         <>
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 bg-foreground/20 backdrop-blur-sm z-50" onClick={onClose} />
+          {/* Backdrop */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-foreground/25 backdrop-blur-sm z-50"
+            onClick={onClose}
+          />
+
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
             <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              className="surface w-full max-w-md rounded shadow-modal border border-accent/15 overflow-hidden"
+              initial={{ opacity: 0, scale: 0.96, y: 8 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.96, y: 8 }}
+              transition={{ duration: 0.18, ease: "easeOut" }}
+              className="surface w-full max-w-md rounded border border-accent/15 shadow-modal overflow-hidden flex flex-col"
+              style={{ maxHeight: "min(600px, 90vh)" }}
               onClick={(e) => e.stopPropagation()}
             >
-              {/* Header */}
-              <div className="px-5 pt-5 pb-3">
-                <div className="flex items-center justify-between mb-3">
-                  <h2 className="text-heading text-foreground">Share with Users</h2>
-                  <button onClick={onClose} className="p-1.5 rounded text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
+              {/* ── Header ── */}
+              <div className="px-5 pt-5 pb-4 border-b border-border shrink-0">
+                <div className="flex items-start justify-between gap-3 mb-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-9 h-9 rounded bg-accent/10 flex items-center justify-center shrink-0">
+                      <UserCheck className="w-4.5 h-4.5 text-accent" style={{ width: 18, height: 18 }} />
+                    </div>
+                    <div>
+                      <h2 className="text-[15px] font-semibold text-foreground leading-tight">Share with users</h2>
+                      <p className="text-[12px] text-muted-foreground mt-0.5">
+                        {selectedCount === 0
+                          ? "Select friends to grant access"
+                          : `${selectedCount} user${selectedCount !== 1 ? "s" : ""} selected`}
+                      </p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={onClose}
+                    className="p-1.5 rounded text-muted-foreground hover:text-foreground hover:bg-muted transition-colors shrink-0 mt-0.5"
+                  >
                     <X className="w-4 h-4" />
                   </button>
                 </div>
+
+                {/* Search */}
                 <div className="relative">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground" />
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground pointer-events-none" />
                   <input
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
-                    placeholder="Search by name or username..."
-                    className="w-full h-9 pl-9 pr-3 rounded border border-input bg-background text-[13px] text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent transition-all"
+                    placeholder="Search by name or @username…"
+                    className="w-full h-9 pl-9 pr-3 rounded border border-input bg-background text-[13px] text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent/60 transition-all"
                   />
                 </div>
               </div>
 
-              {/* Selected count */}
-              {selectedCount > 0 && (
-                <div className="px-5 pb-2">
-                  <span className="text-[11px] font-medium text-accent">{selectedCount} user{selectedCount !== 1 ? "s" : ""} selected</span>
-                </div>
-              )}
-
-              {/* List */}
-              <div className="max-h-[380px] overflow-y-auto px-3 pb-3">
+              {/* ── List ── */}
+              <div className="flex-1 overflow-y-auto py-2 px-3 min-h-0">
+                {/* Loading skeletons */}
                 {isLoading && (
-                  <div className="space-y-1">
+                  <div className="space-y-1 px-1 py-1">
                     {[1, 2, 3].map((n) => (
-                      <div key={n} className="flex items-center gap-3 px-2.5 py-2.5 rounded animate-pulse">
-                        <div className="w-8 h-8 rounded-full bg-muted shrink-0" />
+                      <div key={n} className="flex items-center gap-3 px-2.5 py-2.5 animate-pulse">
+                        <div className="w-8 h-8 rounded bg-muted shrink-0" />
                         <div className="flex-1 space-y-1.5">
-                          <div className="h-2.5 bg-muted rounded w-24" />
-                          <div className="h-2 bg-muted rounded w-16" />
+                          <div className="h-2.5 bg-muted rounded w-28" />
+                          <div className="h-2 bg-muted rounded w-20" />
                         </div>
                       </div>
                     ))}
                   </div>
                 )}
 
+                {/* Friends section */}
                 {!isLoading && friends.length > 0 && (
-                  <div className="mb-2">
-                    <p className="px-2 py-1.5 text-[10px] uppercase tracking-wider font-semibold text-muted-foreground flex items-center gap-1.5">
-                      <UserPlus className="w-3 h-3" /> Friends
-                    </p>
-                    {friends.map((user) => (
-                      <UserRow
-                        key={user.id}
-                        user={user}
-                        selectedLevel={localSelected.get(user.id) ?? null}
-                        onToggle={() => toggleUser(user.id)}
-                        onPermissionChange={(lvl) => setPermission(user.id, lvl)}
-                      />
-                    ))}
+                  <div>
+                    <div className="flex items-center gap-1.5 px-2 pt-1 pb-2">
+                      <Users className="w-3 h-3 text-muted-foreground/60" />
+                      <span className="text-[10px] uppercase tracking-wider font-semibold text-muted-foreground/60">
+                        Friends · {friends.length}
+                      </span>
+                    </div>
+                    <div className="space-y-0.5">
+                      {friends.map((user) => (
+                        <UserRow
+                          key={user.id}
+                          user={user}
+                          selectedLevel={localSelected.get(user.id) ?? null}
+                          onToggle={() => toggleUser(user.id)}
+                          onPermissionChange={(lvl) => setPermission(user.id, lvl)}
+                        />
+                      ))}
+                    </div>
                   </div>
                 )}
 
+                {/* Empty state */}
                 {!isLoading && filtered.length === 0 && (
-                  <div className="py-8 text-center">
-                    <Users className="w-8 h-8 text-muted-foreground/30 mx-auto mb-2" />
-                    <p className="text-body text-muted-foreground">{allUsers.length === 0 ? "No friends yet" : "No users found"}</p>
+                  <div className="flex flex-col items-center justify-center py-12 gap-2">
+                    <div className="w-12 h-12 rounded bg-muted/50 flex items-center justify-center">
+                      <Users className="w-5 h-5 text-muted-foreground/40" />
+                    </div>
+                    <p className="text-[13px] font-medium text-muted-foreground">
+                      {allUsers.length === 0 ? "No friends yet" : "No users found"}
+                    </p>
+                    {allUsers.length > 0 && (
+                      <p className="text-[11px] text-muted-foreground/60">Try a different name or username</p>
+                    )}
                   </div>
                 )}
               </div>
 
-              {/* Footer */}
-              <div className="px-5 py-3 border-t border-border flex justify-end gap-2">
-                <button onClick={onClose} className="h-9 px-4 rounded text-[13px] font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
-                  Cancel
-                </button>
-                <button onClick={handleDone} className="h-9 px-4 rounded text-[13px] font-medium bg-accent text-accent-foreground hover:bg-accent/90 transition-colors">
-                  Done ({selectedCount})
-                </button>
+              {/* ── Footer ── */}
+              <div className="px-5 py-3 border-t border-border shrink-0 flex items-center justify-between gap-2">
+                <p className="text-[11px] text-muted-foreground/70">
+                  {selectedCount > 0
+                    ? `${selectedCount} user${selectedCount !== 1 ? "s" : ""} will have access`
+                    : "No users selected"}
+                </p>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={onClose}
+                    className="h-8 px-3.5 rounded text-[13px] font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={handleDone}
+                    className="h-8 px-4 rounded text-[13px] font-medium bg-accent text-accent-foreground hover:bg-accent/90 transition-colors inline-flex items-center gap-1.5"
+                  >
+                    <Check className="w-3.5 h-3.5" />
+                    Apply
+                    {selectedCount > 0 && (
+                      <span className="ml-0.5 bg-accent-foreground/20 text-accent-foreground text-[11px] font-bold px-1.5 py-0.5 rounded">
+                        {selectedCount}
+                      </span>
+                    )}
+                  </button>
+                </div>
               </div>
             </motion.div>
           </div>
@@ -195,69 +249,102 @@ interface UserRowProps {
 function UserRow({ user, selectedLevel, onToggle, onPermissionChange }: UserRowProps) {
   const isSelected = selectedLevel !== null;
   const currentPerm = PERMISSION_OPTIONS.find((o) => o.value === selectedLevel);
+  const initials = user.name.split(" ").map((n) => n[0]).join("").slice(0, 2).toUpperCase();
+  // Deterministic hue from name for avatar colour
+  const hue = (user.name.charCodeAt(0) * 37 + (user.name.charCodeAt(1) ?? 0) * 13) % 360;
 
   return (
-    <div className={cn("rounded transition-all mb-0.5", isSelected ? "bg-accent/5" : "hover:bg-muted/30")}>
-      {/* User row — click to toggle selection */}
+    <motion.div
+      layout
+      className={cn(
+        "rounded border transition-all duration-150 overflow-hidden",
+        isSelected
+          ? "border-accent/25 bg-accent/5 border-l-2 border-l-accent/50"
+          : "border-transparent hover:border-border hover:bg-muted/20"
+      )}
+    >
+      {/* ── User row ── */}
       <button
         type="button"
         onClick={onToggle}
-        className="flex items-center gap-3 w-full px-2.5 py-2.5"
+        className="flex items-center gap-3 w-full px-3 py-2.5 text-left"
       >
-        <div className="w-8 h-8 rounded-full bg-accent/10 flex items-center justify-center text-[11px] font-semibold text-accent shrink-0">
-          {user.name.split(" ").map((n) => n[0]).join("").slice(0, 2)}
+        {/* Avatar — square with small radius */}
+        <div
+          className="w-8 h-8 rounded flex items-center justify-center text-[11px] font-bold shrink-0"
+          style={{ background: `hsl(${hue} 40% 85%)`, color: `hsl(${hue} 55% 30%)` }}
+        >
+          {initials}
         </div>
-        <div className="flex-1 min-w-0 text-left">
+
+        {/* Name + email */}
+        <div className="flex-1 min-w-0">
           <div className="flex items-center gap-1.5">
-            <p className="text-body font-medium text-foreground truncate">{user.name}</p>
+            <span className="text-[13px] font-medium text-foreground truncate">{user.name}</span>
             {user.isFriend && (
-              <span className="text-[9px] font-semibold uppercase tracking-wider text-accent bg-accent/10 px-1.5 py-0.5 rounded">
+              <span className="shrink-0 text-[9px] font-semibold uppercase tracking-wider text-accent bg-accent/10 px-1.5 py-0.5 rounded">
                 Friend
               </span>
             )}
           </div>
-          <p className="text-small text-muted-foreground truncate">{user.email}</p>
+          <p className="text-[11px] text-muted-foreground truncate">{user.email}</p>
         </div>
-        <div className={cn(
-          "w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 transition-all",
-          isSelected ? "border-accent bg-accent" : "border-border"
-        )}>
-          {isSelected && <Check className="w-3 h-3 text-white" />}
+
+        {/* Checkbox — square */}
+        <div
+          className={cn(
+            "w-4.5 h-4.5 rounded border-2 flex items-center justify-center shrink-0 transition-all",
+            isSelected ? "border-accent bg-accent" : "border-border"
+          )}
+          style={{ width: 18, height: 18 }}
+        >
+          {isSelected && <Check className="w-2.5 h-2.5 text-white" style={{ width: 10, height: 10 }} />}
         </div>
       </button>
 
-      {/* Permission selector — only visible when the user is selected */}
-      {isSelected && (
-        <div className="px-2.5 pb-2.5 pl-[52px]">
-          <div className="flex flex-wrap gap-1">
-            {PERMISSION_OPTIONS.map((opt) => {
-              const Icon = opt.icon;
-              const active = selectedLevel === opt.value;
-              return (
-                <button
-                  key={opt.value}
-                  type="button"
-                  title={opt.desc}
-                  onClick={(e) => { e.stopPropagation(); onPermissionChange(opt.value); }}
-                  className={cn(
-                    "inline-flex items-center gap-1 px-2 py-1 rounded text-[11px] font-medium border transition-all",
-                    active
-                      ? "bg-accent text-accent-foreground border-accent"
-                      : "border-border text-muted-foreground hover:border-accent/40 hover:text-foreground"
-                  )}
-                >
-                  <Icon className="w-3 h-3" />
-                  {opt.label}
-                </button>
-              );
-            })}
-          </div>
-          {currentPerm && (
-            <p className="text-[10px] text-muted-foreground mt-1">{currentPerm.desc}</p>
-          )}
-        </div>
-      )}
-    </div>
+      {/* ── Permission selector (visible when selected) ── */}
+      <AnimatePresence>
+        {isSelected && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.15 }}
+            className="overflow-hidden"
+          >
+            <div className="px-3 pb-3 pt-0.5 pl-[52px]">
+              <p className="text-[10px] text-muted-foreground/70 mb-1.5 font-medium">Permission level</p>
+              <div className="flex gap-1.5 flex-wrap">
+                {PERMISSION_OPTIONS.map((opt) => {
+                  const Icon = opt.icon;
+                  const active = selectedLevel === opt.value;
+                  return (
+                    <button
+                      key={opt.value}
+                      type="button"
+                      title={opt.desc}
+                      onClick={(e) => { e.stopPropagation(); onPermissionChange(opt.value); }}
+                      className={cn(
+                        "inline-flex items-center gap-1.5 h-7 px-2.5 rounded text-[11px] font-medium border transition-all",
+                        active
+                          ? "bg-accent text-accent-foreground border-accent shadow-sm"
+                          : "border-border/60 text-muted-foreground bg-background hover:border-accent/40 hover:text-foreground hover:bg-accent/5"
+                      )}
+                    >
+                      <Icon className="w-3 h-3 shrink-0" />
+                      {opt.label}
+                    </button>
+                  );
+                })}
+              </div>
+              {currentPerm && (
+                <p className="text-[10px] text-muted-foreground/60 mt-1.5">{currentPerm.desc}</p>
+              )}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.div>
   );
 }
-
+ 

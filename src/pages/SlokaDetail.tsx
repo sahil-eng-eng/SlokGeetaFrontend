@@ -366,64 +366,97 @@ export default function SlokaDetail() {
       : shlok.content.slice(0, 60);
 
   return (
-    <div className="space-y-5">
-      {/* Breadcrumb */}
-      <div className="flex items-center gap-2 text-small text-muted-foreground">
-        <Link to="/dashboard/library" className="hover:text-foreground transition-colors">Library</Link>
-        <ChevronRight className="w-3 h-3" />
-        {book && (
-          <>
-            <Link to={`/dashboard/library/${book.id}`} className="hover:text-foreground transition-colors">{book.title}</Link>
-            <ChevronRight className="w-3 h-3" />
-          </>
-        )}
-        <span className="text-foreground">{shlokTitle}</span>
-      </div>
-
-      <Link
-        to={book ? `/dashboard/library/${book.id}` : "/dashboard/library"}
-        className="inline-flex items-center gap-1.5 text-body text-muted-foreground hover:text-foreground transition-colors"
-      >
-        <ArrowLeft className="w-4 h-4" /> {book ? `Back to ${book.title}` : "Back"}
-      </Link>
-
-      {/* Sloka content */}
+    <div className="space-y-5 w-full">
+      {/* Hero sloka card */}
       <motion.div
-        initial={{ opacity: 0, y: 8 }}
+        initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        className="surface rounded border border-border p-6"
+        className="relative overflow-hidden rounded border border-accent/20 surface"
       >
-        <div className="flex items-start justify-between gap-3">
-          <h1 className="text-display text-foreground">{shlokTitle}</h1>
-          {isOwner && (
-            <div className="flex items-center gap-2 shrink-0">
-              <VisibilitySelector
-                value={slokaVisibility}
-                onChange={handleVisibilityChange}
-                compact
-                sharedUsers={sharedUsers}
-                onSharedUsersChange={handleSharedUsersChange}
-              />
-              <button onClick={handleEditSloka} className="p-1.5 rounded text-muted-foreground hover:text-foreground hover:bg-muted transition-colors" title="Edit sloka">
-                <Pencil className="w-3.5 h-3.5" />
-              </button>
+        <div className="absolute inset-0 bg-gradient-to-br from-accent/10 via-transparent to-background pointer-events-none" />
+        <div className="relative px-5 py-5 sm:px-6">
+          {/* Breadcrumb */}
+          <div className="flex items-center gap-1.5 text-small text-muted-foreground mb-3 flex-wrap">
+            <Link to="/dashboard/library" className="hover:text-foreground transition-colors">Library</Link>
+            <ChevronRight className="w-3 h-3 shrink-0" />
+            {book && (
+              <>
+                <Link to={`/dashboard/library/${book.id}`} className="hover:text-foreground transition-colors truncate max-w-[160px]">{book.title}</Link>
+                <ChevronRight className="w-3 h-3 shrink-0" />
+              </>
+            )}
+            <span className="text-foreground truncate max-w-[200px]">{shlokTitle}</span>
+          </div>
+
+          <div className="flex items-start justify-between gap-4">
+            <div className="flex-1 min-w-0">
+              <div className="mb-2 inline-flex items-center gap-2 rounded border border-accent/15 bg-background/70 px-2.5 py-1 text-small text-muted-foreground">
+                <ScrollText className="h-3.5 w-3.5 text-accent shrink-0" />
+                {book ? book.title : "Scripture"}
+              </div>
+              <h1 className="text-display text-foreground">{shlokTitle}</h1>
             </div>
-          )}
-          {!isOwner && shlok?.my_permission && shlok.my_permission !== "view" && (
-            <button onClick={handleEditSloka} className="p-1.5 rounded text-muted-foreground hover:text-foreground hover:bg-muted transition-colors" title={shlok.my_permission === "request_edit" ? "Suggest edit" : "Edit sloka"}>
-              <Pencil className="w-3.5 h-3.5" />
-            </button>
-          )}
-        </div>
-        <div className="mt-3 p-4 rounded bg-muted/30 border border-accent/15">
-          <p className="text-body text-foreground whitespace-pre-line leading-relaxed font-medium">{shlok.content}</p>
+
+            {/* Actions */}
+            <div className="flex items-center gap-2 shrink-0">
+              {isOwner && (
+                <>
+                  <VisibilitySelector
+                    value={slokaVisibility}
+                    onChange={handleVisibilityChange}
+                    compact
+                    sharedUsers={sharedUsers}
+                    onSharedUsersChange={handleSharedUsersChange}
+                  />
+                  <button
+                    onClick={handleEditSloka}
+                    className="p-1.5 rounded border border-accent/15 text-muted-foreground hover:text-foreground hover:border-accent/30 transition-colors"
+                    title="Edit sloka"
+                  >
+                    <Pencil className="w-3.5 h-3.5" />
+                  </button>
+                </>
+              )}
+              {!isOwner && shlok?.my_permission && shlok.my_permission !== "view" && (
+                <button
+                  onClick={handleEditSloka}
+                  className="p-1.5 rounded border border-accent/15 text-muted-foreground hover:text-foreground hover:border-accent/30 transition-colors"
+                  title={shlok.my_permission === "request_edit" ? "Suggest edit" : "Edit sloka"}
+                >
+                  <Pencil className="w-3.5 h-3.5" />
+                </button>
+              )}
+              <Link
+                to={book ? `/dashboard/library/${book.id}` : "/dashboard/library"}
+                className="hidden sm:inline-flex items-center gap-1.5 h-8 px-3 rounded border border-accent/15 text-[12px] text-muted-foreground hover:text-foreground hover:border-accent/30 transition-colors"
+              >
+                <ArrowLeft className="w-3.5 h-3.5" />
+                Back
+              </Link>
+            </div>
+          </div>
+
+          {/* Sloka text */}
+          <div className="mt-4 flex gap-0">
+            <div className="w-0.5 rounded-full bg-accent/50 shrink-0 mr-4" />
+            <div className="flex-1 rounded bg-background/60 border border-accent/15 px-4 py-3">
+              <p className="text-body text-foreground whitespace-pre-line leading-relaxed font-medium">{shlok.content}</p>
+            </div>
+          </div>
         </div>
       </motion.div>
 
       {/* Meanings section */}
       <div className="space-y-4">
         <div className="flex items-center justify-between gap-4 flex-wrap">
-          <h2 className="text-heading text-foreground">Meanings &amp; Interpretations</h2>
+          <div>
+            <h2 className="text-heading text-foreground">Meanings &amp; Interpretations</h2>
+            <p className="mt-0.5 text-small text-muted-foreground">
+              {sortedMeanings.length === 0
+                ? "No interpretations added yet."
+                : `${sortedMeanings.length} root meaning${sortedMeanings.length !== 1 ? "s" : ""} · community annotations`}
+            </p>
+          </div>
           {isOwner && (
             <GradientButton onClick={handleAddRoot} size="sm">
               <Plus className="w-4 h-4" /> Add Meaning
@@ -433,7 +466,12 @@ export default function SlokaDetail() {
 
         <MeaningFilterBar active={filter} onChange={setFilter} />
 
-        <div className="space-y-2">
+        {sortedMeanings.length === 0 ? (
+          <div className="surface rounded border border-accent/15 py-14 flex flex-col items-center gap-3 text-muted-foreground">
+            <ScrollText className="w-8 h-8 opacity-30" />
+            <p className="text-[13px]">No meanings yet.{isOwner ? " Add the first interpretation above." : ""}</p>
+          </div>
+        ) : (
           <MeaningTree
             nodes={sortedMeanings}
             canAddMeaning={isOwner}
@@ -441,7 +479,7 @@ export default function SlokaDetail() {
             onViewHistory={(node) => setHistoryNode(node)}
             onEdit={handleEdit}
           />
-        </div>
+        )}
       </div>
 
       <AddMeaningModal

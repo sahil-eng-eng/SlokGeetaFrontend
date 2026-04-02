@@ -1,5 +1,5 @@
 ﻿import { useState } from "react";
-import { useLocation, Link } from "react-router-dom";
+import { useLocation, Link, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   LayoutDashboard, Library, MessageCircle, Settings,
@@ -77,10 +77,25 @@ interface DashboardSidebarProps {
 
 export function DashboardSidebar({ collapsed, onToggle }: DashboardSidebarProps) {
   const location = useLocation();
+  const navigate = useNavigate();
   const { theme, toggleTheme } = useTheme();
   const [expandedGroups, setExpandedGroups] = useState<string[]>(["Library", "Naam Jap"]);
   const { data: currentUserData } = useCurrentUserQuery();
   const userRole = currentUserData?.data?.role ?? "user";
+
+  const displayName = currentUserData?.data?.full_name ?? currentUserData?.data?.email ?? "User";
+  const userEmail = currentUserData?.data?.email ?? "";
+  const initials = displayName
+    .split(" ")
+    .map((w: string) => w[0])
+    .join("")
+    .slice(0, 2)
+    .toUpperCase();
+
+  function handleLogout() {
+    localStorage.clear();
+    navigate("/login");
+  }
   const isAdmin = userRole === "admin" || userRole === "superadmin";
 
   const visibleNavItems = navItems.filter((item) => !item.adminOnly || isAdmin);
@@ -225,13 +240,17 @@ export function DashboardSidebar({ collapsed, onToggle }: DashboardSidebarProps)
           {!collapsed && (
             <div className="flex items-center gap-3 px-3 py-2">
               <div className="w-7 h-7 rounded-full bg-accent/10 flex items-center justify-center text-[11px] font-semibold text-accent shrink-0">
-                JD
+                {initials}
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-[12px] font-medium text-foreground truncate">John Doe</p>
-                <p className="text-[11px] text-muted-foreground truncate">john@example.com</p>
+                <p className="text-[12px] font-medium text-foreground truncate">{displayName}</p>
+                <p className="text-[11px] text-muted-foreground truncate">{userEmail}</p>
               </div>
-              <button className="p-1 rounded text-muted-foreground hover:text-foreground transition-colors">
+              <button
+                onClick={handleLogout}
+                className="p-1 rounded text-muted-foreground hover:text-destructive transition-colors"
+                title="Log out"
+              >
                 <LogOut className="w-3.5 h-3.5" />
               </button>
             </div>

@@ -24,14 +24,21 @@ interface VisibilitySelectorProps {
 export function VisibilitySelector({ value, onChange, compact, sharedUsers = [], onSharedUsersChange }: VisibilitySelectorProps) {
   const [open, setOpen] = useState(false);
   const [pickerOpen, setPickerOpen] = useState(false);
-  const [dropPos, setDropPos] = useState<{ top: number; left: number }>({ top: 0, left: 0 });
+  const [dropPos, setDropPos] = useState<{ top: number; left?: number; right?: number }>({ top: 0, left: 0 });
   const btnRef = useRef<HTMLButtonElement>(null);
   const current = options.find((o) => o.value === value)!;
 
   const handleToggle = () => {
     if (!open && btnRef.current) {
       const rect = btnRef.current.getBoundingClientRect();
-      setDropPos({ top: rect.bottom + 4, left: rect.left });
+      const dropdownWidth = 208; // w-52
+      const spaceOnRight = window.innerWidth - rect.left;
+      if (spaceOnRight < dropdownWidth + 8) {
+        // Not enough space on right — align to button's right edge
+        setDropPos({ top: rect.bottom + 4, right: window.innerWidth - rect.right });
+      } else {
+        setDropPos({ top: rect.bottom + 4, left: rect.left });
+      }
     }
     setOpen((v) => !v);
   };
@@ -80,7 +87,7 @@ export function VisibilitySelector({ value, onChange, compact, sharedUsers = [],
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -4 }}
                 transition={{ duration: 0.15 }}
-                style={{ top: dropPos.top, left: dropPos.left }}
+                style={{ top: dropPos.top, left: dropPos.left, right: dropPos.right }}
                 className="fixed w-52 p-1.5 rounded border border-border surface shadow-elevated z-[9999]"
               >
                 {options.map((opt) => (
