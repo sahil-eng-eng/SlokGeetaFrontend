@@ -8,7 +8,7 @@ import {
 } from "@/lib/api/endpoints/granths";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { ChevronLeft, ChevronRight, ArrowLeft, BookOpen, Clock3 } from "lucide-react";
+import { ChevronLeft, ChevronRight, ArrowLeft, BookOpen, Clock3, CornerDownRight } from "lucide-react";
 
 export default function GranthReaderPage() {
   const { granthId } = useParams<{ granthId: string }>();
@@ -25,11 +25,21 @@ export default function GranthReaderPage() {
   const savedPage = progressData?.data?.current_page ?? 1;
 
   const [page, setPage] = useState(1);
+  const [jumpInput, setJumpInput] = useState("");
 
   // Restore saved reading position once progress loads
   useEffect(() => {
     if (savedPage > 1) setPage(savedPage);
   }, [savedPage]);
+
+  function handleJump(e: React.FormEvent) {
+    e.preventDefault();
+    const n = parseInt(jumpInput, 10);
+    if (!isNaN(n) && n >= 1 && n <= totalPages) {
+      setPage(n);
+    }
+    setJumpInput("");
+  }
 
   const { data: pageData, isLoading: pageLoading } = useGranthPageQuery(
     granthId ?? "",
@@ -132,7 +142,7 @@ export default function GranthReaderPage() {
 
         <Card className="flex-1 overflow-hidden rounded border-accent/20 bg-card/95">
           <CardContent className="py-6 px-5 sm:px-7 min-h-[420px]">
-          {pageLoading ? (
+              {pageLoading ? (
             <p className="text-center text-muted-foreground py-12">
               Loading page…
             </p>
@@ -145,9 +155,10 @@ export default function GranthReaderPage() {
                   className="w-full max-h-[460px] object-cover rounded mb-6"
                 />
               )}
-              <div className="whitespace-pre-wrap leading-relaxed text-[15px] text-foreground">
-                {pageContent.content}
-              </div>
+              <div
+                className="prose prose-sm max-w-none text-foreground leading-relaxed"
+                dangerouslySetInnerHTML={{ __html: pageContent.content }}
+              />
             </>
           ) : totalPages === 0 ? (
             <p className="text-center text-muted-foreground py-12">
@@ -163,15 +174,39 @@ export default function GranthReaderPage() {
       </div>
 
       {totalPages > 0 && (
-        <div className="flex items-center justify-between rounded border border-accent/20 surface px-4 py-3">
-          <Button variant="outline" onClick={goPrev} disabled={page <= 1} className="rounded">
+        <div className="flex items-center justify-between gap-3 rounded border border-accent/20 surface px-4 py-3">
+          <Button variant="outline" onClick={goPrev} disabled={page <= 1} className="rounded shrink-0">
             <ChevronLeft className="h-4 w-4 mr-1" /> Previous
           </Button>
+
+          <div className="flex items-center gap-2 flex-1 justify-center">
+            <span className="text-small text-muted-foreground hidden sm:inline">Page</span>
+            <form onSubmit={handleJump} className="flex items-center gap-1.5">
+              <input
+                type="number"
+                min={1}
+                max={totalPages}
+                value={jumpInput}
+                onChange={(e) => setJumpInput(e.target.value)}
+                placeholder={`${page}`}
+                className="w-14 h-8 px-2 text-center text-[13px] rounded border border-accent/15 bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent transition-all tabular-nums"
+              />
+              <span className="text-small text-muted-foreground">/ {totalPages}</span>
+              <button
+                type="submit"
+                className="h-8 px-2 rounded border border-accent/15 bg-accent/5 text-accent hover:bg-accent/10 transition-colors"
+                title="Jump to page"
+              >
+                <CornerDownRight className="w-3.5 h-3.5" />
+              </button>
+            </form>
+          </div>
+
           <Button
             variant="outline"
             onClick={goNext}
             disabled={page >= totalPages}
-            className="rounded"
+            className="rounded shrink-0"
           >
             Next <ChevronRight className="h-4 w-4 ml-1" />
           </Button>

@@ -1,5 +1,6 @@
 ﻿import { useState } from "react";
-import { Outlet, Navigate } from "react-router-dom";
+import { Outlet, Navigate, Link } from "react-router-dom";
+import { LayoutDashboard } from "lucide-react";
 import { AdminSidebar } from "@/components/admin/AdminSidebar";
 import { useCurrentUserQuery } from "@/lib/api/endpoints/auth";
 
@@ -46,11 +47,20 @@ export default function AdminLayout() {
               <p className="text-small uppercase tracking-[0.18em] text-muted-foreground">Admin workspace</p>
               <p className="text-heading text-foreground">Manage content with a calmer, more editorial interface</p>
             </div>
-            <div className="hidden max-w-[240px] rounded border border-accent/15 bg-background/80 px-3 py-2 text-right md:block">
-              <p className="text-small text-muted-foreground">Logged in as</p>
-              <p className="truncate text-body font-medium text-foreground">
-                {data?.data?.full_name ?? data?.data?.email}
-              </p>
+            <div className="flex items-center gap-3">
+              <Link
+                to="/dashboard"
+                className="hidden sm:inline-flex items-center gap-1.5 h-8 px-3 rounded border border-accent/20 bg-accent/5 text-[12px] font-medium text-accent hover:bg-accent/10 hover:border-accent/30 transition-colors"
+              >
+                <LayoutDashboard className="w-3.5 h-3.5" />
+                Dashboard
+              </Link>
+              <div className="hidden max-w-[240px] rounded border border-accent/15 bg-background/80 px-3 py-2 text-right md:block">
+                <p className="text-small text-muted-foreground">Logged in as</p>
+                <p className="truncate text-body font-medium text-foreground">
+                  {data?.data?.full_name ?? data?.data?.email}
+                </p>
+              </div>
             </div>
           </div>
         </header>

@@ -63,8 +63,9 @@ const navItems: NavItem[] = [
   {
     label: "Granths",
     icon: BookOpen,
-    href: "/admin/granths",
-    adminOnly: true,
+    children: [
+      { label: "Scripture Library", href: "/dashboard/granths" },
+    ],
   },
   { label: "Settings", icon: Settings, href: "/dashboard/settings" },
 ];

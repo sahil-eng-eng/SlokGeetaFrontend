@@ -1,9 +1,10 @@
 ﻿import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { TrendingUp, Users, BookOpen, ScrollText, ArrowRight, AlertCircle, CheckCircle, Clock, MessageSquare } from "lucide-react";
+import { TrendingUp, Users, BookOpen, ScrollText, ArrowRight, AlertCircle, CheckCircle, Clock, MessageSquare, ShieldCheck } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { mockBooks, mockSlokas } from "@/data/mockSlokas";
 import heroImg from "@/assets/hero-spiritual.jpg";
+import { useCurrentUserQuery } from "@/lib/api/endpoints/auth";
 
 function AnimatedNumber({ value, delay = 0 }: { value: number; delay?: number }) {
   const [display, setDisplay] = useState(0);
@@ -47,9 +48,36 @@ const pendingApprovals = [
 
 export default function DashboardHome() {
   const navigate = useNavigate();
+  const { data: userData } = useCurrentUserQuery();
+  const role = userData?.data?.role ?? "user";
+  const isAdmin = role === "admin" || role === "superadmin";
 
   return (
     <div className="space-y-6">
+      {/* Admin Panel Banner */}
+      {isAdmin && (
+        <motion.div
+          initial={{ opacity: 0, y: -8 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="flex items-center justify-between gap-4 rounded border border-accent/20 bg-accent/5 px-4 py-3"
+        >
+          <div className="flex items-center gap-3">
+            <div className="flex h-8 w-8 items-center justify-center rounded bg-accent/10 text-accent shrink-0">
+              <ShieldCheck className="w-4 h-4" />
+            </div>
+            <div>
+              <p className="text-[13px] font-semibold text-foreground">Admin workspace available</p>
+              <p className="text-[11px] text-muted-foreground">Manage granths, pages and publishing.</p>
+            </div>
+          </div>
+          <button
+            onClick={() => navigate("/admin")}
+            className="inline-flex items-center gap-1.5 rounded border border-accent/20 bg-accent text-white px-3 py-1.5 text-[12px] font-medium transition-all hover:bg-accent/90 shrink-0"
+          >
+            Admin Panel <ArrowRight className="w-3.5 h-3.5" />
+          </button>
+        </motion.div>
+      )}
       {/* Hero Banner */}
       <motion.div
         initial={{ opacity: 0, y: 12 }}

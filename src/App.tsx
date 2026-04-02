@@ -30,6 +30,7 @@ import GroupsPage from "./pages/GroupsPage";
 import PermissionsPage from "./pages/PermissionsPage";
 import ApprovalsPage from "./pages/ApprovalsPage";
 import GranthsAdminPage from "./pages/GranthsAdminPage";
+import GranthsPage from "./pages/GranthsPage";
 import GranthReaderPage from "./pages/GranthReaderPage";
 import GranthPagesAdminPage from "./pages/GranthPagesAdminPage";
 import AdminLayout from "./pages/AdminLayout";
@@ -78,7 +79,7 @@ const App = () => (
                 <Route path="groups/:groupId" element={<GroupsPage />} />
                 <Route path="permissions" element={<PermissionsPage />} />
                 <Route path="approvals" element={<ApprovalsPage />} />
-                <Route path="granths" element={<GranthsAdminPage />} />
+                <Route path="granths" element={<GranthsPage />} />
                 <Route path="granths/:granthId" element={<GranthReaderPage />} />
               </Route>
             </Route>

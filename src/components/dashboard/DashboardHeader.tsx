@@ -1,6 +1,8 @@
-﻿import { Menu, Search, Bell } from "lucide-react";
+﻿import { Menu, Search, Bell, ShieldCheck } from "lucide-react";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { NotificationsDropdown } from "@/components/dashboard/NotificationsDropdown";
+import { useCurrentUserQuery } from "@/lib/api/endpoints/auth";
 
 interface DashboardHeaderProps {
   onMenuToggle: () => void;
@@ -10,6 +12,9 @@ export function DashboardHeader({ onMenuToggle }: DashboardHeaderProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchOpen, setSearchOpen] = useState(false);
   const [notifOpen, setNotifOpen] = useState(false);
+  const { data: userData } = useCurrentUserQuery();
+  const role = userData?.data?.role;
+  const isAdmin = role === "admin" || role === "superadmin";
 
   return (
     <header className="h-14 surface border-b border-border flex items-center justify-between px-4 lg:px-6 shrink-0 z-30">
@@ -43,6 +48,17 @@ export function DashboardHeader({ onMenuToggle }: DashboardHeaderProps) {
           )}
         </div>
       </div>
+
+      {/* Admin Panel shortcut */}
+      {isAdmin && (
+        <Link
+          to="/admin"
+          className="hidden sm:inline-flex items-center gap-1.5 h-8 px-3 rounded border border-accent/20 bg-accent/5 text-[12px] font-medium text-accent hover:bg-accent/10 hover:border-accent/30 transition-colors"
+        >
+          <ShieldCheck className="w-3.5 h-3.5" />
+          Admin Panel
+        </Link>
+      )}
 
       {/* Notifications */}
       <div className="relative">

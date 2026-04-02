@@ -197,6 +197,14 @@ export function AdminSidebar({ collapsed, onToggle }: AdminSidebarProps) {
             )}
             {!collapsed && <span>Theme</span>}
           </button>
+          <Link
+            to="/dashboard"
+            className="w-full flex items-center gap-3 h-9 px-3 rounded text-[13px] font-medium text-muted-foreground transition-colors hover:bg-accent/10 hover:text-accent"
+            title={collapsed ? "Dashboard" : undefined}
+          >
+            <LayoutDashboard className="w-[18px] h-[18px] shrink-0" />
+            {!collapsed && <span>Dashboard</span>}
+          </Link>
           <button
             onClick={handleLogout}
             className="w-full flex items-center gap-3 h-9 px-3 rounded text-[13px] font-medium text-muted-foreground transition-colors hover:bg-destructive/10 hover:text-destructive"

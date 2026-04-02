@@ -33,8 +33,10 @@ export default function Login() {
 
   const onSubmit = (data: LoginValues) => {
     loginMutation.mutate(data, {
-      onSuccess: () => {
-        navigate("/dashboard");
+      onSuccess: (res) => {
+        const role = res.data.user?.role ?? "user";
+        const isAdmin = role === "admin" || role === "superadmin";
+        navigate(isAdmin ? "/admin" : "/dashboard");
       },
       onError: (error: ApiError) => {
         toast({
