@@ -43,4 +43,10 @@ export const QUERY_KEYS = {
   // Groups
   GROUPS_LIST: ["groups", "list"],
   GROUP_MESSAGES: (groupId: string) => ["groups", "messages", groupId],
+  // Granths
+  GRANTHS_LIST: ["granths", "list"],
+  GRANTH_DETAIL: (id: string) => ["granths", "detail", id],
+  GRANTH_PAGES: (id: string) => ["granths", "pages", id],
+  GRANTH_PAGE: (id: string, page: number) => ["granths", "page", id, page],
+  GRANTH_PROGRESS: (id: string) => ["granths", "progress", id],
 } as const;

@@ -1,29 +1,53 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X } from "lucide-react";
+import { X, ArrowUp, ArrowDown, CornerDownRight } from "lucide-react";
 import { GradientButton } from "@/components/ui/gradient-button";
 import { VisibilitySelector } from "@/components/ui/VisibilitySelector";
 import { Visibility } from "@/types/sloka";
+import { cn } from "@/lib/utils";
+
+export type MeaningPosition = "above" | "below" | "inside";
 
 interface AddMeaningModalProps {
   open: boolean;
   onClose: () => void;
-  onSubmit: (text: string) => void;
-  parentText?: string;
+  onSubmit: (text: string, position: MeaningPosition) => void;
+  /** The text of the node the user clicked + on (null for root-level add) */
+  targetNodeText?: string;
+  /** Whether to show the position selector (true when adding relative to an existing node) */
+  showPositionSelector?: boolean;
 }
 
-export function AddMeaningModal({ open, onClose, onSubmit, parentText }: AddMeaningModalProps) {
+export function AddMeaningModal({ open, onClose, onSubmit, targetNodeText, showPositionSelector }: AddMeaningModalProps) {
   const [text, setText] = useState("");
   const [visibility, setVisibility] = useState<Visibility>("public");
+  const [position, setPosition] = useState<MeaningPosition>("inside");
+
+  // Reset state when modal opens/closes
+  useEffect(() => {
+    if (open) {
+      setText("");
+      setPosition("inside");
+    }
+  }, [open]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (text.trim()) {
-      onSubmit(text.trim());
+      onSubmit(text.trim(), position);
       setText("");
-      onClose();
     }
   };
+
+  const truncatedTitle = targetNodeText
+    ? targetNodeText.length > 60 ? targetNodeText.slice(0, 60) + "…" : targetNodeText
+    : "";
+
+  const positionOptions: { value: MeaningPosition; label: string; desc: string; icon: React.ElementType }[] = [
+    { value: "above", label: "Above", desc: `Insert before "${truncatedTitle}"`, icon: ArrowUp },
+    { value: "below", label: "Below", desc: `Insert after "${truncatedTitle}"`, icon: ArrowDown },
+    { value: "inside", label: "Inside", desc: `Add as a child of "${truncatedTitle}"`, icon: CornerDownRight },
+  ];
 
   return (
     <AnimatePresence>
@@ -52,10 +76,37 @@ export function AddMeaningModal({ open, onClose, onSubmit, parentText }: AddMean
                 </button>
               </div>
 
-              {parentText && (
+              {/* Position selector — shown only when adding relative to an existing node */}
+              {showPositionSelector && targetNodeText && (
+                <div className="mb-4 space-y-2">
+                  <p className="text-small font-medium text-foreground">Where would you like to add?</p>
+                  <div className="grid grid-cols-3 gap-2">
+                    {positionOptions.map((opt) => (
+                      <button
+                        key={opt.value}
+                        type="button"
+                        onClick={() => setPosition(opt.value)}
+                        className={cn(
+                          "flex flex-col items-center gap-1.5 px-3 py-3 rounded-lg border text-center transition-all",
+                          position === opt.value
+                            ? "border-accent bg-accent/10 text-accent shadow-sm"
+                            : "border-border text-muted-foreground hover:border-accent/30 hover:text-foreground"
+                        )}
+                      >
+                        <opt.icon className="w-4 h-4" />
+                        <span className="text-[12px] font-semibold">{opt.label}</span>
+                        <span className="text-[10px] opacity-70 line-clamp-2">{opt.desc}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Show parent context for "inside" when no position selector */}
+              {!showPositionSelector && targetNodeText && (
                 <div className="mb-4 p-3 rounded-lg bg-muted/50 border border-border/50">
                   <p className="text-small text-muted-foreground mb-1">Replying to:</p>
-                  <p className="text-body text-foreground line-clamp-2">{parentText}</p>
+                  <p className="text-body text-foreground line-clamp-2">{targetNodeText}</p>
                 </div>
               )}
 

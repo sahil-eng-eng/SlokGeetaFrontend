@@ -4,16 +4,18 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   LayoutDashboard, Library, MessageCircle, Settings,
   Menu, X, ChevronLeft, ChevronDown, LogOut, Globe, Users, Hand,
-  ShieldCheck, ClipboardList,
+  ShieldCheck, ClipboardList, Zap, BookOpen,
 } from "lucide-react";
 import { useTheme } from "@/context/ThemeContext";
 import { Sun, Moon } from "lucide-react";
+import { useCurrentUserQuery } from "@/lib/api/endpoints/auth";
 
 interface NavItem {
   label: string;
   icon: React.ElementType;
   href?: string;
   children?: { label: string; href: string }[];
+  adminOnly?: boolean;
 }
 
 const navItems: NavItem[] = [
@@ -32,6 +34,7 @@ const navItems: NavItem[] = [
     icon: Hand,
     children: [
       { label: "Tracker", href: "/dashboard/naam-jap" },
+      { label: "Instant", href: "/dashboard/instant-naam-jap" },
       { label: "Schedule", href: "/dashboard/schedule" },
     ],
   },
@@ -57,6 +60,12 @@ const navItems: NavItem[] = [
       { label: "Approvals", href: "/dashboard/approvals" },
     ],
   },
+  {
+    label: "Granths",
+    icon: BookOpen,
+    href: "/admin/granths",
+    adminOnly: true,
+  },
   { label: "Settings", icon: Settings, href: "/dashboard/settings" },
 ];
 
@@ -69,6 +78,11 @@ export function DashboardSidebar({ collapsed, onToggle }: DashboardSidebarProps)
   const location = useLocation();
   const { theme, toggleTheme } = useTheme();
   const [expandedGroups, setExpandedGroups] = useState<string[]>(["Library", "Naam Jap"]);
+  const { data: currentUserData } = useCurrentUserQuery();
+  const userRole = currentUserData?.data?.role ?? "user";
+  const isAdmin = userRole === "admin" || userRole === "superadmin";
+
+  const visibleNavItems = navItems.filter((item) => !item.adminOnly || isAdmin);
 
   const isActive = (href: string) => {
     if (href === "/dashboard") return location.pathname === "/dashboard";
@@ -123,7 +137,7 @@ export function DashboardSidebar({ collapsed, onToggle }: DashboardSidebarProps)
 
         {/* Nav */}
         <nav className="flex-1 overflow-y-auto py-3 px-2 space-y-0.5">
-          {navItems.map((item) => {
+          {visibleNavItems.map((item) => {
             if (item.children) {
               const groupExpanded = expandedGroups.includes(item.label);
               const groupActive = isGroupActive(item);

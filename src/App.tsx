@@ -21,6 +21,7 @@ import DiscoverPage from "./pages/DiscoverPage";
 import SharedPage from "./pages/SharedPage";
 import SettingsPage from "./pages/SettingsPage";
 import NaamJapPage from "./pages/NaamJapPage";
+import InstantNaamJapPage from "./pages/InstantNaamJapPage";
 import SchedulePage from "./pages/SchedulePage";
 import FormDemo from "./pages/FormDemo";
 import KirtanLibraryPage from "./pages/KirtanLibraryPage";
@@ -28,6 +29,10 @@ import FriendsPage from "./pages/FriendsPage";
 import GroupsPage from "./pages/GroupsPage";
 import PermissionsPage from "./pages/PermissionsPage";
 import ApprovalsPage from "./pages/ApprovalsPage";
+import GranthsAdminPage from "./pages/GranthsAdminPage";
+import GranthReaderPage from "./pages/GranthReaderPage";
+import GranthPagesAdminPage from "./pages/GranthPagesAdminPage";
+import AdminLayout from "./pages/AdminLayout";
 import NotFound from "./pages/NotFound";
 import { PrivateRoute } from "@/components/auth/PrivateRoute";
 import { PublicRoute } from "@/components/auth/PublicRoute";
@@ -64,6 +69,7 @@ const App = () => (
                 <Route path="shared" element={<SharedPage />} />
                 <Route path="settings" element={<SettingsPage />} />
                 <Route path="naam-jap" element={<NaamJapPage />} />
+                <Route path="instant-naam-jap" element={<InstantNaamJapPage />} />
                 <Route path="schedule" element={<SchedulePage />} />
                 <Route path="kirtan" element={<KirtanLibraryPage />} />
                 <Route path="forms" element={<FormDemo />} />
@@ -72,6 +78,17 @@ const App = () => (
                 <Route path="groups/:groupId" element={<GroupsPage />} />
                 <Route path="permissions" element={<PermissionsPage />} />
                 <Route path="approvals" element={<ApprovalsPage />} />
+                <Route path="granths" element={<GranthsAdminPage />} />
+                <Route path="granths/:granthId" element={<GranthReaderPage />} />
+              </Route>
+            </Route>
+            {/* Super Admin panel */}
+            <Route element={<PrivateRoute />}>
+              <Route path="/admin" element={<AdminLayout />}>
+                <Route index element={<Navigate to="/admin/granths" replace />} />
+                <Route path="granths" element={<GranthsAdminPage />} />
+                <Route path="granths/:granthId" element={<GranthReaderPage />} />
+                <Route path="granths/:granthId/pages" element={<GranthPagesAdminPage />} />
               </Route>
             </Route>
             <Route path="*" element={<NotFound />} />

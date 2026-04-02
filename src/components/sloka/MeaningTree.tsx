@@ -1,6 +1,7 @@
 import { useState, useCallback } from "react";
 import { MeaningNode, ReactionType } from "@/types/sloka";
-import { ChevronRight, ChevronDown, Plus, ThumbsUp, User, Clock, Shield, AlertCircle, History, Star, Pencil, ArrowUpToLine } from "lucide-react";
+import { ChevronRight, ChevronDown, Plus, ThumbsUp, User, Clock, Shield, AlertCircle, History, Star, Pencil } from "lucide-react";
+import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { useQueryClient } from "@tanstack/react-query";
@@ -19,8 +20,7 @@ interface MeaningTreeProps {
   nodes: MeaningNode[];
   depth?: number;
   canAddMeaning?: boolean;
-  onAddChild?: (parentId: string) => void;
-  onInsertAbove?: (targetMeaningId: string) => void;
+  onAddChild?: (node: { id: string; text: string }) => void;
   onViewHistory?: (node: MeaningNode) => void;
   onEdit?: (node: MeaningNode) => void;
 }
@@ -37,14 +37,14 @@ const reactionEmoji: Record<ReactionType, string> = {
   disagree: "👎",
 };
 
-export function MeaningTree({ nodes, depth = 0, canAddMeaning, onAddChild, onInsertAbove, onViewHistory, onEdit }: MeaningTreeProps) {
+export function MeaningTree({ nodes, depth = 0, canAddMeaning, onAddChild, onViewHistory, onEdit }: MeaningTreeProps) {
   return (
     <div className={cn("space-y-1.5", depth > 0 && "ml-6 relative")}>
       {depth > 0 && (
         <div className="absolute left-[-16px] top-0 bottom-0 w-px bg-border" />
       )}
       {nodes.map((node) => (
-        <MeaningTreeNode key={node.id} node={node} depth={depth} canAddMeaning={canAddMeaning} onAddChild={onAddChild} onInsertAbove={onInsertAbove} onViewHistory={onViewHistory} onEdit={onEdit} />
+        <MeaningTreeNode key={node.id} node={node} depth={depth} canAddMeaning={canAddMeaning} onAddChild={onAddChild} onViewHistory={onViewHistory} onEdit={onEdit} />
       ))}
     </div>
   );
@@ -69,16 +69,26 @@ function MeaningVisibilityControl({ nodeId, shlokId, initialVisibility }: { node
     .filter((p) => !p.is_structural && !p.is_hidden)
     .map((p) => ({ user_id: p.user_id, permission_level: (p.permission_level || "view") as PermissionLevel }));
 
-  /** Refetch meaning tree + all meaning permissions after a share/revoke */
+  /** Refetch meaning tree + all permissions after a share/revoke */
   const refetchAfterPermChange = useCallback(() => {
     queryClient.invalidateQueries({ queryKey: QUERY_KEYS.MEANINGS_BY_SHLOK(shlokId) });
-    queryClient.invalidateQueries({ queryKey: ["permissions", "meaning"] });
+    queryClient.invalidateQueries({ queryKey: ["permissions"] });
   }, [queryClient, shlokId]);
 
   const handleVisibilityChange = (v: Visibility) => {
-    setVisibility(v);
+    const prevVisibility = visibility;
     const apiVis = v === "shared" ? "specific_users" : v;
-    updateMutation.mutate({ meaningId: nodeId, data: { visibility: apiVis } });
+    updateMutation.mutate(
+      { meaningId: nodeId, data: { visibility: apiVis } },
+      {
+        onSuccess: () => setVisibility(v),
+        onError: (error: any) => {
+          setVisibility(prevVisibility);
+          const message = error?.response?.data?.message || error?.message || "Failed to update visibility";
+          toast.error(message);
+        },
+      }
+    );
   };
 
   const handleSharedUsersChange = useCallback((newUsers: SharedUserPermission[]) => {
@@ -90,14 +100,18 @@ function MeaningVisibilityControl({ nodeId, shlokId, initialVisibility }: { node
       const prev = sharedUsers.find((p) => p.user_id === u.user_id);
       return prev && prev.permission_level !== u.permission_level;
     });
+    const onErr = (error: any) => {
+      const message = error?.response?.data?.message || error?.message || "Failed to update permissions";
+      toast.error(message);
+    };
     [...added, ...levelChanged].forEach((u) =>
       setMeaningPerm.mutate(
         { user_id: u.user_id, permission_level: u.permission_level },
-        { onSuccess: refetchAfterPermChange }
+        { onSuccess: refetchAfterPermChange, onError: onErr }
       )
     );
     removed.forEach((uid) =>
-      revokeMeaningPerm.mutate(uid, { onSuccess: refetchAfterPermChange })
+      revokeMeaningPerm.mutate(uid, { onSuccess: refetchAfterPermChange, onError: onErr })
     );
   }, [sharedUsers, setMeaningPerm, revokeMeaningPerm, refetchAfterPermChange]);
 
@@ -112,7 +126,7 @@ function MeaningVisibilityControl({ nodeId, shlokId, initialVisibility }: { node
   );
 }
 
-function MeaningTreeNode({ node, depth, canAddMeaning, onAddChild, onInsertAbove, onViewHistory, onEdit }: { node: MeaningNode; depth: number; canAddMeaning?: boolean; onAddChild?: (parentId: string) => void; onInsertAbove?: (targetMeaningId: string) => void; onViewHistory?: (node: MeaningNode) => void; onEdit?: (node: MeaningNode) => void }) {
+function MeaningTreeNode({ node, depth, canAddMeaning, onAddChild, onViewHistory, onEdit }: { node: MeaningNode; depth: number; canAddMeaning?: boolean; onAddChild?: (node: { id: string; text: string }) => void; onViewHistory?: (node: MeaningNode) => void; onEdit?: (node: MeaningNode) => void }) {
   const [expanded, setExpanded] = useState(depth < 2);
   const [reactions, setReactions] = useState(node.reactions);
   const hasChildren = node.children.length > 0;
@@ -207,16 +221,6 @@ function MeaningTreeNode({ node, depth, canAddMeaning, onAddChild, onInsertAbove
 
           {/* Actions */}
           <div className="flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition-all shrink-0">
-            {/* Insert Above — only on child interpretations (not root) */}
-            {depth > 0 && canAddMeaning && (
-              <button
-                onClick={() => onInsertAbove?.(node.id)}
-                className="p-1 rounded-md text-muted-foreground hover:text-accent hover:bg-accent/10 transition-all"
-                title="Insert interpretation above"
-              >
-                <ArrowUpToLine className="w-3.5 h-3.5" />
-              </button>
-            )}
             {/* Show Edit button for owners AND for users with explicit permissions (Bug 2/5) */}
             {(node.isOwner || (node.myPermission && node.myPermission !== "view")) && (
               <button
@@ -238,9 +242,9 @@ function MeaningTreeNode({ node, depth, canAddMeaning, onAddChild, onInsertAbove
             )}
             {canAddMeaning && (
               <button
-                onClick={() => onAddChild?.(node.id)}
+                onClick={() => onAddChild?.({ id: node.id, text: node.text })}
                 className="p-1 rounded-md text-muted-foreground hover:text-accent hover:bg-accent/10 transition-all"
-                title="Add child meaning"
+                title="Add meaning"
               >
                 <Plus className="w-3.5 h-3.5" />
               </button>
@@ -259,7 +263,7 @@ function MeaningTreeNode({ node, depth, canAddMeaning, onAddChild, onInsertAbove
             className="overflow-hidden"
           >
             <div className="mt-1.5">
-              <MeaningTree nodes={node.children} depth={depth + 1} canAddMeaning={canAddMeaning} onAddChild={onAddChild} onInsertAbove={onInsertAbove} onViewHistory={onViewHistory} onEdit={onEdit} />
+              <MeaningTree nodes={node.children} depth={depth + 1} canAddMeaning={canAddMeaning} onAddChild={onAddChild} onViewHistory={onViewHistory} onEdit={onEdit} />
             </div>
           </motion.div>
         )}

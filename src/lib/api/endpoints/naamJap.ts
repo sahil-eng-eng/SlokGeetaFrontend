@@ -11,6 +11,8 @@ import type {
   JapEntryResponse,
   CreateJapEntryRequest,
   DayLogResponse,
+  SaveInstantJapRequest,
+  InstantJapSession,
 } from "@/types";
 
 // ── API FUNCTIONS ───────────────────────────────────────────
@@ -103,5 +105,38 @@ export function useNaamJapHistoryQuery(params?: { limit?: number; fromDate?: str
   return useQuery<ApiResponse<DayLogResponse[]>, ApiError>({
     queryKey: [...QUERY_KEYS.NAAM_JAP_HISTORY, params],
     queryFn: () => naamJapApi.getHistory(params),
+  });
+}
+
+// ── Instant Jap ─────────────────────────────────────────────
+
+export const instantJapApi = {
+  saveSession: (data: SaveInstantJapRequest) =>
+    axiosInstance
+      .post<ApiResponse<InstantJapSession>>("/naam-jap/instant-sessions", data)
+      .then((r) => r.data),
+
+  getSessions: (limit = 20) =>
+    axiosInstance
+      .get<ApiResponse<InstantJapSession[]>>("/naam-jap/instant-sessions", { params: { limit } })
+      .then((r) => r.data),
+};
+
+const INSTANT_JAP_SESSIONS_KEY = ["instant-jap", "sessions"];
+
+export function useInstantJapSessionsQuery(limit = 20) {
+  return useQuery<ApiResponse<InstantJapSession[]>, ApiError>({
+    queryKey: [...INSTANT_JAP_SESSIONS_KEY, limit],
+    queryFn: () => instantJapApi.getSessions(limit),
+  });
+}
+
+export function useSaveInstantJapMutation() {
+  const queryClient = useQueryClient();
+  return useMutation<ApiResponse<InstantJapSession>, ApiError, SaveInstantJapRequest>({
+    mutationFn: instantJapApi.saveSession,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: INSTANT_JAP_SESSIONS_KEY });
+    },
   });
 }

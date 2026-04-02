@@ -23,6 +23,7 @@ export interface User {
   bio: string | null;
   is_verified: boolean;
   auth_provider: string;
+  role: "user" | "admin" | "superadmin";
   last_seen_at: string | null;
   created_at: string;
 }
@@ -165,6 +166,11 @@ export interface CreateMeaningRequest {
 }
 
 export interface InsertMeaningAboveRequest {
+  content: string;
+  target_meaning_id: string;
+}
+
+export interface InsertMeaningBelowRequest {
   content: string;
   target_meaning_id: string;
 }
@@ -500,6 +506,80 @@ export interface CreateCheckInRequest {
 // ── Groups ─────────────────────────────────────────────────────────────────
 
 export type GroupRole = "owner" | "co_admin" | "member";
+
+// ── Instant Naam Jap ───────────────────────────────────────────────────────
+
+export interface SaveInstantJapRequest {
+  count: number;
+  target: number;
+  duration_seconds: number;
+  completed: boolean;
+}
+
+export interface InstantJapSession {
+  id: string;
+  owner_id: string;
+  count: number;
+  target: number;
+  duration_seconds: number;
+  completed: boolean;
+  session_date: string;
+  created_at: string;
+}
+
+// ── Granth ──────────────────────────────────────────────────────────────────
+
+export interface CreateGranthRequest {
+  title: string;
+  description?: string;
+  author?: string;
+  language?: string;
+}
+
+export interface UpdateGranthRequest {
+  title?: string;
+  description?: string;
+  author?: string;
+  language?: string;
+  is_published?: boolean;
+}
+
+export interface GranthResponse {
+  id: string;
+  title: string;
+  description: string | null;
+  author: string | null;
+  language: string;
+  total_pages: number;
+  cover_url: string | null;
+  is_published: boolean;
+  uploaded_by: string;
+  created_at: string;
+}
+
+export interface GranthPageResponse {
+  id: string;
+  granth_id: string;
+  page_number: number;
+  content: string;
+  image_url: string | null;
+}
+
+export interface UpdateGranthPageRequest {
+  content?: string;
+}
+
+export interface UpdateProgressRequest {
+  current_page: number;
+}
+
+export interface ProgressResponse {
+  id: string;
+  user_id: string;
+  granth_id: string;
+  current_page: number;
+  last_read_at: string | null;
+}
 
 export interface GroupMemberResponse {
   user_id: string;

@@ -184,7 +184,7 @@ export function useChatSocket(
     const token = localStorage.getItem("access_token");
     if (!token) return;
 
-    const apiBase = (import.meta.env.VITE_API_URL as string | undefined) ?? "http://localhost:8000";
+    const apiBase = (import.meta.env.VITE_API_URL as string | undefined) ?? "http://localhost:8003";
     const wsBase = apiBase.startsWith("https")
       ? apiBase.replace("https://", "wss://")
       : apiBase.replace("http://", "ws://");

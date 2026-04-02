@@ -6,6 +6,7 @@ import type {
   ApiResponse,
   CreateMeaningRequest,
   InsertMeaningAboveRequest,
+  InsertMeaningBelowRequest,
   UpdateMeaningRequest,
   VoteMeaningRequest,
   MeaningResponse,
@@ -36,6 +37,20 @@ export const meaningsApi = {
     axiosInstance
       .post<ApiResponse<MeaningResponse>>(
         `/shloks/${shlokId}/meanings/insert-above`,
+        data
+      )
+      .then((r) => r.data),
+
+  insertMeaningBelow: ({
+    shlokId,
+    data,
+  }: {
+    shlokId: string;
+    data: InsertMeaningBelowRequest;
+  }) =>
+    axiosInstance
+      .post<ApiResponse<MeaningResponse>>(
+        `/shloks/${shlokId}/meanings/insert-below`,
         data
       )
       .then((r) => r.data),
@@ -108,6 +123,22 @@ export function useInsertMeaningAboveMutation(shlokId: string) {
     { shlokId: string; data: InsertMeaningAboveRequest }
   >({
     mutationFn: meaningsApi.insertMeaningAbove,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: QUERY_KEYS.MEANINGS_BY_SHLOK(shlokId),
+      });
+    },
+  });
+}
+
+export function useInsertMeaningBelowMutation(shlokId: string) {
+  const queryClient = useQueryClient();
+  return useMutation<
+    ApiResponse<MeaningResponse>,
+    ApiError,
+    { shlokId: string; data: InsertMeaningBelowRequest }
+  >({
+    mutationFn: meaningsApi.insertMeaningBelow,
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: QUERY_KEYS.MEANINGS_BY_SHLOK(shlokId),

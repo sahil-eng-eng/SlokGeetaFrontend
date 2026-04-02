@@ -6,7 +6,10 @@ import {
 } from "lucide-react";
 import { MeaningTree } from "@/components/sloka/MeaningTree";
 import { MeaningFilterBar } from "@/components/sloka/MeaningFilter";
-import { AddMeaningModal } from "@/components/sloka/AddMeaningModal";
+import { AddMeaningModal, MeaningPosition } from "@/components/sloka/AddMeaningModal";
+import { toast } from "sonner";
+import { useQueryClient } from "@tanstack/react-query";
+import { QUERY_KEYS } from "@/lib/api/queryKeys";
 import { GradientButton } from "@/components/ui/gradient-button";
 import { VisibilitySelector } from "@/components/ui/VisibilitySelector";
 import { MeaningFilter, MeaningNode, Visibility } from "@/types/sloka";
@@ -16,6 +19,7 @@ import {
   useMeaningsQuery,
   useCreateMeaningMutation,
   useInsertMeaningAboveMutation,
+  useInsertMeaningBelowMutation,
   useUpdateMeaningMutation,
 } from "@/lib/api/endpoints/meanings";
 import {
@@ -66,10 +70,11 @@ function sortMeanings(nodes: MeaningNode[], filter: MeaningFilter): MeaningNode[
 
 export default function SlokaDetail() {
   const { id } = useParams<{ id: string }>();
+  const queryClient = useQueryClient();
   const [filter, setFilter] = useState<MeaningFilter>("most-voted");
   const [meaningModalOpen, setMeaningModalOpen] = useState(false);
   const [parentId, setParentId] = useState<string | null>(null);
-  const [insertAboveTargetId, setInsertAboveTargetId] = useState<string | null>(null);
+  const [targetNode, setTargetNode] = useState<{ id: string; text: string } | null>(null);
   const [historyNode, setHistoryNode] = useState<MeaningNode | null>(null);
   const [editNode, setEditNode] = useState<MeaningNode | null>(null);
   const [editText, setEditText] = useState("");
@@ -93,6 +98,7 @@ export default function SlokaDetail() {
   const updateShlokMutation = useUpdateShlokMutation();
   const createMeaningMutation = useCreateMeaningMutation(id ?? "");
   const insertAboveMutation = useInsertMeaningAboveMutation(id ?? "");
+  const insertBelowMutation = useInsertMeaningBelowMutation(id ?? "");
   const updateMeaningMutation = useUpdateMeaningMutation(id ?? "");
   const createContentReq = useCreateContentRequestMutation();
 
@@ -116,21 +122,15 @@ export default function SlokaDetail() {
 
   const sortedMeanings = sortMeanings(meaningNodes, filter);
 
-  const handleAddChild = (pid: string) => {
-    setParentId(pid);
-    setInsertAboveTargetId(null);
+  const handleAddChild = (node: { id: string; text: string }) => {
+    setParentId(node.id);
+    setTargetNode(node);
     setMeaningModalOpen(true);
   };
 
   const handleAddRoot = () => {
     setParentId(null);
-    setInsertAboveTargetId(null);
-    setMeaningModalOpen(true);
-  };
-
-  const handleInsertAbove = (targetMeaningId: string) => {
-    setInsertAboveTargetId(targetMeaningId);
-    setParentId(null);
+    setTargetNode(null);
     setMeaningModalOpen(true);
   };
 
@@ -145,11 +145,21 @@ export default function SlokaDetail() {
   };
 
   const handleVisibilityChange = (v: Visibility) => {
-    setSlokaVisibility(v);
     if (!id) return;
+    const prevVisibility = slokaVisibility;
     const apiVisibility =
       v === "shared" ? "specific_users" : (v as "public" | "private" | "specific_users");
-    updateShlokMutation.mutate({ shlokId: id, data: { visibility: apiVisibility } });
+    updateShlokMutation.mutate(
+      { shlokId: id, data: { visibility: apiVisibility } },
+      {
+        onSuccess: () => setSlokaVisibility(v),
+        onError: (error: any) => {
+          setSlokaVisibility(prevVisibility);
+          const message = error?.response?.data?.message || error?.message || "Failed to update visibility";
+          toast.error(message);
+        },
+      }
+    );
   };
 
   const handleSharedUsersChange = useCallback(
@@ -163,28 +173,48 @@ export default function SlokaDetail() {
         const prev = sharedUsers.find((p) => p.user_id === u.user_id);
         return prev && prev.permission_level !== u.permission_level;
       });
+      const refetchAll = () => {
+        queryClient.invalidateQueries({ queryKey: QUERY_KEYS.MEANINGS_BY_SHLOK(id ?? "") });
+        queryClient.invalidateQueries({ queryKey: ["permissions"] });
+        queryClient.invalidateQueries({ queryKey: QUERY_KEYS.SHLOK_DETAIL(id ?? "") });
+      };
+      const onErr = (error: any) => {
+        const message = error?.response?.data?.message || error?.message || "Failed to update permissions";
+        toast.error(message);
+      };
       // Grant / revoke permissions on this shlok (backend auto-propagates structural access to parent book)
       ;[...added, ...levelChanged].forEach((u) =>
-        setShlokPerm.mutate({ user_id: u.user_id, permission_level: u.permission_level })
+        setShlokPerm.mutate(
+          { user_id: u.user_id, permission_level: u.permission_level },
+          { onSuccess: refetchAll, onError: onErr }
+        )
       );
-      removed.forEach((uid) => revokeShlokPerm.mutate(uid));
+      removed.forEach((uid) =>
+        revokeShlokPerm.mutate(uid, { onSuccess: refetchAll, onError: onErr })
+      );
     },
-    [sharedUsers, setShlokPerm, revokeShlokPerm]
+    [sharedUsers, setShlokPerm, revokeShlokPerm, queryClient, id]
   );
 
-  const handleAddMeaning = (text: string) => {
+  const handleAddMeaning = (text: string, position: MeaningPosition) => {
     if (!id) return;
     const onDone = () => {
       setMeaningModalOpen(false);
       setParentId(null);
-      setInsertAboveTargetId(null);
+      setTargetNode(null);
     };
-    if (insertAboveTargetId) {
+    if (targetNode && position === "above") {
       insertAboveMutation.mutate(
-        { shlokId: id, data: { content: text, target_meaning_id: insertAboveTargetId } },
+        { shlokId: id, data: { content: text, target_meaning_id: targetNode.id } },
+        { onSuccess: onDone }
+      );
+    } else if (targetNode && position === "below") {
+      insertBelowMutation.mutate(
+        { shlokId: id, data: { content: text, target_meaning_id: targetNode.id } },
         { onSuccess: onDone }
       );
     } else {
+      // position === "inside" or root-level add
       createMeaningMutation.mutate(
         { shlokId: id, data: { content: text, parent_id: parentId ?? undefined } },
         { onSuccess: onDone }
@@ -225,6 +255,7 @@ export default function SlokaDetail() {
   };
 
   const parentNode = parentId ? findNode(sortedMeanings, parentId) : null;
+  const targetNodeText = targetNode?.text ?? parentNode?.text;
 
   if (shlokLoading) {
     return (
@@ -407,7 +438,6 @@ export default function SlokaDetail() {
             nodes={sortedMeanings}
             canAddMeaning={isOwner}
             onAddChild={handleAddChild}
-            onInsertAbove={handleInsertAbove}
             onViewHistory={(node) => setHistoryNode(node)}
             onEdit={handleEdit}
           />
@@ -416,9 +446,10 @@ export default function SlokaDetail() {
 
       <AddMeaningModal
         open={meaningModalOpen}
-        onClose={() => { setMeaningModalOpen(false); setParentId(null); setInsertAboveTargetId(null); }}
+        onClose={() => { setMeaningModalOpen(false); setParentId(null); setTargetNode(null); }}
         onSubmit={handleAddMeaning}
-        parentText={parentNode?.text}
+        targetNodeText={targetNodeText}
+        showPositionSelector={!!targetNode}
       />
 
       {/* Edit Meaning Modal */}
