@@ -15,17 +15,17 @@ export default function AdminLayout() {
   }
 
   return (
-    <div className="h-screen flex w-full bg-background overflow-hidden">
+    <div className="h-screen flex w-full bg-app-gradient bg-background overflow-hidden">
       <AdminSidebar
         collapsed={collapsed}
         onToggle={() => setCollapsed((c) => !c)}
       />
       <div className="flex-1 flex flex-col min-w-0 h-screen overflow-hidden">
         {/* Top bar */}
-        <header className="h-13 flex items-center gap-3 px-5 border-b border-border surface shrink-0">
+        <header className="flex min-h-16 items-center gap-3 border-b border-border/70 surface px-5 shrink-0">
           <button
             onClick={() => setCollapsed((c) => !c)}
-            className="p-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted transition-colors lg:hidden"
+            className="rounded-lg p-2 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground lg:hidden"
           >
             <svg
               className="w-4 h-4"
@@ -41,15 +41,21 @@ export default function AdminLayout() {
               />
             </svg>
           </button>
-          <span className="text-[13px] text-muted-foreground">
-            Logged in as{" "}
-            <span className="font-medium text-foreground">
-              {data?.data?.full_name ?? data?.data?.email}
-            </span>
-          </span>
+          <div className="flex min-w-0 flex-1 items-center justify-between gap-4">
+            <div>
+              <p className="text-small uppercase tracking-[0.18em] text-muted-foreground">Admin workspace</p>
+              <p className="text-heading text-foreground">Manage content with a calmer, more editorial interface</p>
+            </div>
+            <div className="hidden max-w-[240px] rounded-xl border border-border/60 bg-background/80 px-3 py-2 text-right md:block">
+              <p className="text-small text-muted-foreground">Logged in as</p>
+              <p className="truncate text-body font-medium text-foreground">
+                {data?.data?.full_name ?? data?.data?.email}
+              </p>
+            </div>
+          </div>
         </header>
 
-        <main className="flex-1 overflow-auto">
+        <main className="flex-1 overflow-auto px-4 py-4 lg:px-6 lg:py-5">
           <Outlet />
         </main>
       </div>

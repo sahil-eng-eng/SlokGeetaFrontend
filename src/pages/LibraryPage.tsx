@@ -90,7 +90,7 @@ export default function LibraryPage() {
 
   if (isLoading) {
     return (
-      <div className="space-y-5 max-w-5xl">
+      <div className="mx-auto w-full max-w-7xl space-y-5">
         <div className="flex items-start justify-between gap-4">
           <div>
             <h1 className="text-display text-foreground">Library</h1>
@@ -112,7 +112,7 @@ export default function LibraryPage() {
 
   if (isError) {
     return (
-      <div className="space-y-5 max-w-5xl">
+      <div className="mx-auto w-full max-w-7xl space-y-5">
         <h1 className="text-display text-foreground">Library</h1>
         <div className="surface rounded-lg border border-border p-12 text-center">
           <BookOpen className="w-10 h-10 text-muted-foreground/30 mx-auto mb-3" />
@@ -123,15 +123,15 @@ export default function LibraryPage() {
   }
 
   return (
-    <div className="space-y-5 max-w-5xl">
+    <div className="mx-auto w-full max-w-7xl space-y-5">
       {/* Hero */}
       <motion.div
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="relative rounded-xl overflow-hidden h-36"
+        className="relative overflow-hidden rounded-2xl h-40 lg:h-44"
       >
-        <img src={booksHero} alt="" className="absolute inset-0 w-full h-full object-cover" />
+        <img src={booksHero} alt="" className="absolute inset-0 h-full w-full object-cover object-center" />
         <div className="absolute inset-0 bg-gradient-to-r from-foreground/60 via-foreground/30 to-transparent" />
         <div className="relative z-10 flex items-end justify-between h-full px-6 pb-5">
           <div>

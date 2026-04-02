@@ -1,7 +1,6 @@
-import { useState } from "react";
 import { useLocation, Link, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { BookOpen, Menu, X, Settings, LogOut, ShieldCheck, ChevronLeft } from "lucide-react";
+import { BookOpen, Menu, LogOut, ShieldCheck, ChevronLeft, LayoutDashboard } from "lucide-react";
 import { useTheme } from "@/context/ThemeContext";
 import { Sun, Moon } from "lucide-react";
 
@@ -48,40 +47,45 @@ export function AdminSidebar({ collapsed, onToggle }: AdminSidebarProps) {
       </AnimatePresence>
 
       <aside
-        className={`fixed lg:static inset-y-0 left-0 z-50 flex flex-col bg-surface border-r border-sidebar-border transition-all duration-300 ${
-          collapsed ? "-translate-x-full lg:translate-x-0 lg:w-[56px]" : "w-[200px]"
+        className={`fixed lg:static inset-y-0 left-0 z-50 flex flex-col surface border-r border-sidebar-border transition-all duration-300 ${
+          collapsed ? "-translate-x-full lg:translate-x-0 lg:w-[68px]" : "w-[246px]"
         }`}
       >
-        {/* Branding */}
-        <div className="h-13 flex items-center justify-between px-3 py-3 border-b border-sidebar-border shrink-0">
+        <div className="border-b border-sidebar-border px-3 py-3 shrink-0">
           {!collapsed && (
-            <div className="flex items-center gap-2 min-w-0">
-              <ShieldCheck className="w-4 h-4 text-accent shrink-0" />
-              <span className="text-[13px] font-semibold text-foreground truncate">
-                Admin Panel
-              </span>
+            <div className="rounded-2xl border border-border/70 bg-background/80 px-3 py-3">
+              <div className="flex items-center gap-2 min-w-0">
+                <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-accent/10 text-accent">
+                  <ShieldCheck className="w-4 h-4 shrink-0" />
+                </div>
+                <div className="min-w-0">
+                  <span className="block truncate text-[13px] font-semibold text-foreground">Admin Panel</span>
+                  <span className="block truncate text-[11px] text-muted-foreground">Editorial workspace</span>
+                </div>
+              </div>
             </div>
           )}
-          <button
-            onClick={onToggle}
-            className="p-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted transition-colors shrink-0"
-          >
-            {collapsed ? <Menu className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
-          </button>
+          <div className={`mt-3 flex ${collapsed ? "justify-center" : "justify-end"}`}>
+            <button
+              onClick={onToggle}
+              className="rounded-lg p-2 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground shrink-0"
+            >
+              {collapsed ? <Menu className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
+            </button>
+          </div>
         </div>
 
-        {/* Nav */}
-        <nav className="flex-1 py-3 space-y-0.5 px-2 overflow-y-auto">
+        <nav className="flex-1 overflow-y-auto px-2 py-3 space-y-1">
           {adminNavItems.map((item) => {
             const active = isActive(item.href);
             return (
               <Link
                 key={item.href}
                 to={item.href}
-                className={`flex items-center gap-2.5 px-2.5 py-2 rounded-md text-[13px] font-medium transition-all ${
+                className={`flex items-center gap-3 rounded-xl border px-3 py-2.5 text-[13px] font-medium transition-all ${
                   active
-                    ? "bg-accent/10 text-accent"
-                    : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                    ? "border-accent/10 bg-accent/10 text-accent"
+                    : "border-transparent text-muted-foreground hover:bg-muted hover:text-foreground"
                 }`}
                 title={collapsed ? item.label : undefined}
               >
@@ -92,11 +96,20 @@ export function AdminSidebar({ collapsed, onToggle }: AdminSidebarProps) {
           })}
         </nav>
 
-        {/* Footer */}
-        <div className="border-t border-sidebar-border px-2 py-2 space-y-0.5 shrink-0">
+        <div className="border-t border-sidebar-border px-2 py-2 space-y-1 shrink-0">
+          {!collapsed && (
+            <div className="rounded-xl border border-border/60 bg-background/70 px-3 py-3">
+              <div className="flex items-center gap-2 text-[12px] font-medium text-foreground">
+                <LayoutDashboard className="h-4 w-4 text-accent" /> Workspace status
+              </div>
+              <p className="mt-1 text-[11px] text-muted-foreground">
+                Manage collections, pages, and publishing in one cleaner flow.
+              </p>
+            </div>
+          )}
           <button
             onClick={toggleTheme}
-            className="w-full flex items-center gap-2.5 px-2.5 py-2 rounded-md text-[13px] text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+            className="w-full flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-[13px] text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
             title={collapsed ? "Toggle theme" : undefined}
           >
             {theme === "dark" ? (
@@ -108,7 +121,7 @@ export function AdminSidebar({ collapsed, onToggle }: AdminSidebarProps) {
           </button>
           <button
             onClick={handleLogout}
-            className="w-full flex items-center gap-2.5 px-2.5 py-2 rounded-md text-[13px] text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors"
+            className="w-full flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-[13px] text-muted-foreground transition-colors hover:bg-destructive/10 hover:text-destructive"
             title={collapsed ? "Log out" : undefined}
           >
             <LogOut className="w-4 h-4 shrink-0" />

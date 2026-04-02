@@ -161,7 +161,7 @@ export default function BookSlokas() {
 
   if (bookLoading) {
     return (
-      <div className="max-w-5xl space-y-4">
+      <div className="mx-auto w-full max-w-7xl space-y-4">
         <Link to="/dashboard/library" className="inline-flex items-center gap-1.5 text-body text-muted-foreground hover:text-foreground transition-colors">
           <ArrowLeft className="w-4 h-4" /> Back to Library
         </Link>
@@ -175,7 +175,7 @@ export default function BookSlokas() {
 
   if (bookError || !book) {
     return (
-      <div className="max-w-5xl space-y-4">
+      <div className="mx-auto w-full max-w-7xl space-y-4">
         <Link to="/dashboard/library" className="inline-flex items-center gap-1.5 text-body text-muted-foreground hover:text-foreground transition-colors">
           <ArrowLeft className="w-4 h-4" /> Back to Library
         </Link>
@@ -188,7 +188,7 @@ export default function BookSlokas() {
   }
 
   return (
-    <div className="space-y-5 max-w-5xl">
+    <div className="mx-auto w-full max-w-7xl space-y-5">
       {/* Breadcrumb */}
       <div className="flex items-center gap-2 text-small text-muted-foreground">
         <Link to="/dashboard/library" className="hover:text-foreground transition-colors">Library</Link>

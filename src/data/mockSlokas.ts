@@ -20,11 +20,16 @@ export const sharedBooks: Book[] = [
   { id: "sb2", title: "Tattva Bodha", author: "Shankaracharya", description: "Introduction to Vedantic concepts", category: "philosophy", slokaCount: 8, visibility: "shared", sharedBy: "Prof. Gupta", sharedAt: "2026-03-14" },
 ];
 
-function makeMeaning(overrides: Partial<MeaningNode> & { id: string; text: string; author: string }): MeaningNode {
+function makeMeaning(
+  shlokId: string,
+  overrides: Partial<MeaningNode> & { id: string; text: string; author: string }
+): MeaningNode {
   return {
+    shlokId,
     votes: 0,
     createdAt: "2026-01-16",
     status: "approved",
+    visibility: "public",
     isOwner: false,
     reactions: [
       { type: "agree", count: 0, reacted: false },
@@ -47,7 +52,7 @@ export const mockSlokas: Sloka[] = [
     visibility: "public",
     createdAt: "2026-01-15",
     meanings: [
-      makeMeaning({
+      makeMeaning("s1", {
         id: "m1",
         text: "You have the right to perform your prescribed duties, but you are not entitled to the fruits of your actions.",
         author: "Scholar A",
@@ -65,7 +70,7 @@ export const mockSlokas: Sloka[] = [
           { id: "v2", text: "You have the right to perform your prescribed duties, but you are not entitled to the fruits of your actions.", editedAt: "2026-01-18", editedBy: "Scholar A" },
         ],
         children: [
-          makeMeaning({
+          makeMeaning("s1", {
             id: "m1-1",
             text: "This teaches detachment from results while maintaining dedication to action.",
             author: "Scholar B",
@@ -78,11 +83,11 @@ export const mockSlokas: Sloka[] = [
               { type: "disagree", count: 0, reacted: false },
             ],
             children: [
-              makeMeaning({ id: "m1-1-1", text: "Detachment here doesn't mean indifference, but freedom from anxiety about outcomes.", author: "Scholar C", authorReputation: 65, votes: 12, status: "approved" }),
-              makeMeaning({ id: "m1-1-2", text: "This is the foundation of Karma Yoga — selfless action.", author: "Scholar A", authorReputation: 92, votes: 15, status: "approved", isOwner: true }),
+              makeMeaning("s1", { id: "m1-1-1", text: "Detachment here doesn't mean indifference, but freedom from anxiety about outcomes.", author: "Scholar C", authorReputation: 65, votes: 12, status: "approved" }),
+              makeMeaning("s1", { id: "m1-1-2", text: "This is the foundation of Karma Yoga — selfless action.", author: "Scholar A", authorReputation: 92, votes: 15, status: "approved", isOwner: true }),
             ],
           }),
-          makeMeaning({
+          makeMeaning("s1", {
             id: "m1-2",
             text: "The verse establishes the principle of Nishkama Karma — action without desire for reward.",
             author: "Scholar D",
@@ -97,7 +102,7 @@ export const mockSlokas: Sloka[] = [
           }),
         ],
       }),
-      makeMeaning({
+      makeMeaning("s1", {
         id: "m2",
         text: "Focus on the effort, not the outcome. This is the key to inner peace and effective action.",
         author: "Scholar E",
@@ -105,7 +110,7 @@ export const mockSlokas: Sloka[] = [
         votes: 16,
         status: "approved",
         children: [
-          makeMeaning({ id: "m2-1", text: "Modern psychology supports this: process-oriented thinking leads to better performance.", author: "Scholar B", authorReputation: 78, votes: 10, status: "pending" }),
+          makeMeaning("s1", { id: "m2-1", text: "Modern psychology supports this: process-oriented thinking leads to better performance.", author: "Scholar B", authorReputation: 78, votes: 10, status: "pending" }),
         ],
       }),
     ],
@@ -119,7 +124,7 @@ export const mockSlokas: Sloka[] = [
     visibility: "public",
     createdAt: "2026-01-15",
     meanings: [
-      makeMeaning({
+      makeMeaning("s2", {
         id: "m3",
         text: "The contact of senses with their objects gives rise to feelings of cold, heat, pleasure, and pain. They are transient — learn to endure them.",
         author: "Scholar A",
@@ -128,7 +133,7 @@ export const mockSlokas: Sloka[] = [
         isOwner: true,
         status: "approved",
         children: [
-          makeMeaning({ id: "m3-1", text: "This verse teaches equanimity in the face of dualities.", author: "Scholar C", authorReputation: 65, votes: 14, status: "approved" }),
+          makeMeaning("s2", { id: "m3-1", text: "This verse teaches equanimity in the face of dualities.", author: "Scholar C", authorReputation: 65, votes: 14, status: "approved" }),
         ],
       }),
     ],
@@ -142,7 +147,7 @@ export const mockSlokas: Sloka[] = [
     visibility: "public",
     createdAt: "2026-01-15",
     meanings: [
-      makeMeaning({ id: "m4", text: "Whenever there is a decline in righteousness and an increase in unrighteousness, I manifest Myself.", author: "Scholar D", authorReputation: 45, votes: 30, status: "approved", isOwner: true }),
+      makeMeaning("s3", { id: "m4", text: "Whenever there is a decline in righteousness and an increase in unrighteousness, I manifest Myself.", author: "Scholar D", authorReputation: 45, votes: 30, status: "approved", isOwner: true }),
     ],
   },
 ];
