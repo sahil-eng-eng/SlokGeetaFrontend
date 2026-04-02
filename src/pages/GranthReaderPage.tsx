@@ -83,7 +83,7 @@ export default function GranthReaderPage() {
   }
 
   return (
-    <div className="mx-auto flex h-full w-full max-w-7xl flex-col gap-5">
+    <div className="mx-auto flex w-full max-w-7xl flex-col gap-5">
       <div className="relative overflow-hidden rounded border border-accent/20 surface px-5 py-5 sm:px-6">
         <div className="absolute inset-0 bg-gradient-to-br from-accent/10 via-transparent to-background" />
         <div className="relative flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
