@@ -93,7 +93,7 @@ export default function PermissionsPage() {
         <div>
           <div className="flex items-center gap-2 mb-1">
             <ShieldCheck className="w-5 h-5 text-accent" />
-            <h1 className="text-xl font-bold text-foreground">Permissions</h1>
+            <h1 className="text-heading text-foreground">Permissions</h1>
           </div>
           <p className="text-[13px] text-muted-foreground">
             Manage access you've granted to others on your content

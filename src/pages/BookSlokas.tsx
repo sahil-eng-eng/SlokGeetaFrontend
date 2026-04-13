@@ -2,7 +2,7 @@
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  Plus, ArrowLeft, Search, ScrollText, ChevronRight, BookOpen, Eye, Lock, Users, Pencil, X,
+  Plus, Search, ScrollText, ChevronRight, BookOpen, Eye, Lock, Users, Pencil, X, ArrowRight, Calendar,
 } from "lucide-react";
 import { CreateSlokaModal } from "@/components/sloka/CreateSlokaModal";
 import { GradientButton } from "@/components/ui/gradient-button";
@@ -161,13 +161,11 @@ export default function BookSlokas() {
 
   if (bookLoading) {
     return (
-      <div className="mx-auto w-full max-w-7xl space-y-4">
-        <Link to="/dashboard/library" className="inline-flex items-center gap-1.5 text-body text-muted-foreground hover:text-foreground transition-colors">
-          <ArrowLeft className="w-4 h-4" /> Back to Library
-        </Link>
-        <div className="surface rounded border border-border p-5 animate-pulse">
-          <div className="h-6 bg-muted rounded w-1/3 mb-2" />
-          <div className="h-4 bg-muted rounded w-2/3" />
+      <div className="mx-auto w-full max-w-7xl space-y-5">
+        <div className="relative overflow-hidden rounded border border-accent/20 surface px-5 py-5 sm:px-6 animate-pulse">
+          <div className="h-5 bg-muted rounded w-24 mb-3" />
+          <div className="h-8 bg-muted rounded w-64 mb-2" />
+          <div className="h-4 bg-muted rounded w-80" />
         </div>
       </div>
     );
@@ -175,13 +173,15 @@ export default function BookSlokas() {
 
   if (bookError || !book) {
     return (
-      <div className="mx-auto w-full max-w-7xl space-y-4">
-        <Link to="/dashboard/library" className="inline-flex items-center gap-1.5 text-body text-muted-foreground hover:text-foreground transition-colors">
-          <ArrowLeft className="w-4 h-4" /> Back to Library
-        </Link>
-        <div className="surface rounded border border-border p-12 text-center">
-          <BookOpen className="w-10 h-10 text-muted-foreground/30 mx-auto mb-3" />
-          <p className="text-body text-muted-foreground">Book not found.</p>
+      <div className="mx-auto w-full max-w-7xl space-y-5">
+        <div className="surface rounded border border-accent/15 py-16 flex flex-col items-center gap-3">
+          <div className="w-12 h-12 rounded bg-muted/50 flex items-center justify-center">
+            <BookOpen className="w-6 h-6 text-muted-foreground/40" />
+          </div>
+          <p className="text-body font-medium text-muted-foreground">Book not found</p>
+          <Link to="/dashboard/library" className="text-small text-accent hover:text-accent-glow font-medium transition-colors">
+            ← Back to Library
+          </Link>
         </div>
       </div>
     );
@@ -189,136 +189,182 @@ export default function BookSlokas() {
 
   return (
     <div className="mx-auto w-full max-w-7xl space-y-5">
-      {/* Breadcrumb */}
-      <div className="flex items-center gap-2 text-small text-muted-foreground">
-        <Link to="/dashboard/library" className="hover:text-foreground transition-colors">Library</Link>
-        <ChevronRight className="w-3 h-3" />
-        <span className="text-foreground">{book.title}</span>
-      </div>
-
-      <Link to="/dashboard/library" className="inline-flex items-center gap-1.5 text-body text-muted-foreground hover:text-foreground transition-colors">
-        <ArrowLeft className="w-4 h-4" /> Back
-      </Link>
-
-      {/* Book header */}
+      {/* ── Hero ── */}
       <motion.div
         initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
-        className="surface rounded border border-border p-5"
+        className="relative overflow-hidden rounded border border-accent/20 surface px-5 py-5 sm:px-6"
       >
-        <div className="flex items-start justify-between gap-4">
-          <div className="flex-1">
+        <div className="absolute inset-0 bg-gradient-to-br from-accent/10 via-transparent to-background" />
+        <div className="relative flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
+          {/* Left — title + breadcrumb */}
+          <div className="min-w-0 flex-1">
+            <div className="mb-2 inline-flex items-center gap-2 rounded border border-accent/15 bg-background/70 px-2.5 py-1 text-small text-muted-foreground">
+              <BookOpen className="h-3.5 w-3.5 text-accent" />
+              <Link to="/dashboard/library" className="hover:text-foreground transition-colors">Library</Link>
+              <ChevronRight className="w-3 h-3" />
+              <span className="text-foreground/80 truncate max-w-[160px]">{book.title}</span>
+            </div>
             <h1 className="text-display text-foreground">{book.title}</h1>
-            <p className="text-body text-muted-foreground mt-1">{book.description}</p>
-            <div className="flex items-center gap-3 mt-2 text-small text-muted-foreground">
-              {book.author_name && <span>by {book.author_name}</span>}
-              {book.author_name && <span className="text-border">•</span>}
-              <span>{shloks.length} slokas</span>
-              {book.category && (
-                <>
-                  <span className="text-border">•</span>
-                  <span className="capitalize">{book.category}</span>
-                </>
-              )}
-            </div>
+            {book.author_name && (
+              <p className="mt-1 text-body text-muted-foreground">by {book.author_name}</p>
+            )}
+            {book.description && (
+              <p className="mt-2 max-w-2xl text-body text-muted-foreground line-clamp-2">{book.description}</p>
+            )}
           </div>
-          {isOwner && (
-            <div className="flex items-center gap-2 shrink-0">
-              <VisibilitySelector
-                value={bookVisibility}
-                onChange={handleVisibilityChange}
-                compact
-                sharedUsers={sharedUsers}
-                onSharedUsersChange={handleSharedUsersChange}
-              />
-              <button
-                onClick={handleOpenEdit}
-                className="p-1.5 rounded text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
-                aria-label="Edit book details"
-              >
-                <Pencil className="w-3.5 h-3.5" />
-              </button>
-              <GradientButton onClick={() => setCreateOpen(true)} size="sm">
-                <Plus className="w-4 h-4" /> Add Sloka
-              </GradientButton>
+
+          {/* Right — stats + owner controls */}
+          <div className="flex flex-col sm:flex-row items-start sm:items-end gap-3">
+            <div className="grid grid-cols-2 gap-2 lg:min-w-[220px]">
+              <div className="rounded border border-accent/15 bg-background/80 p-3">
+                <p className="text-small text-muted-foreground">Slokas</p>
+                <p className="mt-1 text-heading text-foreground">{shloks.length}</p>
+              </div>
+              <div className="rounded border border-accent/15 bg-background/80 p-3">
+                <p className="text-small text-muted-foreground">
+                  {book.category ? "Category" : "Visibility"}
+                </p>
+                <p className="mt-1 text-body font-medium text-foreground capitalize">
+                  {book.category
+                    ? book.category
+                    : (book.visibility === "specific_users" ? "Shared" : book.visibility)}
+                </p>
+              </div>
             </div>
-          )}
+            {isOwner && (
+              <div className="flex items-center gap-2 shrink-0">
+                <VisibilitySelector
+                  value={bookVisibility}
+                  onChange={handleVisibilityChange}
+                  compact
+                  sharedUsers={sharedUsers}
+                  onSharedUsersChange={handleSharedUsersChange}
+                />
+                <button
+                  onClick={handleOpenEdit}
+                  className="p-2 rounded border border-accent/15 text-muted-foreground hover:text-foreground hover:border-accent/30 hover:bg-accent/5 transition-colors"
+                  aria-label="Edit book details"
+                >
+                  <Pencil className="w-3.5 h-3.5" />
+                </button>
+                <GradientButton onClick={() => setCreateOpen(true)} size="sm">
+                  <Plus className="w-4 h-4" /> Add Sloka
+                </GradientButton>
+              </div>
+            )}
+          </div>
         </div>
       </motion.div>
 
-      {/* Search */}
+      {/* ── Search ── */}
       <div className="relative max-w-sm">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground" />
         <input
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          placeholder="Search slokas..."
-          className="w-full h-9 pl-9 pr-3 rounded border border-input bg-background text-[13px] text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent transition-all"
+          placeholder="Search slokas…"
+          className="w-full h-9 pl-9 pr-3 rounded border border-input bg-background text-[13px] text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent/60 transition-all"
         />
       </div>
 
-      {/* Sloka Cards */}
+      {/* ── Sloka Cards ── */}
       {shloksLoading ? (
-        <div className="space-y-2">
+        <div className="space-y-3">
           {Array.from({ length: 4 }).map((_, i) => (
-            <div key={i} className="surface rounded border border-border p-4 animate-pulse">
-              <div className="h-4 bg-muted rounded w-1/3 mb-2" />
-              <div className="h-3 bg-muted rounded w-3/4" />
+            <div key={i} className="surface rounded border border-accent/15 p-5 animate-pulse">
+              <div className="flex items-start gap-4">
+                <div className="w-10 h-10 rounded bg-muted shrink-0" />
+                <div className="flex-1 space-y-2">
+                  <div className="h-4 bg-muted rounded w-1/3" />
+                  <div className="h-3 bg-muted rounded w-3/4" />
+                  <div className="h-3 bg-muted rounded w-1/2" />
+                </div>
+              </div>
             </div>
           ))}
         </div>
+      ) : filtered.length === 0 ? (
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+          <div className="surface rounded border border-accent/15 py-16 flex flex-col items-center gap-3">
+            <div className="w-12 h-12 rounded bg-accent/10 flex items-center justify-center">
+              <ScrollText className="w-6 h-6 text-accent/50" />
+            </div>
+            <p className="text-body font-medium text-muted-foreground">No slokas found</p>
+            {isOwner && (
+              <button
+                onClick={() => setCreateOpen(true)}
+                className="text-small text-accent hover:text-accent-glow font-medium transition-colors"
+              >
+                Add the first sloka →
+              </button>
+            )}
+          </div>
+        </motion.div>
       ) : (
-        <div className="space-y-2">
+        <div className="space-y-3">
           {filtered.map((shlok, i) => {
             const VIcon = visIcon[shlok.visibility] ?? Eye;
             const label = getShlokLabel(shlok);
+            const hasLocation = shlok.chapter_number != null || shlok.verse_number != null;
             return (
               <motion.div
                 key={shlok.id}
-                initial={{ opacity: 0, y: 8 }}
+                initial={{ opacity: 0, y: 4 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.25, delay: i * 0.04 }}
                 onClick={() => navigate(`/dashboard/slokas/${shlok.id}`)}
-                className="group surface rounded border border-border p-4 cursor-pointer transition-all duration-200 hover:shadow-elevated hover:border-accent/20"
+                className="group surface rounded border border-accent/15 p-5 cursor-pointer transition-all hover:border-accent/30 hover:shadow-elevated"
               >
-                <div className="flex items-start justify-between gap-4">
+                <div className="flex items-start gap-4">
+                  {/* Icon */}
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded bg-accent/10 text-accent group-hover:bg-accent group-hover:text-accent-foreground transition-colors">
+                    <ScrollText className="w-4 h-4" />
+                  </div>
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-1">
-                      <h3 className="text-heading text-foreground group-hover:text-accent transition-colors">{label}</h3>
-                      <span className={`inline-flex items-center gap-1 text-[10px] font-medium ${visColor[shlok.visibility] ?? "text-muted-foreground"}`}>
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="min-w-0 flex flex-wrap items-center gap-2">
+                        <h3 className="text-heading text-foreground group-hover:text-accent transition-colors">{label}</h3>
+                        {hasLocation && (
+                          <span className="inline-flex items-center gap-1 rounded border border-accent/15 bg-accent/5 px-2 py-0.5 text-[11px] font-medium text-accent">
+                            {shlok.chapter_number != null && `Ch ${shlok.chapter_number}`}
+                            {shlok.chapter_number != null && shlok.verse_number != null && " · "}
+                            {shlok.verse_number != null && `V ${shlok.verse_number}`}
+                          </span>
+                        )}
+                      </div>
+                      <span className={`inline-flex items-center gap-1 text-[10px] font-medium shrink-0 ${visColor[shlok.visibility] ?? "text-muted-foreground"}`}>
                         <VIcon className="w-3 h-3" />
                       </span>
                     </div>
-                    <p className="text-body text-muted-foreground mt-1.5 line-clamp-2 whitespace-pre-line leading-relaxed">{shlok.content}</p>
-                    <div className="flex items-center gap-3 mt-3 text-small text-muted-foreground">
-                      <span className="inline-flex items-center gap-1">
-                        <Pencil className="w-3 h-3" />
-                        {new Date(shlok.created_at).toLocaleDateString()}
-                      </span>
-                      {shlok.tags.length > 0 && (
-                        <>
-                          <span className="text-border">•</span>
-                          <span>{shlok.tags.join(", ")}</span>
-                        </>
-                      )}
+                    <p className="mt-2 line-clamp-3 text-body text-muted-foreground whitespace-pre-line leading-relaxed">{shlok.content}</p>
+                    <div className="mt-3 pt-3 border-t border-accent/10 flex items-center justify-between gap-3">
+                      <div className="flex items-center gap-3 flex-wrap min-w-0">
+                        <span className="text-small text-muted-foreground inline-flex items-center gap-1 shrink-0">
+                          <Calendar className="w-3 h-3" />
+                          {new Date(shlok.created_at).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}
+                        </span>
+                        {shlok.tags.length > 0 && (
+                          <>
+                            <span className="text-muted-foreground/30">·</span>
+                            <div className="flex flex-wrap gap-1">
+                              {shlok.tags.slice(0, 3).map((tag) => (
+                                <span key={tag} className="inline-flex items-center rounded border border-accent/15 bg-accent/5 px-1.5 py-0.5 text-[10px] text-accent/80">
+                                  {tag}
+                                </span>
+                              ))}
+                            </div>
+                          </>
+                        )}
+                      </div>
+                      <ArrowRight className="w-4 h-4 text-accent opacity-0 group-hover:opacity-100 -translate-x-1 group-hover:translate-x-0 transition-all duration-200 shrink-0" />
                     </div>
                   </div>
-                  <ChevronRight className="w-4 h-4 text-muted-foreground/40 group-hover:text-accent transition-colors mt-1 shrink-0" />
                 </div>
               </motion.div>
             );
           })}
         </div>
-      )}
-
-      {filtered.length === 0 && !shloksLoading && (
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="surface rounded border border-border p-12 text-center">
-          <ScrollText className="w-10 h-10 text-muted-foreground/30 mx-auto mb-3" />
-          <p className="text-body text-muted-foreground">No slokas found.</p>
-          <button onClick={() => setCreateOpen(true)} className="text-small text-accent hover:text-accent-glow font-medium mt-2 transition-colors">
-            Add the first sloka
-          </button>
-        </motion.div>
       )}
 
       <CreateSlokaModal

@@ -4,13 +4,12 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { motion, AnimatePresence } from "framer-motion";
-import { Plus, Search, BookOpen, ScrollText, ChevronRight, X, Eye, Lock, Users } from "lucide-react";
+import { Plus, Search, BookOpen, ScrollText, X, Eye, Lock, Users, Library, ArrowRight, Sparkles } from "lucide-react";
 import { GradientButton } from "@/components/ui/gradient-button";
 import { VisibilitySelector } from "@/components/ui/VisibilitySelector";
 import { Visibility } from "@/types/sloka";
 import { useMyBooksQuery, useCreateBookMutation } from "@/lib/api/endpoints/books";
 import type { BookResponse } from "@/types";
-import booksHero from "@/assets/books-hero.jpg";
 
 const CATEGORIES = ["All", "scripture", "philosophy", "epic", "veda"] as const;
 
@@ -91,18 +90,22 @@ export default function LibraryPage() {
   if (isLoading) {
     return (
       <div className="mx-auto w-full max-w-7xl space-y-5">
-        <div className="flex items-start justify-between gap-4">
-          <div>
-            <h1 className="text-display text-foreground">Library</h1>
-            <p className="text-body text-muted-foreground mt-1">Loading your collection...</p>
-          </div>
+        <div className="relative overflow-hidden rounded border border-accent/20 surface px-5 py-5 sm:px-6 animate-pulse">
+          <div className="h-5 bg-muted rounded w-32 mb-3" />
+          <div className="h-8 bg-muted rounded w-48 mb-2" />
+          <div className="h-4 bg-muted rounded w-80" />
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
           {Array.from({ length: 6 }).map((_, i) => (
-            <div key={i} className="surface rounded border border-border p-4 animate-pulse">
-              <div className="w-9 h-9 rounded bg-muted mb-3" />
-              <div className="h-4 bg-muted rounded mb-2 w-3/4" />
-              <div className="h-3 bg-muted rounded w-1/2" />
+            <div key={i} className="surface rounded border border-accent/15 p-5 animate-pulse">
+              <div className="flex items-start gap-4">
+                <div className="w-11 h-11 rounded bg-muted shrink-0" />
+                <div className="flex-1 space-y-2">
+                  <div className="h-4 bg-muted rounded w-2/3" />
+                  <div className="h-3 bg-muted rounded w-1/3" />
+                  <div className="h-3 bg-muted rounded w-3/4" />
+                </div>
+              </div>
             </div>
           ))}
         </div>
@@ -113,10 +116,12 @@ export default function LibraryPage() {
   if (isError) {
     return (
       <div className="mx-auto w-full max-w-7xl space-y-5">
-        <h1 className="text-display text-foreground">Library</h1>
-        <div className="surface rounded border border-border p-12 text-center">
-          <BookOpen className="w-10 h-10 text-muted-foreground/30 mx-auto mb-3" />
-          <p className="text-body text-muted-foreground">Failed to load your library. Please try again.</p>
+        <div className="surface rounded border border-accent/15 py-16 flex flex-col items-center gap-3">
+          <div className="w-12 h-12 rounded bg-muted/50 flex items-center justify-center">
+            <BookOpen className="w-6 h-6 text-muted-foreground/40" />
+          </div>
+          <p className="text-body font-medium text-muted-foreground">Failed to load your library</p>
+          <p className="text-small text-muted-foreground/60">Please try refreshing the page.</p>
         </div>
       </div>
     );
@@ -124,35 +129,50 @@ export default function LibraryPage() {
 
   return (
     <div className="mx-auto w-full max-w-7xl space-y-5">
-      {/* Hero */}
+      {/* ── Hero ── */}
       <motion.div
-        initial={{ opacity: 0, y: 12 }}
+        initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="relative overflow-hidden rounded h-40 lg:h-44"
+        className="relative overflow-hidden rounded border border-accent/20 surface px-5 py-5 sm:px-6"
       >
-        <img src={booksHero} alt="" className="absolute inset-0 h-full w-full object-cover object-center" />
-        <div className="absolute inset-0 bg-gradient-to-r from-foreground/60 via-foreground/30 to-transparent" />
-        <div className="relative z-10 flex items-end justify-between h-full px-6 pb-5">
+        <div className="absolute inset-0 bg-gradient-to-br from-accent/10 via-transparent to-background" />
+        <div className="relative flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
           <div>
-            <h1 className="text-[1.35rem] font-display font-bold text-white">Library</h1>
-            <p className="text-[13px] text-white/70 mt-1">{books.length} books in your collection</p>
+            <div className="mb-2 inline-flex items-center gap-2 rounded border border-accent/15 bg-background/70 px-2.5 py-1 text-small text-muted-foreground">
+              <Library className="h-3.5 w-3.5 text-accent" /> Personal collection
+            </div>
+            <h1 className="text-display text-foreground">My Library</h1>
+            <p className="mt-1 max-w-2xl text-body text-muted-foreground">
+              Your personal book collection — save verses, add meanings and share with others.
+            </p>
           </div>
-          <GradientButton onClick={() => setCreateOpen(true)} size="sm">
-            <Plus className="w-4 h-4" /> Add Book
-          </GradientButton>
+          <div className="flex flex-col sm:flex-row items-start sm:items-end gap-3">
+            <div className="grid grid-cols-2 gap-2 lg:min-w-[200px]">
+              <div className="rounded border border-accent/15 bg-background/80 p-3">
+                <p className="text-small text-muted-foreground">Total books</p>
+                <p className="mt-1 text-heading text-foreground">{books.length}</p>
+              </div>
+              <div className="rounded border border-accent/15 bg-background/80 p-3">
+                <p className="text-small text-muted-foreground">Showing</p>
+                <p className="mt-1 text-heading text-foreground">{filtered.length}</p>
+              </div>
+            </div>
+            <GradientButton onClick={() => setCreateOpen(true)} size="sm">
+              <Plus className="w-4 h-4" /> Add Book
+            </GradientButton>
+          </div>
         </div>
       </motion.div>
 
-      {/* Search & Filters */}
+      {/* ── Search & Filters ── */}
       <div className="flex flex-col sm:flex-row gap-3">
         <div className="relative flex-1 max-w-sm">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground" />
           <input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search books..."
-            className="w-full h-9 pl-9 pr-3 rounded border border-input bg-background text-[13px] text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent transition-all"
+            placeholder="Search books…"
+            className="w-full h-9 pl-9 pr-3 rounded border border-input bg-background text-[13px] text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent/60 transition-all"
           />
         </div>
         <div className="flex items-center gap-1 p-0.5 rounded bg-muted/50 border border-accent/15">
@@ -172,69 +192,89 @@ export default function LibraryPage() {
         </div>
       </div>
 
-      {/* Book Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-        {filtered.map((book, i) => {
-          const VIcon = visIcon[book.visibility] ?? Eye;
-          return (
-            <motion.div
-              key={book.id}
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, delay: i * 0.04 }}
-              onClick={() => navigate(`/dashboard/library/${book.id}`)}
-              className="group surface rounded border border-border p-4 cursor-pointer transition-all duration-200 hover:shadow-elevated hover:border-accent/20 hover:-translate-y-0.5"
-            >
-              <div className="flex items-start justify-between mb-3">
-                <div className="w-9 h-9 rounded bg-accent/10 flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-accent-foreground transition-colors">
-                  <BookOpen className="w-4 h-4" />
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className={`inline-flex items-center gap-1 text-[10px] font-medium ${visColor[book.visibility] ?? "text-muted-foreground"}`}>
-                    <VIcon className="w-3 h-3" />
-                    {book.visibility === "specific_users"
-                      ? "Shared"
-                      : book.visibility.charAt(0).toUpperCase() + book.visibility.slice(1)}
-                  </span>
-                  <ChevronRight className="w-4 h-4 text-muted-foreground/40 group-hover:text-accent transition-colors" />
-                </div>
-              </div>
-              <h3 className="text-heading text-foreground group-hover:text-accent transition-colors">{book.title}</h3>
-              <p className="text-small text-muted-foreground mt-1 line-clamp-2">{book.description}</p>
-              <div className="flex items-center gap-3 mt-3 pt-3 border-t border-accent/15">
-                {book.author_name && (
-                  <span className="text-small text-muted-foreground">{book.author_name}</span>
-                )}
-                {book.category && (
-                  <>
-                    <span className="text-muted-foreground/30">•</span>
-                    <span className="text-small text-muted-foreground inline-flex items-center gap-1">
-                      <ScrollText className="w-3 h-3" />
-                      {book.category}
-                    </span>
-                  </>
-                )}
-              </div>
-            </motion.div>
-          );
-        })}
-      </div>
-
-      {filtered.length === 0 && !isLoading && (
+      {/* ── Book Grid ── */}
+      {filtered.length === 0 ? (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="surface rounded border border-border p-12 text-center"
+          className="surface rounded border border-accent/15 py-16 flex flex-col items-center gap-3"
         >
-          <BookOpen className="w-10 h-10 text-muted-foreground/30 mx-auto mb-3" />
-          <p className="text-body text-muted-foreground">No books found matching your search.</p>
-          <button
-            onClick={() => { setSearch(""); setActiveCategory("All"); }}
-            className="text-small text-accent hover:text-accent-glow font-medium mt-2 inline-flex items-center gap-1 transition-colors"
-          >
-            Clear filters
-          </button>
+          <div className="w-12 h-12 rounded bg-accent/10 flex items-center justify-center">
+            <BookOpen className="w-6 h-6 text-accent/50" />
+          </div>
+          <p className="text-body font-medium text-muted-foreground">No books found</p>
+          {(search || activeCategory !== "All") ? (
+            <button
+              onClick={() => { setSearch(""); setActiveCategory("All"); }}
+              className="text-small text-accent hover:text-accent-glow font-medium transition-colors"
+            >
+              Clear filters
+            </button>
+          ) : (
+            <button
+              onClick={() => setCreateOpen(true)}
+              className="text-small text-accent hover:text-accent-glow font-medium transition-colors"
+            >
+              Add your first book →
+            </button>
+          )}
         </motion.div>
+      ) : (
+        <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
+          {filtered.map((book, i) => {
+            const VIcon = visIcon[book.visibility] ?? Eye;
+            return (
+              <motion.div
+                key={book.id}
+                initial={{ opacity: 0, y: 4 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.04 }}
+                onClick={() => navigate(`/dashboard/library/${book.id}`)}
+                className="group surface rounded border border-accent/15 p-5 cursor-pointer transition-all hover:border-accent/30 hover:shadow-elevated"
+              >
+                <div className="flex items-start gap-4">
+                  {/* Icon badge */}
+                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded bg-accent/10 text-accent group-hover:bg-accent group-hover:text-accent-foreground transition-colors">
+                    <BookOpen className="w-5 h-5" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="min-w-0">
+                        <div className="flex flex-wrap items-center gap-2">
+                          <h2 className="text-heading text-foreground group-hover:text-accent transition-colors">{book.title}</h2>
+                          {book.category && (
+                            <span className="inline-flex items-center gap-1 rounded border border-accent/15 bg-accent/5 px-2 py-0.5 text-[11px] font-medium text-accent capitalize">
+                              {book.category}
+                            </span>
+                          )}
+                        </div>
+                        {book.author_name && (
+                          <p className="mt-0.5 text-small text-muted-foreground">by {book.author_name}</p>
+                        )}
+                      </div>
+                      <span className={`inline-flex items-center gap-1 text-[10px] font-medium shrink-0 mt-0.5 ${visColor[book.visibility] ?? "text-muted-foreground"}`}>
+                        <VIcon className="w-3 h-3" />
+                        {book.visibility === "specific_users"
+                          ? "Shared"
+                          : book.visibility.charAt(0).toUpperCase() + book.visibility.slice(1)}
+                      </span>
+                    </div>
+                    {book.description && (
+                      <p className="mt-2 line-clamp-2 text-body text-muted-foreground">{book.description}</p>
+                    )}
+                    <div className="mt-3 pt-3 border-t border-accent/10 flex items-center justify-between">
+                      <span className="text-small text-muted-foreground inline-flex items-center gap-1.5">
+                        <ScrollText className="w-3 h-3" />
+                        View collection
+                      </span>
+                      <ArrowRight className="w-4 h-4 text-accent opacity-0 group-hover:opacity-100 -translate-x-1 group-hover:translate-x-0 transition-all duration-200" />
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            );
+          })}
+        </div>
       )}
 
       {/* Create Book Modal */}

@@ -18,6 +18,28 @@ function formatDuration(seconds: number): string {
   return m > 0 ? `${m}m ${s}s` : `${s}s`;
 }
 
+// Smooth per-step colour interpolation for the progress ring
+function lerpHsl(stops: [number, [number, number, number]][], t: number): string {
+  for (let i = 1; i < stops.length; i++) {
+    if (t <= stops[i][0]) {
+      const [t0, [h0, s0, l0]] = stops[i - 1];
+      const [t1, [h1, s1, l1]] = stops[i];
+      const u = (t - t0) / (t1 - t0);
+      return `hsl(${Math.round(h0 + (h1 - h0) * u)} ${Math.round(s0 + (s1 - s0) * u)}% ${Math.round(l0 + (l1 - l0) * u)}%)`;
+    }
+  }
+  const [h, s, l] = stops[stops.length - 1][1];
+  return `hsl(${h} ${s}% ${l}%)`;
+}
+
+const JAP_COLOR_STOPS: [number, [number, number, number]][] = [
+  [0,    [262, 70, 60]],  // accent purple
+  [0.25, [215, 75, 58]],  // blue
+  [0.5,  [45,  90, 60]],  // gold
+  [0.75, [120, 58, 50]],  // green
+  [1,    [145, 65, 42]],  // deep success green
+];
+
 export default function InstantNaamJapPage() {
   const navigate = useNavigate();
   const [target, setTarget] = useState(108);
@@ -63,6 +85,13 @@ export default function InstantNaamJapPage() {
   const strokeDashoffset = circumference * (1 - progress);
   const remaining = Math.max(target - count, 0);
   const focusMode = started && !completed;
+
+  // Smooth per-step colour transitions — changes with every single tap
+  const pct = Math.round(progress * 100);
+  const gradStop1 = lerpHsl(JAP_COLOR_STOPS, Math.max(0, progress - 0.12));
+  const gradStop2 = lerpHsl(JAP_COLOR_STOPS, progress);
+  // Track colour also responds to progress
+  const trackOpacity = 0.3 + progress * 0.2;
 
   const handleTap = useCallback(() => {
     if (completed) return;
@@ -208,41 +237,68 @@ export default function InstantNaamJapPage() {
           <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-accent/10 via-accent/5 to-transparent" />
           <div className="relative flex flex-col items-center">
             <div className="relative mb-6 grid place-items-center">
-              <div className="absolute h-44 w-44 rounded-full bg-accent/10 blur-3xl" />
-              <div className="absolute h-28 w-28 rounded-full bg-success/10 blur-2xl" />
+              {/* Glow layers — intensify as progress rises */}
+              <div
+                className="absolute rounded-full blur-3xl transition-all duration-500"
+                style={{
+                  width: 176, height: 176,
+                  background: `hsl(var(--accent) / ${0.06 + progress * 0.14})`,
+                }}
+              />
+              <div
+                className="absolute rounded-full blur-2xl transition-all duration-500"
+                style={{
+                  width: 112, height: 112,
+                  background: completed
+                    ? "hsl(var(--success) / 0.25)"
+                    : `hsl(var(--accent) / ${0.04 + progress * 0.1})`,
+                }}
+              />
               <div className="relative h-56 w-56">
                 <svg className="h-full w-full -rotate-90" viewBox="0 0 200 200">
                   <defs>
-                    <linearGradient id="naam-jap-progress" x1="0%" y1="0%" x2="100%" y2="100%">
-                      <stop offset="0%" stopColor="hsl(var(--accent-glow))" />
-                      <stop offset="100%" stopColor="hsl(var(--accent))" />
+                    <linearGradient id="jap-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stopColor={gradStop1} />
+                      <stop offset="100%" stopColor={gradStop2} />
                     </linearGradient>
                   </defs>
+                  {/* Track */}
                   <circle
-                    cx="100"
-                    cy="100"
-                    r={radius}
+                    cx="100" cy="100" r={radius}
                     fill="none"
-                    stroke="hsl(var(--muted) / 0.6)"
-                    strokeWidth="10"
+                    stroke={`hsl(var(--muted) / ${trackOpacity})`}
+                    strokeWidth="3"
                   />
+                  {/* Progress arc */}
                   <motion.circle
-                    cx="100"
-                    cy="100"
-                    r={radius}
+                    cx="100" cy="100" r={radius}
                     fill="none"
-                    stroke="url(#naam-jap-progress)"
-                    strokeWidth="10"
+                    stroke="url(#jap-grad)"
+                    strokeWidth={completed ? 5 : 3}
                     strokeLinecap="round"
                     strokeDasharray={circumference}
                     animate={{ strokeDashoffset }}
                     transition={{ duration: 0.18, ease: "easeOut" }}
+                    style={{ filter: progress > 0 ? `drop-shadow(0 0 ${4 + progress * 8}px ${gradStop2})` : "none" }}
                   />
                 </svg>
-                <div className="absolute inset-0 m-5 flex flex-col items-center justify-center rounded-full border border-accent/15 bg-background/85 shadow-elevated backdrop-blur-sm">
-                  <span className="text-4xl font-semibold text-foreground tabular-nums">{count}</span>
-                  <span className="mt-1 text-small text-muted-foreground">of {target}</span>
-                  <span className="mt-2 text-small font-medium text-accent">{Math.round(progress * 100)}% complete</span>
+                {/* Inner circle */}
+                <div
+                  className="absolute inset-0 m-5 flex flex-col items-center justify-center rounded-full border bg-background/85 shadow-elevated backdrop-blur-sm transition-all duration-500"
+                  style={{
+                    borderColor: completed
+                      ? "hsl(var(--success) / 0.3)"
+                      : `hsl(var(--accent) / ${0.1 + progress * 0.2})`,
+                  }}
+                >
+                  <span className="text-2xl font-semibold text-foreground tabular-nums">{count}</span>
+                  <span className="mt-0.5 text-small text-muted-foreground">of {target}</span>
+                  <span
+                    className="mt-1.5 text-[11px] font-semibold tabular-nums transition-colors duration-500"
+                    style={{ color: gradStop2 }}
+                  >
+                    {pct}%
+                  </span>
                 </div>
               </div>
             </div>

@@ -210,7 +210,7 @@ export default function NaamJapPage() {
             <div className={`w-9 h-9 rounded ${stat.bgColor} flex items-center justify-center mb-3`}>
               <stat.icon className={`w-[18px] h-[18px] ${stat.color}`} />
             </div>
-            <p className="text-2xl font-bold text-foreground tracking-tight">{stat.value}</p>
+            <p className="text-[15px] font-bold text-foreground tracking-tight">{stat.value}</p>
             <p className="text-small text-muted-foreground mt-0.5">{stat.label}</p>
           </motion.div>
         ))}

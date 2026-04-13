@@ -247,7 +247,7 @@ export default function ApprovalsPage() {
         <div>
           <div className="flex items-center gap-2 mb-1">
             <ClipboardList className="w-5 h-5 text-accent" />
-            <h1 className="text-xl font-bold text-foreground">Approvals</h1>
+            <h1 className="text-heading text-foreground">Approvals</h1>
           </div>
           <p className="text-[13px] text-muted-foreground">
             Review edit requests submitted for your content
